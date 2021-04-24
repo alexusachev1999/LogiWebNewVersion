@@ -1,0 +1,91 @@
+CREATE DATABASE logiWeb;
+USE logiWeb;
+
+CREATE TABLE logiWeb.cities (
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(30) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE logiWeb.map (
+    id int NOT NULL AUTO_INCREMENT,
+    city1_id int NOT NULL,
+    city2_id int NOT NULL,
+    distance int NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (city1_id) REFERENCES logiWeb.cities(id),
+    FOREIGN KEY (city2_id) REFERENCES logiWeb.cities(id)
+);
+
+CREATE TABLE logiWeb.cargo (
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(50) NOT NULL,
+    weight int NOT NULL,
+    status varchar(15) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE logiWeb.roles (
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(20) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE logiWeb.employee (
+    id int NOT NULL AUTO_INCREMENT,
+    login varchar(20) NOT NULL,
+    password varchar(20) NOT NULL,
+    role_id int NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (role_id) REFERENCES logiWeb.roles(id)
+);
+
+CREATE TABLE logiWeb.truck (
+    id int NOT NULL AUTO_INCREMENT,
+    registration_number varchar(7) NOT NULL ,
+    driver_shift_duration int NOT NULL ,
+    state bool DEFAULT true NOT NULL ,
+    city_id int NOT NULL ,
+    capacity int NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (city_id) REFERENCES logiWeb.cities(id)
+);
+
+CREATE TABLE logiWeb.order (
+    id int NOT NULL AUTO_INCREMENT,
+    status bool DEFAULT false NOT NULL,
+    truck_id int NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (truck_id) REFERENCES logiWeb.truck(id)
+);
+
+CREATE TABLE logiWeb.driver (
+    id int NOT NULL AUTO_INCREMENT,
+    status varchar(15) NOT NULL,
+    city_id int NOT NULL,
+    truck_id int NOT NULL,
+    order_id int NOT NULL,
+    employee_id int NOT NULL,
+    name varchar(20) NOT NULL,
+    surname varchar(20) NOT NULL,
+    phone_number varchar(16) NOT NULL ,
+    worked_hours int NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (truck_id) REFERENCES logiWeb.truck(id),
+    FOREIGN KEY (order_id) REFERENCES logiWeb.order(id),
+    FOREIGN KEY (city_id) REFERENCES logiWeb.cities(id),
+    FOREIGN KEY (employee_id) REFERENCES logiWeb.employee(id)
+);
+
+CREATE TABLE logiWeb.waypoint (
+    id int NOT NULL AUTO_INCREMENT,
+    city_id int NOT NULL,
+    cargo_id int NOT NULL,
+    order_id int NOT NULL,
+    loading bool DEFAULT false NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (cargo_id) REFERENCES logiWeb.cargo(id),
+    FOREIGN KEY (order_id) REFERENCES logiWeb.order(id)
+);
+
+
