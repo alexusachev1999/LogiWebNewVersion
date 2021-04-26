@@ -43,7 +43,7 @@ public class AdminController {
     @RequestMapping("/admin/updateDriver")
     public String updateDriver(@RequestParam("driverId") int id, Model model){
         Driver driver = driverService.getDriver(id);
-        model.addAttribute("driver");
+        model.addAttribute("driver", driver);
         return "add-driver";
     }
 }
