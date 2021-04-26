@@ -27,7 +27,7 @@
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
           destroy-method="close">
         <property name="driverClass" value="com.mysql.cj.jdbc.Driver" />
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/my_db?useSSL=false&amp;serverTimezone=UTC" />
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/logiWeb?useSSL=false&amp;serverTimezone=UTC" />
         <property name="user" value="root" />
         <property name="password" value="cfif270599!" />
     </bean>
@@ -40,6 +40,9 @@
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.connection.Charset">UTF-8</prop>
+                <prop key="hibernate.connection.CharacterEncoding">UTF-8</prop>
+                <prop key="hibernate.connection.Useunicode">true</prop>
             </props>
         </property>
     </bean>

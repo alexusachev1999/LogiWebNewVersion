@@ -19,6 +19,7 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <datasource-mapping>
+          <factory-entry name="LogiWebProject" />
           <factory-entry name="default" />
         </datasource-mapping>
         <naming-strategy-map />
@@ -84,5 +85,8 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:5.3.6" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:5.3.6" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.6" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:5.4.6" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:5.4.6" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-config:5.4.6" level="project" />
   </component>
 </module>

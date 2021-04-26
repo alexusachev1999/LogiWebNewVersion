@@ -9,11 +9,7 @@
 <body>
 <h2>Для входа на сайт введите логин и пароль</h2>
 
-<%--<form:form>--%>
-<%--    <label>Логин</label>--%>
-<%--    <form:input path="login">--%>
-
-<%--    </form:input>--%>
-<%--</form:form>--%>
+<input type="button" value="Для администраторов" onclick="window.location.href = 'admin-main'">
+<input type="button" value="Для водителей" onclick="window.location.href = 'driver-main'">
 </body>
 </html>

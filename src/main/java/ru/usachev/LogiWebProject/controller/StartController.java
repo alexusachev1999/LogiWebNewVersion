@@ -13,4 +13,9 @@ public class StartController {
         model.addAttribute("employee", employee);
         return "start-page";
     }
+
+    @RequestMapping("/admin-main")
+    public String getAdminMenu(){
+        return "admin-main";
+    }
 }
