@@ -13,6 +13,7 @@ import ru.usachev.LogiWebProject.service.DriverService;
 import ru.usachev.LogiWebProject.service.EmployeeService;
 
 import javax.validation.Valid;
+import javax.ws.rs.GET;
 import java.util.List;
 
 @Controller

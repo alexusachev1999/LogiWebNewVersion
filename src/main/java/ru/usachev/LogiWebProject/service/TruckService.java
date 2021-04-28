@@ -12,4 +12,6 @@ public interface TruckService {
     public void deleteTruck(int id);
 
     public void saveTruck(Truck truck);
+
+    public List<Truck> getValidTrucksForOrder(int capacity);
 }

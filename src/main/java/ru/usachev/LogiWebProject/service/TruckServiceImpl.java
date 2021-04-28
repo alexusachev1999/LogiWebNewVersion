@@ -37,4 +37,10 @@ public class TruckServiceImpl implements TruckService{
     public void saveTruck(Truck truck) {
         truckDAO.saveTruck(truck);
     }
+
+    @Override
+    @Transactional
+    public List<Truck> getValidTrucksForOrder(int capacity) {
+        return truckDAO.getValidTrucksForOrder(capacity);
+    }
 }

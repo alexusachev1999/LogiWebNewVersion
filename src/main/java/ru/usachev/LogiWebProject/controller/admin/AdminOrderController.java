@@ -85,8 +85,8 @@ public class AdminOrderController {
         return "order-detail";
     }
 
-    @RequestMapping("/order/waypoints")
+    @RequestMapping("/order/drivers")
     public String getOrderWaypoints(@RequestParam(name = "orderId") int id){
-        return "order-waypoints";
+        return "order-drivers";
     }
 }

@@ -46,4 +46,11 @@ public class TruckDAOImpl implements TruckDAO{
         city.addTruckToTruckList(truck);
         session.saveOrUpdate(truck);
     }
+
+    @Override
+    public List<Truck> getValidTrucksForOrder(int capacity) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Truck where state=true");
+        return null;
+    }
 }
