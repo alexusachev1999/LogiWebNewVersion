@@ -84,4 +84,9 @@ public class Cargo {
     public void setWaypoints(List<Waypoint> waypoints) {
         this.waypoints = waypoints;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

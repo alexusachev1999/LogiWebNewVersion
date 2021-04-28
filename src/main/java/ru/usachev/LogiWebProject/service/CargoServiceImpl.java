@@ -37,4 +37,10 @@ public class CargoServiceImpl implements CargoService{
     public Cargo getCargo(int id) {
         return cargoDAO.getCargo(id);
     }
+
+    @Override
+    @Transactional
+    public Cargo getCargoByName(String cargoName) {
+        return cargoDAO.getCargoByName(cargoName);
+    }
 }

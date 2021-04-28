@@ -13,4 +13,6 @@ public interface CargoService {
     public void deleteCargo(int id);
 
     public Cargo getCargo(int id);
+
+    Cargo getCargoByName(String cargoName);
 }

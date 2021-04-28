@@ -48,7 +48,8 @@ public class AdminWaypointController {
     }
 
     @RequestMapping("/saveWaypoint")
-    public String saveWaypoint(@Valid @ModelAttribute("waypoint") Waypoint waypoint, BindingResult bindingResult, Model model) {
+    public String saveWaypoint(@Valid @ModelAttribute("waypoint") Waypoint waypoint, BindingResult bindingResult, Model model,
+                               @RequestParam(name = "cargoId") int cargoId){
         if (bindingResult.hasErrors()) {
             List<Cargo> cargoes = cargoService.getAllCargoes();
             List<City> cities = cityService.getCities();
@@ -56,6 +57,8 @@ public class AdminWaypointController {
             model.addAttribute("cities", cities);
             return "admin/add-waypoint";
         } else {
+            Cargo cargo = cargoService.getCargo(cargoId);
+            waypoint.setCargo(cargo);
             waypointService.saveWaypoint(waypoint);
             return "redirect:/admin/waypoints";
         }

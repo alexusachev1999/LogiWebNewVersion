@@ -14,10 +14,8 @@
     <form:hidden path="id"/>
 
     <label>Груз</label>
-    <form:select path="cargo">
-        <c:forEach var="cargo" items="${cargoes}">
-            <form:option value="${cargo.name}"/>
-        </c:forEach>
+    <form:select path="cargo" name = "cargoId">
+        <form:options items="${cargoes}"></form:options>
     </form:select>
     <br/><br/>
     <label>Город</label>
