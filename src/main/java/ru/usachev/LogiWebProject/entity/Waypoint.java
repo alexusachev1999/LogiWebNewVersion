@@ -18,7 +18,7 @@ public class Waypoint {
     @JoinColumn(name = "city_id")
     private City city;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "cargo_id")
     private Cargo cargo;
 

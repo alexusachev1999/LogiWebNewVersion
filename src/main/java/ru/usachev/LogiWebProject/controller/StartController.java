@@ -16,6 +16,6 @@ public class StartController {
 
     @RequestMapping("/admin-main")
     public String getAdminMenu(){
-        return "admin-main";
+        return "admin/admin-main";
     }
 }

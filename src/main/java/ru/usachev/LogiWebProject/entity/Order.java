@@ -1,6 +1,7 @@
 package ru.usachev.LogiWebProject.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,6 +12,9 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+
+    @Column(name = "number")
+    private int number;
 
     @Column(name = "status")
     private boolean status;
@@ -26,6 +30,20 @@ public class Order {
     private List<Driver> drivers;
 
     public Order() {
+    }
+
+    public void addDriverToDriverList(Driver driver){
+        if (drivers == null)
+            drivers = new ArrayList<>();
+        drivers.add(driver);
+        driver.setOrder(this);
+    }
+
+    public void addWaypointToWaypointList(Waypoint waypoint){
+        if (waypoints == null)
+            waypoints = new ArrayList<>();
+        waypoints.add(waypoint);
+        waypoint.setOrder(this);
     }
 
     public Order(boolean status) {
@@ -70,5 +88,13 @@ public class Order {
 
     public void setDrivers(List<Driver> drivers) {
         this.drivers = drivers;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

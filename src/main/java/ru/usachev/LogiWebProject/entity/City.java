@@ -1,6 +1,7 @@
 package ru.usachev.LogiWebProject.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,6 +27,28 @@ public class City {
 
     public City() {
     }
+
+    public void addDriverToDriverList(Driver driver){
+        if (drivers == null)
+            drivers = new ArrayList<>();
+        drivers.add(driver);
+        driver.setCity(this);
+    }
+
+    public void addTruckToTruckList(Truck truck) {
+        if (trucks == null)
+            trucks = new ArrayList<>();
+        trucks.add(truck);
+        truck.setCity(this);
+    }
+
+    public void addWaypointToWaypointList(Waypoint waypoint) {
+        if (waypoints == null)
+            waypoints = new ArrayList<>();
+        waypoints.add(waypoint);
+        waypoint.setCity(this);
+    }
+
 
     public City(String name) {
         this.name = name;
@@ -70,4 +93,5 @@ public class City {
     public void setDrivers(List<Driver> drivers) {
         this.drivers = drivers;
     }
+
 }

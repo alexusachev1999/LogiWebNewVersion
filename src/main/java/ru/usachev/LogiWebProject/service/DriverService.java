@@ -11,4 +11,6 @@ public interface DriverService {
     public void saveDriver(Driver driver);
 
     public Driver getDriver(int id);
+
+    public void deleteDriver(int id);
 }

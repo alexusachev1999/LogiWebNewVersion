@@ -1,6 +1,8 @@
 package ru.usachev.LogiWebProject.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "cargo")
@@ -11,6 +13,9 @@ public class Cargo {
     @Column(name = "id")
     private int id;
 
+    @Column(name = "number")
+    private int number;
+
     @Column(name = "name")
     private String name;
 
@@ -20,13 +25,17 @@ public class Cargo {
     @Column(name = "status")
     private String status;
 
+    @OneToMany(mappedBy = "cargo")
+    private List<Waypoint> waypoints;
+
     public Cargo() {
     }
 
-    public Cargo(String name, int weight, String status) {
-        this.name = name;
-        this.weight = weight;
-        this.status = status;
+    public void addWaypointToWaypoints(Waypoint waypoint){
+        if (waypoints == null)
+            waypoints = new ArrayList<>();
+        waypoints.add(waypoint);
+        waypoint.setCargo(this);
     }
 
     public int getId() {
@@ -59,5 +68,20 @@ public class Cargo {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public List<Waypoint> getWaypoints() {
+        return waypoints;
+    }
+
+    public void setWaypoints(List<Waypoint> waypoints) {
+        this.waypoints = waypoints;
     }
 }

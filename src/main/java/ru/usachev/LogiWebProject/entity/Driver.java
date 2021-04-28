@@ -1,5 +1,9 @@
 package ru.usachev.LogiWebProject.entity;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.util.Map;
 
 @Entity
 @Table(name = "driver")
@@ -11,12 +15,20 @@ public class Driver {
     private int id;
 
     @Column(name = "name")
+    @Size (min = 2, max = 20, message = "Имя не меньше 2-х и не больше 20-ти символов")
+    @NotBlank
+    @Pattern(regexp = "[А-Я]{1}[а-я]*", message = "Используйте для имени следующий шаблон - \"Александр\"")
     private String name;
 
     @Column(name = "surname")
+    @Size (min = 2, max = 20, message = "Имя не меньше 2-х и не больше 20-ти символов")
+    @NotBlank
+    @Pattern(regexp = "[А-Я]{1}[а-я]*", message = "Используйте для имени следующий шаблон - \"Иванов\"")
     private String surname;
 
     @Column(name = "phone_number")
+    @NotBlank
+    @Pattern(regexp = "^\\+[7][-]\\d{3}-\\d{3}-\\d{2}-\\d{2}$", message = "Используйте для номера следующий шаблон - +7-953-146-23-60")
     private String phoneNumber;
 
     @Column(name = "worked_hours")
@@ -25,7 +37,8 @@ public class Driver {
     @Column(name = "status")
     private String status;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "city_id")
     private City city;
 
@@ -111,4 +124,5 @@ public class Driver {
     public void setOrder(Order order) {
         this.order = order;
     }
+
 }

@@ -1,6 +1,8 @@
 package ru.usachev.LogiWebProject.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Entity
@@ -13,6 +15,8 @@ public class Truck {
     private int id;
 
     @Column(name = "registration_number")
+    @NotBlank
+    @Pattern(regexp = "[А-Я]{2}\\d{5}", message = "Используйте следующий шаблон \"АБ12345\"")
     private String registrationNumber;
 
     @Column(name = "driver_shift_duration")

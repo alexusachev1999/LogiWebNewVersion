@@ -26,16 +26,20 @@
         <c:url var="updateButton" value="/admin/updateDriver">
             <c:param name="driverId" value="${driver.id}"/>
         </c:url>
+
+        <c:url var="deleteButton" value="/admin/deleteDriver">
+            <c:param name="driverId" value="${driver.id}"/>
+        </c:url>
         <tr>
             <td>${driver.name}</td>
             <td>${driver.surname}</td>
             <td>${driver.phoneNumber}</td>
             <td>${driver.workedHours}</td>
             <td>${driver.status}</td>
-            <td>${driver.city}</td>
-            <td>${driver.truck}</td>
+            <td>${driver.city.name}</td>
+            <td>${driver.truck.registrationNumber}</td>
             <td><input type="button" value="Обновить" onclick="window.location.href='${updateButton}'"/></td>
-            <td><input type="button" value="Удалить" onclick="window.location.href='deleteDriver'"/></td>
+            <td><input type="button" value="Удалить" onclick="window.location.href='${deleteButton}'"/></td>
         </tr>
     </C:forEach>
 </table>

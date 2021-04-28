@@ -30,4 +30,10 @@ public class DriverServiceImpl implements DriverService{
     public Driver getDriver(int id) {
         return driverDAO.getDriver(id);
     }
+
+    @Override
+    @Transactional
+    public void deleteDriver(int id) {
+        driverDAO.deleteDriver(id);
+    }
 }
