@@ -36,4 +36,10 @@ public class DriverServiceImpl implements DriverService{
     public void deleteDriver(int id) {
         driverDAO.deleteDriver(id);
     }
+
+    @Override
+    @Transactional
+    public List<Driver> getDriversByOrderId(int orderId) {
+        return driverDAO.getDriversByOrderId(orderId);
+    }
 }

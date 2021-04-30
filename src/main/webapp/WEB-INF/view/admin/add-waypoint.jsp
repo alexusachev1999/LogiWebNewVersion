@@ -14,7 +14,7 @@
     <form:hidden path="id"/>
 
     <label>Груз</label>
-    <form:select path="cargo" name = "cargoId">
+    <form:select path="cargo" name = "cargoName">
         <form:options items="${cargoes}"></form:options>
     </form:select>
     <br/><br/>
@@ -26,7 +26,7 @@
     </form:select>
     <br/><br/>
     <label>Тип</label>
-    <form:select path="loading">
+    <form:select path="type">
         <form:option value= "true" label="Загрузка"/>
         <form:option value="false" label="Выгрузка"/>
     </form:select>

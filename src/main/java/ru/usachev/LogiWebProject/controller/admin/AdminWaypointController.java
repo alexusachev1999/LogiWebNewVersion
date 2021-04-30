@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ru.usachev.LogiWebProject.converter.WaypointConverter;
+import ru.usachev.LogiWebProject.dto.WaypointDTO;
 import ru.usachev.LogiWebProject.entity.Cargo;
 import ru.usachev.LogiWebProject.entity.City;
 import ru.usachev.LogiWebProject.entity.Waypoint;
@@ -29,6 +29,9 @@ public class AdminWaypointController {
     @Autowired
     private CityService cityService;
 
+    @Autowired
+    private WaypointConverter waypointConverter;
+
     @RequestMapping("/waypoints")
     public String getAllCargoes(Model model){
         List<Waypoint> waypoints = waypointService.getAllWaypoints();
@@ -36,9 +39,9 @@ public class AdminWaypointController {
         return "admin/all-waypoints";
     }
 
-    @RequestMapping("/addWaypoint")
+    @GetMapping("/addWaypoint")
     public String addCargo(Model model){
-        Waypoint waypoint = new Waypoint();
+        WaypointDTO waypoint = new WaypointDTO();
         List<Cargo> cargoes = cargoService.getAllCargoes();
         List<City> cities = cityService.getCities();
         model.addAttribute("waypoint", waypoint);
@@ -47,8 +50,8 @@ public class AdminWaypointController {
         return "admin/add-waypoint";
     }
 
-    @RequestMapping("/saveWaypoint")
-    public String saveWaypoint(@Valid @ModelAttribute("waypoint") Waypoint waypoint, BindingResult bindingResult, Model model){
+    @PostMapping("/saveWaypoint")
+    public String saveWaypoint(@Valid @ModelAttribute("waypoint") WaypointDTO waypoint, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
             List<Cargo> cargoes = cargoService.getAllCargoes();
             List<City> cities = cityService.getCities();
@@ -63,8 +66,15 @@ public class AdminWaypointController {
 
     @RequestMapping("/updateWaypoint")
     public String updateWaypoint(@RequestParam("waypointId") int id, Model model){
+        List<Cargo> cargoes = cargoService.getAllCargoes();
+        List<City> cities = cityService.getCities();
+
         Waypoint waypoint = waypointService.getWaypoint(id);
-        model.addAttribute("waypoint", waypoint);
+        WaypointDTO waypointDTO = waypointConverter.convertWaypointToWaypointDTO(waypoint);
+
+        model.addAttribute("cargoes", cargoes);
+        model.addAttribute("cities", cities);
+        model.addAttribute("waypoint", waypointDTO);
         return "admin/add-waypoint";
     }
 

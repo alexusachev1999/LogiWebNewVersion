@@ -46,4 +46,14 @@ public class DriverDAOImpl implements DriverDAO{
         Driver driver = session.get(Driver.class, id);
         session.delete(driver);
     }
+
+    @Override
+    public List<Driver> getDriversByOrderId(int orderId) {
+        Session session = sessionFactory.getCurrentSession();
+
+        List<Driver> drivers = session.createQuery("from Driver where order=:orderId")
+                .setParameter("orderId", orderId)
+                .getResultList();
+        return drivers;
+    }
 }

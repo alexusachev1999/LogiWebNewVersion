@@ -24,4 +24,9 @@ public class CityServiceImpl implements CityService{
     public List<City> getCities() {
         return cityDAO.getCities();
     }
+
+    @Override
+    public City getCityByName(String cityName) {
+        return cityDAO.getCityByName(cityName);
+    }
 }

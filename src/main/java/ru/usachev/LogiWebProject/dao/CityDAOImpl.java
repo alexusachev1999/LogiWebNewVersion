@@ -28,4 +28,15 @@ public class CityDAOImpl implements CityDAO{
         List<City> cities = session.createQuery("from City", City.class).getResultList();
         return cities;
     }
+
+    @Override
+    public City getCityByName(String cityName) {
+        Session session = sessionFactory.getCurrentSession();
+        City city = new City();
+
+        city = session.createQuery("from City where name=:cityName", City.class)
+                .setParameter("cityName", cityName)
+                .getSingleResult();
+        return city;
+    }
 }

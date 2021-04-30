@@ -37,7 +37,14 @@
             <td>${driver.workedHours}</td>
             <td>${driver.status}</td>
             <td>${driver.city.name}</td>
-            <td>${driver.truck.registrationNumber}</td>
+            <td>
+                <c:if test="${driver.truck == null}">
+                    <c:out value="Нет фуры"/>
+                </c:if>
+                <c:if test="${driver.truck != null}">
+                    <c:out value="${driver.truck.registrationNumber}"/>
+                </c:if>
+            </td>
             <td><input type="button" value="Обновить" onclick="window.location.href='${updateButton}'"/></td>
             <td><input type="button" value="Удалить" onclick="window.location.href='${deleteButton}'"/></td>
         </tr>

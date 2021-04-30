@@ -80,13 +80,10 @@ public class AdminOrderController {
         return "redirect:/admin/orders";
     }
 
-    @RequestMapping("/order/detail")
-    public String getOrderDetail(){
-        return "order-detail";
-    }
-
     @RequestMapping("/order/drivers")
-    public String getOrderWaypoints(@RequestParam(name = "orderId") int id){
-        return "order-drivers";
+    public String getOrderDrivers(@RequestParam(name = "orderId") int orderId, Model model){
+        List<Driver> drivers = driverService.getDriversByOrderId(orderId);
+        model.addAttribute("drivers", drivers);
+        return "admin/order-drivers";
     }
 }
