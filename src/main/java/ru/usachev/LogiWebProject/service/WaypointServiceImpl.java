@@ -49,4 +49,17 @@ public class WaypointServiceImpl implements WaypointService{
     public void deleteWaypoint(int id) {
         waypointDAO.deleteWaypoint(id);
     }
+
+    @Override
+    public WaypointDTO getWaypointByCargoName(String waypointToString) {
+        return waypointConverter
+                .convertWaypointToWaypointDTO(waypointDAO.getWaypointByCargoName(waypointToString));
+    }
+
+    @Override
+    public List getWaypointListByIds(int[] ids) {
+        List waypoints = waypointDAO.getWaypointListByIds(ids);
+        List waypointsDTO = waypointConverter.convertWaypointListToWaypointDTOList(waypoints);
+        return waypointsDTO;
+    }
 }

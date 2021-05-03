@@ -1,6 +1,7 @@
 package ru.usachev.LogiWebProject.dto;
 
 public class WaypointDTO {
+
     private int id;
     private String cargo;
     private String cityLoading;
@@ -43,6 +44,6 @@ public class WaypointDTO {
 
     @Override
     public String toString() {
-        return cargo + " из:" + cityLoading + ", в:" + cityUnloading;
+        return cargo + " из " + cityLoading + ", в " + cityUnloading;
     }
 }

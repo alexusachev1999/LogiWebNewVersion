@@ -8,27 +8,21 @@
     <title>Добавить заказ</title>
 </head>
 <body>
+<h2>Заказ №${order.number}</h2>
 <form:form action="saveOrder" modelAttribute="order">
 
     <c:url var="submitButton" value="/admin/saveOrder">
         <c:param name="orderId" value="${order.id}"/>
     </c:url>
 
-    <form:hidden path="id"/>
-
-    <label>Номер заказа</label>
-    <form:input path="number"/>
-    <form:errors path="number"/>
-    <br/><br/>
-    <label>Статус</label>
-    <form:select path="status">
-        <form:option value= "true" label="Выполнен"/>
-        <form:option value="false" label="Невыполнен"/>
-    </form:select>
-    <br/><br/>
-    <label>Добавить маршрутную точку</label>
-
-    <input type="submit" value="OK" onclick="window.location='${submitButton}'">
+    <label>Список маршрутных точек</label>
+    <br>
+    <c:forEach var="waypoint" items="${waypoints}">
+        <form:checkbox path="waypoints" value="${waypoint.id}" label="${waypoint.toString()}"/>
+        <br/>
+    </c:forEach>
+    <br/>
+    <input type="submit" value="Добавить маршрутные точки" onclick="window.location='${submitButton}'">
 </form:form>
 </body>
 </html>

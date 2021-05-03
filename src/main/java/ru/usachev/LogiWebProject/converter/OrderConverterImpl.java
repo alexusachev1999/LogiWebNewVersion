@@ -32,7 +32,7 @@ public class OrderConverterImpl implements OrderConverter{
         if (orderDTO.getDrivers() != null)
             order.setDrivers(driverConverter.convertDriverDTOListToDriverList(orderDTO.getDrivers()));
 
-        if (orderDTO.getWaypoints() !=null)
+        if (orderDTO.getWaypoints() != null)
             order.setWaypoints(waypointConverter.convertWaypointDTOListToWaypointList(orderDTO.getWaypoints()));
 
         return order;

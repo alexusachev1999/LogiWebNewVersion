@@ -4,11 +4,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ru.usachev.LogiWebProject.dto.WaypointDTO;
 import ru.usachev.LogiWebProject.entity.Cargo;
 import ru.usachev.LogiWebProject.entity.City;
 import ru.usachev.LogiWebProject.entity.Waypoint;
 
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -59,5 +61,29 @@ public class WaypointDAOImpl implements WaypointDAO{
         Session session = sessionFactory.getCurrentSession();
         Waypoint waypoint = session.get(Waypoint.class, id);
         session.delete(waypoint);
+    }
+
+    @Override
+    public Waypoint getWaypointByCargoName(String waypointToString) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Waypoint waypoint = session.createQuery("from Waypoint where cargo.name=:name", Waypoint.class)
+                .setParameter("name", waypointToString)
+                .getSingleResult();
+        return waypoint;
+    }
+
+    @Override
+    public List getWaypointListByIds(int[] ids) {
+        Session session = sessionFactory.getCurrentSession();
+
+        List waypoints = new ArrayList<>();
+
+        for (int id: ids){
+            Waypoint waypoint = session.get(Waypoint.class, id);
+            waypoints.add(waypoint);
+        }
+
+        return waypoints;
     }
 }

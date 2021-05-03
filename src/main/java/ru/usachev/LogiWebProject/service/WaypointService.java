@@ -13,4 +13,8 @@ public interface WaypointService {
     public Waypoint getWaypoint(int id);
 
     public void deleteWaypoint(int id);
+
+    WaypointDTO getWaypointByCargoName(String waypointToString);
+
+    List getWaypointListByIds(int[] ids);
 }

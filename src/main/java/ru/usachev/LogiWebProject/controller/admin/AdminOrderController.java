@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.usachev.LogiWebProject.converter.OrderConverter;
 import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.dto.OrderDTO;
@@ -14,6 +15,7 @@ import ru.usachev.LogiWebProject.service.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/admin")
@@ -37,6 +39,7 @@ public class AdminOrderController {
     @Autowired
     private OrderConverter orderConverter;
 
+
     @GetMapping("/orders")
     public String getAllOrders(Model model){
         List<OrderDTO> orders = orderService.getAllOrders();
@@ -47,21 +50,33 @@ public class AdminOrderController {
 
     @GetMapping("/addOrder")
     public String addOrder(Model model){
-        model.addAttribute("order", new OrderDTO());
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setStatus(false);
+        orderDTO.setNumber((int) (Math.random() * 1000));
+        List<WaypointDTO> waypoints = waypointService.getAllWaypoints();
+
+        model.addAttribute("waypoints", waypoints);
+        model.addAttribute("order", orderDTO);
         return "admin/add-order";
     }
 
     @PostMapping("/saveOrder")
     public String saveOrder(@Valid @ModelAttribute("order") OrderDTO order, BindingResult bindingResult
-            , Model model){
+            , Model model, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()){
-            model.addAttribute("order", new OrderDTO());
+            OrderDTO orderDTO = new OrderDTO();
+            orderDTO.setStatus(false);
+            orderDTO.setNumber((int) (Math.random() * 1000));
+            List<WaypointDTO> waypoints = waypointService.getAllWaypoints();
+
+            model.addAttribute("waypoints", waypoints);
+            model.addAttribute("order", orderDTO);
             return "admin/add-order";
         }
         else {
-            model.addAttribute("order", order);
+            redirectAttributes.addFlashAttribute("order", order);
             orderService.saveOrder(order);
-            return "redirect:/admin/order/addWaypoints";
+            return "redirect:/admin/order/addTruck";
         }
     }
 
@@ -77,23 +92,6 @@ public class AdminOrderController {
     public String deleteOrder(@RequestParam(name = "orderId") int id){
         orderService.deleteOrder(id);
         return "redirect:/admin/orders";
-    }
-
-    @GetMapping("/order/addWaypoints")
-    public String addOrderWaypoints(Model model, @ModelAttribute(name = "order") OrderDTO orderDTO){
-        List<WaypointDTO> waypoints = waypointService.getAllWaypoints();
-
-        model.addAttribute("order", orderDTO);
-        model.addAttribute("waypoints", waypoints);
-        return "admin/order-add-waypoints";
-    }
-
-    @PostMapping("/order/saveWaypoints")
-    public String saveOrderWaypoints(@Valid @ModelAttribute("order") OrderDTO orderDTO
-            , BindingResult bindingResult, Model model){
-        orderService.saveOrder(orderDTO);
-        model.addAttribute("order", orderDTO);
-        return "redirect:/admin/order/addTruck";
     }
 
     @GetMapping("/order/addTruck")
