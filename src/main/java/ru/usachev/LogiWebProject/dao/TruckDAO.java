@@ -13,5 +13,9 @@ public interface TruckDAO {
 
     public void saveTruck(Truck truck);
 
-    public List<Truck> getValidTrucksForOrder(int capacity);
+    public List<Truck> getValidTrucksForOrder(int orderId);
+
+    Truck getTruckByRegistrationNumber(String registrationNumber);
+
+    Truck getTruckByOrderId(int orderId);
 }

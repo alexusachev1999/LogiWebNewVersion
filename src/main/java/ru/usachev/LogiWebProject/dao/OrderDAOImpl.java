@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.usachev.LogiWebProject.entity.Order;
 import ru.usachev.LogiWebProject.entity.Truck;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -40,5 +41,16 @@ public class OrderDAOImpl implements OrderDAO{
         Session session = sessionFactory.getCurrentSession();
         Order order = session.get(Order.class, id);
         session.delete(order);
+    }
+
+    @Override
+    public Order getOrderByNumber(String order) {
+        Session session = sessionFactory.getCurrentSession();
+        Order orderByName = new Order();
+        Integer orderNumber = Integer.getInteger(order);
+        orderByName = session.createQuery("from Order where number=:number", Order.class)
+                .setParameter("number", orderNumber)
+                .getSingleResult();
+        return orderByName;
     }
 }

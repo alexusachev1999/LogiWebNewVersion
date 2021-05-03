@@ -34,10 +34,15 @@ public class WaypointDAOImpl implements WaypointDAO{
         cargo.addWaypointToWaypoints(waypoint);
 
 
-        Query query2 = session.createQuery("from City where name=:cityName ");
-        query2.setParameter("cityName", waypoint.getCity().getName());
-        City city = (City) query2.getSingleResult();
-        city.addWaypointToWaypointList(waypoint);
+        Query query2 = session.createQuery("from City where name=:cityLoadingName ");
+        query2.setParameter("cityLoadingName", waypoint.getCityLoading().getName());
+        City cityLoading = (City) query2.getSingleResult();
+        cityLoading.addWaypointToLoadingWaypointList(waypoint);
+
+        Query query3 = session.createQuery("from City where name=:cityUnloadingName ");
+        query3.setParameter("cityUnloadingName", waypoint.getCityUnloading().getName());
+        City cityUnloading = (City) query3.getSingleResult();
+        cityUnloading.addWaypointToUnloadingWaypointList(waypoint);
 
         session.saveOrUpdate(waypoint);
     }

@@ -23,7 +23,7 @@ public class Order {
     @JoinColumn(name = "truck_id")
     private Truck truck;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order")
     private List<Waypoint> waypoints;
 
     @OneToMany(mappedBy = "order")

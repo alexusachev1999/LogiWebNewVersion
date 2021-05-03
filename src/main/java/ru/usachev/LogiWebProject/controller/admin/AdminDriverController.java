@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ru.usachev.LogiWebProject.converter.DriverConverter;
+import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.service.CityService;
 import ru.usachev.LogiWebProject.service.DriverService;
@@ -27,6 +27,9 @@ public class AdminDriverController {
     private CityService cityService;
 
     @Autowired
+    private DriverConverter driverConverter;
+
+    @Autowired
     private EmployeeService employeeService;
 
     @RequestMapping("/")
@@ -41,16 +44,16 @@ public class AdminDriverController {
         return "admin/all-drivers";
     }
 
-    @RequestMapping("/addDriver")
+    @GetMapping("/addDriver")
     public String addDriver(Model model){
-        Driver driver = new Driver();
+        DriverDTO driver = new DriverDTO();
         model.addAttribute("driver", driver);
         model.addAttribute("cityList", cityService.getCities());
         return "admin/add-driver";
     }
 
-    @RequestMapping("/saveDriver")
-    public String saveDriver(@Valid @ModelAttribute("driver") Driver driver, BindingResult bindingResult
+    @PostMapping("/saveDriver")
+    public String saveDriver(@Valid @ModelAttribute("driver") DriverDTO driver, BindingResult bindingResult
     , Model model){
         if (bindingResult.hasErrors()){
             model.addAttribute("cityList", cityService.getCities());
@@ -63,7 +66,7 @@ public class AdminDriverController {
 
     @RequestMapping("/updateDriver")
     public String updateDriver(@RequestParam("driverId") int id, Model model){
-        Driver driver = driverService.getDriver(id);
+        DriverDTO driver = driverConverter.convertDriverToDriverDTO(driverService.getDriver(id));
         model.addAttribute("cityList", cityService.getCities());
         model.addAttribute("driver", driver);
         return "admin/add-driver";

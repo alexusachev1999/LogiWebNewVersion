@@ -15,20 +15,21 @@
 
     <label>Груз</label>
     <form:select path="cargo" name = "cargoName">
-        <form:options items="${cargoes}"></form:options>
+        <form:options items="${cargoes}"/>
     </form:select>
     <br/><br/>
-    <label>Город</label>
-    <form:select path="city">
+    <label>Город загрузки</label>
+    <form:select path="cityLoading">
         <c:forEach var="city" items="${cities}">
             <form:option value="${city.name}"/>
         </c:forEach>
     </form:select>
     <br/><br/>
-    <label>Тип</label>
-    <form:select path="type">
-        <form:option value= "true" label="Загрузка"/>
-        <form:option value="false" label="Выгрузка"/>
+    <label>Город выгрузки</label>
+    <form:select path="cityUnloading">
+        <c:forEach var="city" items="${cities}">
+            <form:option value="${city.name}"/>
+        </c:forEach>
     </form:select>
     <br/><br/>
     <input type="submit" value="OK">

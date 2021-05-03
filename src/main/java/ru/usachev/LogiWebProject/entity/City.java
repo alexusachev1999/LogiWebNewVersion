@@ -16,8 +16,11 @@ public class City {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "city")
-    private List<Waypoint> waypoints;
+    @OneToMany(mappedBy = "cityLoading")
+    private List<Waypoint> loadingWaypoints;
+
+    @OneToMany(mappedBy = "cityUnloading")
+    private List<Waypoint> unloadingWaypoints;
 
     @OneToMany(mappedBy = "city")
     private List<Truck> trucks;
@@ -42,16 +45,18 @@ public class City {
         truck.setCity(this);
     }
 
-    public void addWaypointToWaypointList(Waypoint waypoint) {
-        if (waypoints == null)
-            waypoints = new ArrayList<>();
-        waypoints.add(waypoint);
-        waypoint.setCity(this);
+    public void addWaypointToLoadingWaypointList(Waypoint waypoint) {
+        if (loadingWaypoints == null)
+            loadingWaypoints = new ArrayList<>();
+        loadingWaypoints.add(waypoint);
+        waypoint.setCityLoading(this);
     }
 
-
-    public City(String name) {
-        this.name = name;
+    public void addWaypointToUnloadingWaypointList(Waypoint waypoint) {
+        if (unloadingWaypoints == null)
+            unloadingWaypoints = new ArrayList<>();
+        unloadingWaypoints.add(waypoint);
+        waypoint.setCityUnloading(this);
     }
 
     public int getId() {
@@ -70,12 +75,20 @@ public class City {
         this.name = name;
     }
 
-    public List<Waypoint> getWaypoints() {
-        return waypoints;
+    public List<Waypoint> getLoadingWaypoints() {
+        return loadingWaypoints;
     }
 
-    public void setWaypoints(List<Waypoint> waypoints) {
-        this.waypoints = waypoints;
+    public void setLoadingWaypoints(List<Waypoint> loadingWaypoints) {
+        this.loadingWaypoints = loadingWaypoints;
+    }
+
+    public List<Waypoint> getUnloadingWaypoints() {
+        return unloadingWaypoints;
+    }
+
+    public void setUnloadingWaypoints(List<Waypoint> unloadingWaypoints) {
+        this.unloadingWaypoints = unloadingWaypoints;
     }
 
     public List<Truck> getTrucks() {
@@ -93,5 +106,4 @@ public class City {
     public void setDrivers(List<Driver> drivers) {
         this.drivers = drivers;
     }
-
 }

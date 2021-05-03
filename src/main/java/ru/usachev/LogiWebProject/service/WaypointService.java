@@ -6,7 +6,7 @@ import ru.usachev.LogiWebProject.entity.Waypoint;
 import java.util.List;
 
 public interface WaypointService {
-    public List<Waypoint> getAllWaypoints();
+    public List<WaypointDTO> getAllWaypoints();
 
     public void saveWaypoint(WaypointDTO waypoint);
 

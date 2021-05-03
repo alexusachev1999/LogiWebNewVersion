@@ -7,6 +7,9 @@ import ru.usachev.LogiWebProject.entity.Waypoint;
 import ru.usachev.LogiWebProject.service.CargoService;
 import ru.usachev.LogiWebProject.service.CityService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Component
 public class WaypointConverterImpl implements WaypointConverter{
@@ -21,8 +24,8 @@ public class WaypointConverterImpl implements WaypointConverter{
         Waypoint convertedWaypoint = new Waypoint();
 
         convertedWaypoint.setId(waypoint.getId());
-        convertedWaypoint.setCity(cityService.getCityByName(waypoint.getCity()));
-        convertedWaypoint.setLoading(waypoint.isType());
+        convertedWaypoint.setCityLoading(cityService.getCityByName(waypoint.getCityLoading()));
+        convertedWaypoint.setCityUnloading(cityService.getCityByName(waypoint.getCityUnloading()));
         convertedWaypoint.setCargo(cargoService.getCargoByName(waypoint.getCargo()));
 
         return convertedWaypoint;
@@ -33,10 +36,28 @@ public class WaypointConverterImpl implements WaypointConverter{
         WaypointDTO waypointDTO = new WaypointDTO();
 
         waypointDTO.setId(waypoint.getId());
-        waypointDTO.setCity(waypoint.getCity().getName());
+        waypointDTO.setCityLoading(waypoint.getCityLoading().getName());
+        waypointDTO.setCityUnloading(waypoint.getCityUnloading().getName());
         waypointDTO.setCargo(waypoint.getCargo().getName());
-        waypointDTO.setType(waypoint.isLoading());
 
         return waypointDTO;
+    }
+
+    @Override
+    public List<Waypoint> convertWaypointDTOListToWaypointList(List<WaypointDTO> waypointsDTO) {
+        List<Waypoint> waypoints = new ArrayList<>();
+        for(WaypointDTO waypointDTO: waypointsDTO){
+            waypoints.add(convertWaypointDTOToWaypoint(waypointDTO));
+        }
+        return waypoints;
+    }
+
+    @Override
+    public List<WaypointDTO> convertWaypointListToWaypointDTOList(List<Waypoint> waypoints) {
+        List<WaypointDTO> waypointsDTO = new ArrayList<>();
+        for (Waypoint waypoint: waypoints){
+            waypointsDTO.add(convertWaypointToWaypointDTO(waypoint));
+        }
+        return waypointsDTO;
     }
 }

@@ -5,10 +5,15 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Добавить фуру</title>
+    <title>Добавить заказ</title>
 </head>
 <body>
 <form:form action="saveOrder" modelAttribute="order">
+
+    <c:url var="submitButton" value="/admin/saveOrder">
+        <c:param name="orderId" value="${order.id}"/>
+    </c:url>
+
     <form:hidden path="id"/>
 
     <label>Номер заказа</label>
@@ -22,19 +27,8 @@
     </form:select>
     <br/><br/>
     <label>Добавить маршрутную точку</label>
-    <%--    <label>Фура</label>--%>
-<%--    <form:select path="truck">--%>
-<%--        <c:forEach var="truck" items="${trucks}">--%>
-<%--            <form:option value="${truck.registrationNumber}"/>--%>
-<%--        </c:forEach>--%>
-<%--    </form:select>--%>
-<%--    <br/><br/>--%>
-<%--    <label>Водители</label>--%>
-<%--    <c:forEach var="driver" items="${drivers}">--%>
-<%--        <form:checkbox path="drivers" value="${driver.id}" label="${driver.name} ${driver.surname}"/>--%>
-<%--    </c:forEach>--%>
-<%--    <br/><br/>--%>
-    <input type="submit" value="OK">
+
+    <input type="submit" value="OK" onclick="window.location='${submitButton}'">
 </form:form>
 </body>
 </html>

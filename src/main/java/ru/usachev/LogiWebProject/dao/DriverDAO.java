@@ -14,4 +14,6 @@ public interface DriverDAO {
     public void deleteDriver(int id);
 
     List<Driver> getDriversByOrderId(int orderId);
+
+    List<Driver> getValidDriversByOrderId(int orderId);
 }

@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.usachev.LogiWebProject.entity.Driver;
-import ru.usachev.LogiWebProject.entity.Order;
-import ru.usachev.LogiWebProject.entity.Truck;
+import org.springframework.web.bind.annotation.*;
+import ru.usachev.LogiWebProject.converter.OrderConverter;
+import ru.usachev.LogiWebProject.dto.DriverDTO;
+import ru.usachev.LogiWebProject.dto.OrderDTO;
+import ru.usachev.LogiWebProject.dto.TruckDTO;
+import ru.usachev.LogiWebProject.dto.WaypointDTO;
 import ru.usachev.LogiWebProject.service.*;
 
 import javax.validation.Valid;
@@ -18,9 +18,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminOrderController {
-
-    @Autowired
-    private DriverService driverService;
 
     @Autowired
     private OrderService orderService;
@@ -32,58 +29,105 @@ public class AdminOrderController {
     private TruckService truckService;
 
     @Autowired
-    private EmployeeService employeeService;
+    private DriverService driverService;
 
-    @RequestMapping("/orders")
+    @Autowired
+    private WaypointService waypointService;
+
+    @Autowired
+    private OrderConverter orderConverter;
+
+    @GetMapping("/orders")
     public String getAllOrders(Model model){
-        List<Order> orders = orderService.getAllOrders();
+        List<OrderDTO> orders = orderService.getAllOrders();
         model.addAttribute("orders", orders);
 
         return "admin/all-orders";
     }
 
-    @RequestMapping("/addOrder")
-    public String addDriver(Model model){
-        Order order = new Order();
-        List<Driver> drivers = driverService.getAllDrivers();
-        List<Truck> trucks = truckService.getAllTrucks();
-
-        model.addAttribute("order", order);
-        model.addAttribute("drivers", drivers);
-        model.addAttribute("trucks", trucks);
+    @GetMapping("/addOrder")
+    public String addOrder(Model model){
+        model.addAttribute("order", new OrderDTO());
         return "admin/add-order";
     }
 
-    @RequestMapping("/saveOrder")
-    public String saveDriver(@Valid @ModelAttribute("order") Order order, BindingResult bindingResult
+    @PostMapping("/saveOrder")
+    public String saveOrder(@Valid @ModelAttribute("order") OrderDTO order, BindingResult bindingResult
             , Model model){
         if (bindingResult.hasErrors()){
-            model.addAttribute("cityList", cityService.getCities());
-            return "admin/add-order";}
+            model.addAttribute("order", new OrderDTO());
+            return "admin/add-order";
+        }
         else {
+            model.addAttribute("order", order);
             orderService.saveOrder(order);
-            return "redirect:/admin/orders";
+            return "redirect:/admin/order/addWaypoints";
         }
     }
 
     @RequestMapping("/updateOrder")
-    public String updateDriver(@RequestParam("orderId") int id, Model model){
-        Order order = orderService.getOrder(id);
+    public String updateOrder(@RequestParam("orderId") int id, Model model){
+        OrderDTO order = orderConverter.convertOrderToOrderDTO(orderService.getOrder(id));
         model.addAttribute("cityList", cityService.getCities());
         model.addAttribute("order", order);
         return "admin/add-order";
     }
 
     @RequestMapping("/deleteOrder")
-    public String deleteDriver(@RequestParam(name = "orderId") int id){
+    public String deleteOrder(@RequestParam(name = "orderId") int id){
         orderService.deleteOrder(id);
         return "redirect:/admin/orders";
     }
 
-    @RequestMapping("/order/drivers")
-    public String getOrderDrivers(@RequestParam(name = "orderId") int orderId, Model model){
-        List<Driver> drivers = driverService.getDriversByOrderId(orderId);
-        model.addAttribute("drivers", drivers);
+    @GetMapping("/order/addWaypoints")
+    public String addOrderWaypoints(Model model, @ModelAttribute(name = "order") OrderDTO orderDTO){
+        List<WaypointDTO> waypoints = waypointService.getAllWaypoints();
+
+        model.addAttribute("order", orderDTO);
+        model.addAttribute("waypoints", waypoints);
+        return "admin/order-add-waypoints";
+    }
+
+    @PostMapping("/order/saveWaypoints")
+    public String saveOrderWaypoints(@Valid @ModelAttribute("order") OrderDTO orderDTO
+            , BindingResult bindingResult, Model model){
+        orderService.saveOrder(orderDTO);
+        model.addAttribute("order", orderDTO);
+        return "redirect:/admin/order/addTruck";
+    }
+
+    @GetMapping("/order/addTruck")
+    public String addOrderTruck(Model model, @ModelAttribute(name = "order") OrderDTO order){
+        List<TruckDTO> trucks = truckService.getValidTrucksForOrder(order.getId());
+
+        model.addAttribute("order", order);
+        model.addAttribute("trucks", trucks);
         return "admin/order-drivers";
+    }
+
+    @PostMapping("/order/saveTruck")
+    public String saveOrderTruck(@Valid @ModelAttribute("order") OrderDTO order
+            , BindingResult bindingResult, Model model){
+
+        model.addAttribute("order", order);
+        orderService.saveOrder(order);
+        return "redirect:/admin/order/addDrivers";
+    }
+
+    @GetMapping("/order/addDrivers")
+    public String addDriversToOrder(Model model, @ModelAttribute(name = "order") OrderDTO order){
+        List<DriverDTO> drivers = driverService.getValidDriversByOrderId(order.getId());
+
+        model.addAttribute("order", order);
+        model.addAttribute("drivers", drivers);
+        return "admin/add-driver-to-order";
+    }
+
+
+    @PostMapping("/order/saveDrivers")
+    public String saveDriversToOrder(@Valid @ModelAttribute("order") OrderDTO order
+            , BindingResult bindingResult){
+        orderService.saveOrder(order);
+        return "redirect:admin/orders";
     }
 }

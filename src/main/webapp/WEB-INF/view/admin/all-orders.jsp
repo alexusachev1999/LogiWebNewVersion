@@ -29,10 +29,6 @@
             <c:param name="orderId" value="${order.id}"/>
         </c:url>
 
-        <c:url var="detailButton" value="/admin/order/detail">
-            <c:param name="orderId" value="${order.id}"/>
-        </c:url>
-
         <c:url var="driverButton" value="/admin/order/drivers">
             <c:param name="orderId" value="${order.id}"/>
         </c:url>
@@ -44,11 +40,12 @@
             <td>
                 <ul>
                     <c:forEach var="waypoint" items="${order.waypoints}">
-                        <li>${waypoint.cargo} ${waypoint.city}</li>
+                        <li>${waypoint.cargo} ${waypoint.cityLoading}</li>
+                        <li>${waypoint.cargo} ${waypoint.cityUnloading}</li>
                     </c:forEach>
                 </ul>
             </td>
-            <td>${order.truck.registrationNumber}</td>
+            <td>${order.truck}</td>
             <td><input type="button" value="Список водителей" onclick="window.location.href='${driverButton}'"/></td>
             <td><input type="button" value="Обновить" onclick="window.location.href='${updateButton}'"/></td>
             <td><input type="button" value="Удалить" onclick="window.location.href='${deleteButton}'"/></td>

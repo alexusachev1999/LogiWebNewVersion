@@ -2,7 +2,9 @@ package ru.usachev.LogiWebProject.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.usachev.LogiWebProject.converter.DriverConverter;
 import ru.usachev.LogiWebProject.dao.DriverDAO;
+import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.entity.Driver;
 
 import javax.transaction.Transactional;
@@ -13,6 +15,9 @@ public class DriverServiceImpl implements DriverService{
     @Autowired
     private DriverDAO driverDAO;
 
+    @Autowired
+    private DriverConverter driverConverter;
+
     @Override
     @Transactional
     public List<Driver> getAllDrivers() {
@@ -21,8 +26,9 @@ public class DriverServiceImpl implements DriverService{
 
     @Override
     @Transactional
-    public void saveDriver(Driver driver) {
-        driverDAO.saveDriver(driver);
+    public void saveDriver(DriverDTO driver) {
+        Driver convertedDriver = driverConverter.convertDriverDTOToDriver(driver);
+        driverDAO.saveDriver(convertedDriver);
     }
 
     @Override
@@ -41,5 +47,12 @@ public class DriverServiceImpl implements DriverService{
     @Transactional
     public List<Driver> getDriversByOrderId(int orderId) {
         return driverDAO.getDriversByOrderId(orderId);
+    }
+
+    @Override
+    public List<DriverDTO> getValidDriversByOrderId(int orderId) {
+        List<Driver> drivers = driverDAO.getValidDriversByOrderId(orderId);
+        List<DriverDTO> convertedDrivers = driverConverter.convertDriverListToDriverDTOList(drivers);
+        return convertedDrivers;
     }
 }

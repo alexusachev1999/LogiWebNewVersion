@@ -35,6 +35,9 @@ public class Truck {
     @OneToMany(mappedBy = "truck")
     private List<Driver> drivers;
 
+    @OneToOne(mappedBy = "truck")
+    private Order order;
+
     public Truck() {
     }
 
@@ -99,5 +102,13 @@ public class Truck {
 
     public void setDrivers(List<Driver> drivers) {
         this.drivers = drivers;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

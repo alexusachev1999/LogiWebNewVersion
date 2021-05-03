@@ -2,7 +2,9 @@ package ru.usachev.LogiWebProject.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.usachev.LogiWebProject.converter.CargoConverter;
 import ru.usachev.LogiWebProject.dao.CargoDAO;
+import ru.usachev.LogiWebProject.dto.CargoDTO;
 import ru.usachev.LogiWebProject.entity.Cargo;
 
 import javax.transaction.Transactional;
@@ -14,6 +16,9 @@ public class CargoServiceImpl implements CargoService{
     @Autowired
     private CargoDAO cargoDAO;
 
+    @Autowired
+    private CargoConverter cargoConverter;
+
     @Override
     @Transactional
     public List<Cargo> getAllCargoes() {
@@ -22,8 +27,9 @@ public class CargoServiceImpl implements CargoService{
 
     @Override
     @Transactional
-    public void saveCargo(Cargo cargo) {
-        cargoDAO.saveCargo(cargo);
+    public void saveCargo(CargoDTO cargo) {
+        Cargo convertedCargo = cargoConverter.convertCargoDTOToCargo(cargo);
+        cargoDAO.saveCargo(convertedCargo);
     }
 
     @Override

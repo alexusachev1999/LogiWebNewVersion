@@ -12,8 +12,8 @@
 <table>
     <tr>
         <th>Груз</th>
-        <th>Город</th>
-        <th>Тип</th>
+        <th>Город погрузки</th>
+        <th>Город разгрузки</th>
         <th>Обновить</th>
         <th>Удалить</th>
     </tr>
@@ -29,9 +29,8 @@
 
         <tr>
             <td>${waypoint.cargo}</td>
-            <td>${waypoint.city.name}</td>
-            <td><c:if test="${waypoint.loading == false}">Выгрузка</c:if>
-                <c:if test="${waypoint.loading == true}">Загрузка</c:if></td>
+            <td>${waypoint.cityLoading}</td>
+            <td>${waypoint.cityUnloading}</td>
             <td><input type="button" value="Обновить" onclick="window.location.href='${updateButton}'"/></td>
             <td><input type="button" value="Удалить" onclick="window.location.href='${deleteButton}'"/></td>
         </tr>

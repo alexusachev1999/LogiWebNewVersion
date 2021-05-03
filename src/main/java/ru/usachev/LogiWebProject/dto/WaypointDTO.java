@@ -3,8 +3,8 @@ package ru.usachev.LogiWebProject.dto;
 public class WaypointDTO {
     private int id;
     private String cargo;
-    private String city;
-    private boolean type;
+    private String cityLoading;
+    private String cityUnloading;
 
     public WaypointDTO() {
     }
@@ -25,19 +25,24 @@ public class WaypointDTO {
         this.cargo = cargo;
     }
 
-    public String getCity() {
-        return city;
+    public String getCityLoading() {
+        return cityLoading;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCityLoading(String cityLoading) {
+        this.cityLoading = cityLoading;
     }
 
-    public boolean isType() {
-        return type;
+    public String getCityUnloading() {
+        return cityUnloading;
     }
 
-    public void setType(boolean type) {
-        this.type = type;
+    public void setCityUnloading(String cityUnloading) {
+        this.cityUnloading = cityUnloading;
+    }
+
+    @Override
+    public String toString() {
+        return cargo + " из:" + cityLoading + ", в:" + cityUnloading;
     }
 }

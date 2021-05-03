@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ru.usachev.LogiWebProject.converter.TruckConverter;
+import ru.usachev.LogiWebProject.dto.TruckDTO;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Truck;
 import ru.usachev.LogiWebProject.service.CityService;
@@ -25,6 +25,9 @@ public class AdminTruckController {
     @Autowired
     private CityService cityService;
 
+    @Autowired
+    private TruckConverter truckConverter;
+
     @RequestMapping("/trucks")
     private String getAllTrucks(Model model){
         List<Truck> trucks = truckService.getAllTrucks();
@@ -32,17 +35,29 @@ public class AdminTruckController {
         return "/admin/all-trucks";
     }
 
-    @RequestMapping("/addTruck")
+    @GetMapping("/addTruck")
     public String addTruck(Model model){
-        Truck truck = new Truck();
+        TruckDTO truck = new TruckDTO();
         model.addAttribute("truck", truck);
         model.addAttribute("cityList", cityService.getCities());
         return "admin/add-new-truck";
     }
 
+    @PostMapping("/saveTruck")
+    private String saveTruck(@Valid @ModelAttribute("truck") TruckDTO truck, BindingResult bindingResult
+            , Model model){
+        if (bindingResult.hasErrors()){
+            model.addAttribute("cityList", cityService.getCities());
+            return "admin/add-new-truck";}
+        else {
+            truckService.saveTruck(truck);
+            return "redirect:/admin/trucks";
+        }
+    }
+
     @RequestMapping("/updateTruck")
     private String updateTruck(@RequestParam("truckId") int id, Model model){
-        Truck truck = truckService.getTruck(id);
+        TruckDTO truck = truckConverter.convertTruckToTruckDTO(truckService.getTruck(id));
         model.addAttribute("cityList", cityService.getCities());
         model.addAttribute("truck", truck);
         return "admin/add-new-truck";
@@ -53,17 +68,5 @@ public class AdminTruckController {
         truckService.deleteTruck(id);
 
         return "redirect:/admin/trucks";
-    }
-
-    @RequestMapping("/saveTruck")
-    private String saveTruck(@Valid @ModelAttribute("truck") Truck truck, BindingResult bindingResult
-    , Model model){
-        if (bindingResult.hasErrors()){
-            model.addAttribute("cityList", cityService.getCities());
-            return "admin/add-new-truck";}
-        else {
-            truckService.saveTruck(truck);
-            return "redirect:/admin/trucks";
-        }
     }
 }

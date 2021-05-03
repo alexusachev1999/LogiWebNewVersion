@@ -34,7 +34,7 @@ public class AdminWaypointController {
 
     @RequestMapping("/waypoints")
     public String getAllCargoes(Model model){
-        List<Waypoint> waypoints = waypointService.getAllWaypoints();
+        List<WaypointDTO> waypoints = waypointService.getAllWaypoints();
         model.addAttribute("waypoints", waypoints);
         return "admin/all-waypoints";
     }
@@ -51,7 +51,8 @@ public class AdminWaypointController {
     }
 
     @PostMapping("/saveWaypoint")
-    public String saveWaypoint(@Valid @ModelAttribute("waypoint") WaypointDTO waypoint, BindingResult bindingResult, Model model){
+    public String saveWaypoint(@Valid @ModelAttribute("waypoint") WaypointDTO waypoint, BindingResult bindingResult
+            , Model model){
         if (bindingResult.hasErrors()) {
             List<Cargo> cargoes = cargoService.getAllCargoes();
             List<City> cities = cityService.getCities();

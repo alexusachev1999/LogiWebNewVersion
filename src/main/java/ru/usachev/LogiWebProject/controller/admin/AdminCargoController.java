@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ru.usachev.LogiWebProject.converter.CargoConverter;
+import ru.usachev.LogiWebProject.dto.CargoDTO;
 import ru.usachev.LogiWebProject.entity.Cargo;
 import ru.usachev.LogiWebProject.service.CargoService;
 
@@ -20,6 +20,9 @@ public class AdminCargoController {
     @Autowired
     private CargoService cargoService;
 
+    @Autowired
+    private CargoConverter cargoConverter;
+
     @RequestMapping("/cargoes")
     public String getAllCargoes(Model model){
         List<Cargo> cargoes = cargoService.getAllCargoes();
@@ -27,15 +30,15 @@ public class AdminCargoController {
         return "admin/all-cargoes";
     }
 
-    @RequestMapping("/addCargo")
+    @GetMapping("/addCargo")
     public String addCargo(Model model){
-        Cargo cargo = new Cargo();
+        CargoDTO cargo = new CargoDTO();
         model.addAttribute("cargo", cargo);
         return "admin/add-cargo";
     }
 
-    @RequestMapping("/saveCargo")
-    public String saveCargo(@Valid @ModelAttribute("cargo") Cargo cargo, BindingResult bindingResult
+    @PostMapping("/saveCargo")
+    public String saveCargo(@Valid @ModelAttribute("cargo") CargoDTO cargo, BindingResult bindingResult
             , Model model){
         if (bindingResult.hasErrors()){
             return "admin/add-cargo";}
@@ -47,7 +50,7 @@ public class AdminCargoController {
 
     @RequestMapping("/updateCargo")
     public String updateCargo(@RequestParam("cargoId") int id, Model model){
-        Cargo cargo = cargoService.getCargo(id);
+        CargoDTO cargo = cargoConverter.convertCargoToCargoDTO(cargoService.getCargo(id));
         model.addAttribute("cargo", cargo);
         return "admin/add-cargo";
     }

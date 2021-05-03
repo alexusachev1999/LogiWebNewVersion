@@ -8,6 +8,7 @@ import ru.usachev.LogiWebProject.dto.WaypointDTO;
 import ru.usachev.LogiWebProject.entity.Waypoint;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,8 +22,13 @@ public class WaypointServiceImpl implements WaypointService{
 
     @Override
     @Transactional
-    public List<Waypoint> getAllWaypoints() {
-        return waypointDAO.getAllWaypoints();
+    public List<WaypointDTO> getAllWaypoints() {
+        List<Waypoint> waypoints = waypointDAO.getAllWaypoints();
+        List<WaypointDTO> waypointsDTO = new ArrayList<>();
+        for(Waypoint waypoint: waypoints){
+            waypointsDTO.add(waypointConverter.convertWaypointToWaypointDTO(waypoint));
+        }
+        return waypointsDTO;
     }
 
     @Override

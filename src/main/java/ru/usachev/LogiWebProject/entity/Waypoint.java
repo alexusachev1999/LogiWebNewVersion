@@ -11,12 +11,13 @@ public class Waypoint {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "loading")
-    private boolean loading;
+    @ManyToOne
+    @JoinColumn(name = "city_loading_id")
+    private City cityLoading;
 
     @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
+    @JoinColumn(name = "city_unloading_id")
+    private City cityUnloading;
 
     @ManyToOne
     @JoinColumn(name = "cargo_id")
@@ -29,10 +30,6 @@ public class Waypoint {
     public Waypoint() {
     }
 
-    public Waypoint(boolean loading) {
-        this.loading = loading;
-    }
-
     public int getId() {
         return id;
     }
@@ -41,20 +38,20 @@ public class Waypoint {
         this.id = id;
     }
 
-    public boolean isLoading() {
-        return loading;
+    public City getCityLoading() {
+        return cityLoading;
     }
 
-    public void setLoading(boolean loading) {
-        this.loading = loading;
+    public void setCityLoading(City cityLoading) {
+        this.cityLoading = cityLoading;
     }
 
-    public City getCity() {
-        return city;
+    public City getCityUnloading() {
+        return cityUnloading;
     }
 
-    public void setCity(City city) {
-        this.city = city;
+    public void setCityUnloading(City cityUnloading) {
+        this.cityUnloading = cityUnloading;
     }
 
     public Cargo getCargo() {
