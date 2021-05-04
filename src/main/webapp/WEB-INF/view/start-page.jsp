@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=utf-8" %>
 <!doctype html>
 <html>
@@ -7,9 +8,14 @@
     <title>Тег META, атрибут charset</title>
 </head>
 <body>
-<h2>Для входа на сайт введите логин и пароль</h2>
+<h2>Добро пожаловать!</h2>
 
-<input type="button" value="Для администраторов" onclick="window.location.href = 'admin-main'">
-<input type="button" value="Для водителей" onclick="window.location.href = 'driver-main'">
+<security:authorize access="hasRole('ADMIN')">
+    <input type="button" value="Для администраторов" onclick="window.location.href = '/admin/main'">
+</security:authorize>
+
+<security:authorize access="hasRole('DRIVER')">
+    <input type="button" value="Для водителей" onclick="window.location.href = '/driver/main'">
+</security:authorize>
 </body>
 </html>

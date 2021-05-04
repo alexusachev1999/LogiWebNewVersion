@@ -1,7 +1,7 @@
 package ru.usachev.LogiWebProject.service;
 
-import ru.usachev.LogiWebProject.entity.Employee;
+import ru.usachev.LogiWebProject.entity.User;
 
 public interface EmployeeService {
-    public void addNewEmployee(Employee employee);
+    public void addNewEmployee(User user);
 }

@@ -30,6 +30,4 @@ public class MyWebInitializer extends AbstractAnnotationConfigDispatcherServletI
         characterEncodingFilter.setForceEncoding(true);
         return new Filter[] { characterEncodingFilter};
     }
-
-
 }

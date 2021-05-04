@@ -2,6 +2,7 @@ package ru.usachev.LogiWebProject.configuration;
 
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -110,5 +111,10 @@ public class MyConfig extends WebMvcConfigurationSupport {
         registry.addConverter(stringArrayToWaypointDTOList);
         registry.addConverter(stringToWaypointDAO);
         super.addFormatters(registry);
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 }
