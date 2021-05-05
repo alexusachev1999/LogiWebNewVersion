@@ -10,8 +10,6 @@ public class UserDTO {
 
     private String authority;
 
-    private String driver;
-
     public UserDTO() {
     }
 
@@ -45,13 +43,5 @@ public class UserDTO {
 
     public void setAuthority(String authority) {
         this.authority = authority;
-    }
-
-    public String getDriver() {
-        return driver;
-    }
-
-    public void setDriver(String driver) {
-        this.driver = driver;
     }
 }

@@ -85,26 +85,6 @@ public class MyConfig extends WebMvcConfigurationSupport {
         return viewResolver;
     }
 
-/*
-    @Bean
-    public ConversionService getConversionService()
-    {
-        ConversionServiceFactoryBean bean = new ConversionServiceFactoryBean();
-        bean.setConverters( getConverters() );
-        bean.afterPropertiesSet();
-        return bean.getObject();
-    }
-
-    private Set<Converter<?, ?>> getConverters()
-    {
-        Set<Converter<?, ?>> converters = new HashSet<>();
-
-        converters.add( stringArrayToWaypointDTOList );
-
-        return converters;
-    }
-*/
-
 
     @Override
     public void addFormatters(FormatterRegistry registry) {

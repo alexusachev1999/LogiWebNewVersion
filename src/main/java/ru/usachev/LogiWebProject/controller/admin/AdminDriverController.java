@@ -10,10 +10,9 @@ import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.service.CityService;
 import ru.usachev.LogiWebProject.service.DriverService;
-import ru.usachev.LogiWebProject.service.EmployeeService;
+import ru.usachev.LogiWebProject.service.UserService;
 
 import javax.validation.Valid;
-import javax.ws.rs.GET;
 import java.util.List;
 
 @Controller
@@ -30,7 +29,7 @@ public class AdminDriverController {
     private DriverConverter driverConverter;
 
     @Autowired
-    private EmployeeService employeeService;
+    private UserService userService;
 
     @RequestMapping("/")
     public String showAdminMenu(){

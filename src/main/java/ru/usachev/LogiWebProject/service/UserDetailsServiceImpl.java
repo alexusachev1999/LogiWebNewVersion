@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.usachev.LogiWebProject.dao.EmployeeDAO;
+import ru.usachev.LogiWebProject.dao.UserDAO;
 import ru.usachev.LogiWebProject.dto.UserDTO;
 import ru.usachev.LogiWebProject.entity.User;
 
@@ -19,7 +19,7 @@ import java.util.Set;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
-    private EmployeeDAO employeeDAO;
+    private UserDAO userDAO;
 
     @Autowired
     private ModelMapper mapper;
@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String login) {
-        User user = employeeDAO.getByLogin(login);
+        User user = userDAO.getByLogin(login);
 
         if (user != null) {
             UserDTO userDTO = mapper.map(user, UserDTO.class);

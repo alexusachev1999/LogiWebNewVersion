@@ -22,7 +22,7 @@ public class WaypointDAOImpl implements WaypointDAO{
     @Override
     public List<Waypoint> getAllWaypoints() {
         Session session = sessionFactory.getCurrentSession();
-        List<Waypoint> waypoints = session.createQuery("from Waypoint").getResultList();
+        List<Waypoint> waypoints = session.createQuery("from Waypoint", Waypoint.class).getResultList();
         return waypoints;
     }
 

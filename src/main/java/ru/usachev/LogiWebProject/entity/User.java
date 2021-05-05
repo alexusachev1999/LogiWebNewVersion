@@ -20,7 +20,7 @@ public class User {
     @JoinColumn(name = "username")
     private Authority authority;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username")
     private Driver driver;
 

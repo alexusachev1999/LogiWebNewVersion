@@ -5,8 +5,11 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.usachev.LogiWebProject.entity.User;
+
+import java.util.List;
+
 @Repository
-public class EmployeeDAOImpl implements EmployeeDAO{
+public class UserDAOImpl implements UserDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -24,5 +27,13 @@ public class EmployeeDAOImpl implements EmployeeDAO{
                 .setParameter("login", login)
                 .getSingleResult();
         return user;
+    }
+
+    @Override
+    public List<User> getAllAdminUsers() {
+        Session session = sessionFactory.getCurrentSession();
+        List<User> users =  session.createQuery("from User", User.class)
+                .getResultList();
+        return users;
     }
 }
