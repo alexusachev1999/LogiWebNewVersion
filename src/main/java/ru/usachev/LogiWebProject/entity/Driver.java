@@ -50,9 +50,9 @@ public class Driver {
     @JoinColumn(name = "order_id")
     private Order order;
 
-//    @OneToOne
-//    @JoinColumn(name = "username")
-//    private User user;
+    @OneToOne
+    @JoinColumn(name = "username")
+    private User user;
 
     public Driver() {
     }
@@ -129,12 +129,12 @@ public class Driver {
         this.order = order;
     }
 
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
 

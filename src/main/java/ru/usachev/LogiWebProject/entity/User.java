@@ -1,42 +1,56 @@
 package ru.usachev.LogiWebProject.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", catalog = "test")
 public class User {
 
     @Id
-    @Column(name = "username")
-    private String login;
+    @Column(name = "username", unique = true, nullable = false, length = 45)
+    private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false, length = 60)
     private String password;
 
-    @Column(name = "enabled")
+    @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @OneToOne
-    @JoinColumn(name = "username")
-    private Authority authority;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<UserRole> userRole = new HashSet<UserRole>(0);
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "username")
+    @OneToOne(mappedBy = "user")
     private Driver driver;
 
     public User() {
     }
 
-    public String getLogin() {
-        return login;
+    public User(String username, String password, boolean enabled) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public User(String username, String password, boolean enabled, Set<UserRole> userRole) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.userRole = userRole;
+    }
+
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -44,19 +58,19 @@ public class User {
     }
 
     public boolean isEnabled() {
-        return enabled;
+        return this.enabled;
     }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
-    public Authority getAuthority() {
-        return authority;
+    public Set<UserRole> getUserRole() {
+        return this.userRole;
     }
 
-    public void setAuthority(Authority authority) {
-        this.authority = authority;
+    public void setUserRole(Set<UserRole> userRole) {
+        this.userRole = userRole;
     }
 
     public Driver getDriver() {

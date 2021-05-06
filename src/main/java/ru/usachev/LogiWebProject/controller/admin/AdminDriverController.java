@@ -10,7 +10,6 @@ import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.service.CityService;
 import ru.usachev.LogiWebProject.service.DriverService;
-import ru.usachev.LogiWebProject.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -27,9 +26,6 @@ public class AdminDriverController {
 
     @Autowired
     private DriverConverter driverConverter;
-
-    @Autowired
-    private UserService userService;
 
     @RequestMapping("/")
     public String showAdminMenu(){
@@ -51,7 +47,7 @@ public class AdminDriverController {
         return "admin/add-driver";
     }
 
-    @PostMapping("/saveDriver")
+    @PostMapping(value = "/saveDriver", produces = "text/plain;charset=UTF-8")
     public String saveDriver(@Valid @ModelAttribute("driver") DriverDTO driver, BindingResult bindingResult
     , Model model){
         if (bindingResult.hasErrors()){

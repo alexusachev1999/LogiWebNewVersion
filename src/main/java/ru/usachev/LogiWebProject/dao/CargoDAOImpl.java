@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.usachev.LogiWebProject.entity.Cargo;
 import ru.usachev.LogiWebProject.entity.Waypoint;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -19,7 +20,12 @@ public class CargoDAOImpl implements CargoDAO{
     @Override
     public List<Cargo> getAllCargoes() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from Cargo").getResultList();
+
+        try {
+            return session.createQuery("from Cargo").getResultList();
+        } catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
@@ -39,7 +45,12 @@ public class CargoDAOImpl implements CargoDAO{
     public Cargo getCargo(int id) {
         Session session = sessionFactory.getCurrentSession();
         Cargo cargo = session.get(Cargo.class, id);
-        return cargo;
+
+        try {
+            return cargo;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
@@ -48,6 +59,11 @@ public class CargoDAOImpl implements CargoDAO{
         Query query = session.createQuery("from Cargo where name=:cargoName");
         query.setParameter("cargoName", cargoName);
         Cargo cargo = (Cargo) query.getSingleResult();
-        return cargo;
+
+        try {
+            return cargo;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 }

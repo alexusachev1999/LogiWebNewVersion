@@ -9,6 +9,7 @@ import ru.usachev.LogiWebProject.entity.City;
 import ru.usachev.LogiWebProject.entity.Order;
 import ru.usachev.LogiWebProject.entity.Truck;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -18,21 +19,29 @@ public class TruckDAOImpl implements TruckDAO{
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired
-    private BusinessCalculating calculating;
+//    @Autowired
+//    private BusinessCalculating calculating;
 
     @Override
     public List<Truck> getAllTrucks() {
         Session session = sessionFactory.getCurrentSession();
         List<Truck> trucks = session.createQuery("from Truck ").getResultList();
-        return trucks;
+        try {
+            return trucks;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
     public Truck getTruck(int id) {
         Session session = sessionFactory.getCurrentSession();
         Truck truck = session.get(Truck.class, id);
-        return truck;
+        try {
+            return truck;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
@@ -55,11 +64,17 @@ public class TruckDAOImpl implements TruckDAO{
     @Override
     public List<Truck> getValidTrucksForOrder(int orderId) {
         Session session = sessionFactory.getCurrentSession();
-        int needingCapacity = calculating.calculateNeedingCapacityByOrderId(orderId);
+        int needingCapacity = 20;
+//        int needingCapacity = calculating.calculateNeedingCapacityByOrderId(orderId);
         Query query = session.createQuery("from Truck where state=true and " +
                 "capacity<=:capacity and order = null");
         query.setParameter("capacity", needingCapacity);
-        return query.getResultList();
+
+        try {
+            return query.getResultList();
+        } catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
@@ -67,7 +82,12 @@ public class TruckDAOImpl implements TruckDAO{
         Session session = sessionFactory.getCurrentSession();
         Truck truck = session.createQuery("from Truck where registrationNumber=:regNumber", Truck.class)
                 .setParameter("regNumber", registrationNumber).getSingleResult();
-        return truck;
+
+        try {
+            return truck;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
@@ -75,6 +95,11 @@ public class TruckDAOImpl implements TruckDAO{
         Session session = sessionFactory.getCurrentSession();
         Truck truck = session.createQuery("from Truck where Order.id=:orderId", Truck.class)
                 .setParameter("orderId", orderId).getSingleResult();
-        return truck;
+
+        try {
+            return truck;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 }

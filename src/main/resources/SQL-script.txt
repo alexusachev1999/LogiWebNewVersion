@@ -82,15 +82,13 @@ CREATE TABLE logiWeb.driver (
 
 CREATE TABLE logiWeb.waypoint (
                                   id int NOT NULL AUTO_INCREMENT,
-                                  city_loading_id int,
-                                  city_unloading_id int,
+                                  city_id int,
                                   cargo_id int,
                                   order_id int,
+                                  loading bool DEFAULT false,
                                   PRIMARY KEY (id),
                                   FOREIGN KEY (cargo_id) REFERENCES logiWeb.cargo(id),
-                                  FOREIGN KEY (order_id) REFERENCES logiWeb.orders(id),
-                                  FOREIGN KEY (city_loading_id) REFERENCES logiWeb.cities(id),
-                                  FOREIGN KEY (city_unloading_id) REFERENCES logiWeb.cities(id)
+                                  FOREIGN KEY (order_id) REFERENCES logiWeb.orders(id)
 );
 
 ALTER TABLE logiWeb.cities CONVERT TO CHARACTER SET utf8;
@@ -109,27 +107,30 @@ insert cities (id, name) value (3, 'Ростов');
 insert cities (id, name) value (4, 'Краснодар');
 insert cities (id, name) value (5, 'Сочи');
 
-CREATE TABLE users (
-                       username varchar(15),
-                       password varchar(100),
-                       enabled tinyint(1),
-                       PRIMARY KEY (username)
-) ;
 
-CREATE TABLE authorities (
-                             id int AUTO_INCREMENT NOT NULL,
-                             username varchar(15),
-                             authority varchar(25),
-                             PRIMARY KEY (id),
-                             FOREIGN KEY (username) references users(username)
-) ;
+CREATE  TABLE users (
+                        username VARCHAR(45) NOT NULL ,
+                        password VARCHAR(60) NOT NULL ,
+                        enabled TINYINT NOT NULL DEFAULT 1 ,
+                        PRIMARY KEY (username));
 
-INSERT INTO users (username, password, enabled)
-VALUES
-('alex', '{noop}1234', 1),
-('misha', '{noop}1234', 1);
+CREATE TABLE user_roles (
+                            user_role_id int(11) NOT NULL AUTO_INCREMENT,
+                            username varchar(45) NOT NULL,
+                            role varchar(45) NOT NULL,
+                            PRIMARY KEY (user_role_id),
+                            UNIQUE KEY uni_username_role (role,username),
+                            KEY fk_username_idx (username),
+                            CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES users (username));
 
-INSERT INTO authorities (username, authority)
-VALUES
-('alex', 'ROLE_ADMIN'),
-('misha', 'ROLE_DRIVER');
+INSERT INTO users(username,password,enabled)
+VALUES ('michael','$2a$10$04TVADrR6/SPLBjsK0N30.Jf5fNjBugSACeGv1S69dZALR7lSov0y', true);
+INSERT INTO users(username,password,enabled)
+VALUES ('alexander','$2a$10$04TVADrR6/SPLBjsK0N30.Jf5fNjBugSACeGv1S69dZALR7lSov0y', true);
+
+
+INSERT INTO user_roles (username, role)
+VALUES ('alexander', 'ROLE_ADMIN');
+INSERT INTO user_roles (username, role)
+VALUES ('michael', 'ROLE_DRIVER');
+

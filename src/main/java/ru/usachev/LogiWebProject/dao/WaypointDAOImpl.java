@@ -9,6 +9,7 @@ import ru.usachev.LogiWebProject.entity.Cargo;
 import ru.usachev.LogiWebProject.entity.City;
 import ru.usachev.LogiWebProject.entity.Waypoint;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,12 @@ public class WaypointDAOImpl implements WaypointDAO{
     public List<Waypoint> getAllWaypoints() {
         Session session = sessionFactory.getCurrentSession();
         List<Waypoint> waypoints = session.createQuery("from Waypoint", Waypoint.class).getResultList();
-        return waypoints;
+
+        try {
+            return waypoints;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
@@ -53,7 +59,11 @@ public class WaypointDAOImpl implements WaypointDAO{
     public Waypoint getWaypoint(int id) {
         Session session = sessionFactory.getCurrentSession();
         Waypoint waypoint = session.get(Waypoint.class, id);
-        return waypoint;
+        try {
+            return waypoint;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
@@ -70,7 +80,11 @@ public class WaypointDAOImpl implements WaypointDAO{
         Waypoint waypoint = session.createQuery("from Waypoint where cargo.name=:name", Waypoint.class)
                 .setParameter("name", waypointToString)
                 .getSingleResult();
-        return waypoint;
+        try {
+            return waypoint;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
@@ -84,6 +98,10 @@ public class WaypointDAOImpl implements WaypointDAO{
             waypoints.add(waypoint);
         }
 
-        return waypoints;
+        try {
+            return waypoints;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 }

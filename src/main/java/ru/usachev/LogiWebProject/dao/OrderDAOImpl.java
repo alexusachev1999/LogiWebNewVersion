@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.usachev.LogiWebProject.entity.Order;
 import ru.usachev.LogiWebProject.entity.Truck;
 
+import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -20,7 +21,12 @@ public class OrderDAOImpl implements OrderDAO{
     public List<Order> getAllOrders() {
         Session session = sessionFactory.getCurrentSession();
         List<Order> orders = session.createQuery("from Order").getResultList();
-        return orders;
+
+        try {
+            return orders;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
@@ -33,7 +39,12 @@ public class OrderDAOImpl implements OrderDAO{
     public Order getOrder(int id) {
         Session session = sessionFactory.getCurrentSession();
         Order order = session.get(Order.class, id);
-        return order;
+
+        try {
+            return order;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
@@ -51,6 +62,11 @@ public class OrderDAOImpl implements OrderDAO{
         orderByName = session.createQuery("from Order where number=:number", Order.class)
                 .setParameter("number", orderNumber)
                 .getSingleResult();
-        return orderByName;
+
+        try {
+            return orderByName;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 }

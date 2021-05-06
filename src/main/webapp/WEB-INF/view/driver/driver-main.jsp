@@ -7,6 +7,7 @@
     <title>Меню водителя</title>
 </head>
 <body>
+<h2>${username} меню</h2>
 <input type="button" value="Водители" onclick="window.location.href='driver/drivers'">
 <input type="button" value="Фуры" onclick="window.location.href='driver/trucks'">
 <input type="button" value="Заказы" onclick="window.location.href='driver/orders'">

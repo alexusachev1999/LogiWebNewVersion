@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
@@ -28,16 +29,12 @@ import java.util.Properties;
 import java.util.Set;
 
 @Configuration
-@ComponentScan(basePackages = "ru.usachev.LogiWebProject")
+@ComponentScan(basePackages = "ru.usachev.LogiWebProject.**")
 @EnableWebMvc
 @EnableTransactionManagement
+@Import({ SecurityConfig.class })
 public class MyConfig extends WebMvcConfigurationSupport {
 
-    @Autowired
-    private StringArrayToWaypointDTOList stringArrayToWaypointDTOList;
-
-    @Autowired
-    private StringToWaypointDAO stringToWaypointDAO;
 
     @Bean
     public DataSource dataSource(){
@@ -88,8 +85,8 @@ public class MyConfig extends WebMvcConfigurationSupport {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(stringArrayToWaypointDTOList);
-        registry.addConverter(stringToWaypointDAO);
+        registry.addConverter(new StringArrayToWaypointDTOList());
+        registry.addConverter(new StringToWaypointDAO());
         super.addFormatters(registry);
     }
 

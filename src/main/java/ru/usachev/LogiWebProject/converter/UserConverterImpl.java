@@ -14,7 +14,7 @@ public class UserConverterImpl implements UserConverter{
     public User convertUserDTOToUser(UserDTO userDTO) {
         User user = new User();
 
-        user.setLogin(userDTO.getLogin());
+        user.setUsername(userDTO.getLogin());
         user.setPassword(userDTO.getPassword());
         user.setEnabled(userDTO.isEnabled());
 
@@ -25,10 +25,10 @@ public class UserConverterImpl implements UserConverter{
     public UserDTO convertUserToUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
 
-        userDTO.setLogin(user.getLogin());
+        userDTO.setLogin(user.getUsername());
         userDTO.setPassword(user.getPassword());
         userDTO.setEnabled(user.isEnabled());
-        userDTO.setAuthority(user.getAuthority().getAuthority());
+        userDTO.setAuthority(user.getUserRole().toString());
 
         return userDTO;
     }

@@ -9,6 +9,7 @@ import ru.usachev.LogiWebProject.entity.City;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Order;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -18,14 +19,19 @@ public class DriverDAOImpl implements DriverDAO{
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired
-    private BusinessCalculating businessCalculating;
+//    @Autowired
+//    private BusinessCalculating businessCalculating;
 
     @Override
     public List<Driver> getAllDrivers() {
         Session session = sessionFactory.getCurrentSession();
         List<Driver> drivers = session.createQuery("from Driver", Driver.class).getResultList();
-        return drivers;
+
+        try {
+            return drivers;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
@@ -61,19 +67,29 @@ public class DriverDAOImpl implements DriverDAO{
         drivers = session.createQuery("from Driver where order.id=:orderId")
                 .setParameter("orderId", orderId)
                 .getResultList();
-        return drivers;
+
+        try {
+            return drivers;
+        } catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
     public List<Driver> getValidDriversByOrderId(int orderId) {
         Session session = sessionFactory.getCurrentSession();
-        int workedHours = businessCalculating.calculateDriverWorkedHoursLimitForOrderByOrderId(orderId);
+        int workedHours = 9;
+//        int workedHours = businessCalculating.calculateDriverWorkedHoursLimitForOrderByOrderId(orderId);
 
         Query query = session.createQuery("from Driver where order.id = null " +
                 "and order.truck.city=city " +
                 "and workedHours<:workedHours")
                 .setParameter("workedHours", workedHours);
 
-        return query.getResultList();
+        try {
+            return query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }
