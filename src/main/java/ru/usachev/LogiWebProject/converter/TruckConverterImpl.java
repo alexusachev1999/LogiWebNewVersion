@@ -6,6 +6,9 @@ import ru.usachev.LogiWebProject.dto.TruckDTO;
 import ru.usachev.LogiWebProject.entity.Truck;
 import ru.usachev.LogiWebProject.service.CityService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class TruckConverterImpl implements TruckConverter{
 
@@ -35,5 +38,16 @@ public class TruckConverterImpl implements TruckConverter{
         truckDTO.setCity(truck.getCity().getName());
         truckDTO.setState(truck.isState());
         return truckDTO;
+    }
+
+    @Override
+    public List<TruckDTO> convertTruckListToTruckDTOList(List<Truck> trucks) {
+        List<TruckDTO> convertedTruckList = new ArrayList<>();
+
+        for (Truck truck: trucks){
+            convertedTruckList.add(convertTruckToTruckDTO(truck));
+        }
+
+        return convertedTruckList;
     }
 }

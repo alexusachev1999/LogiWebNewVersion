@@ -8,9 +8,11 @@ import ru.usachev.LogiWebProject.businessCalculating.BusinessCalculating;
 import ru.usachev.LogiWebProject.entity.City;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Order;
+import ru.usachev.LogiWebProject.entity.Waypoint;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -118,5 +120,22 @@ public class DriverDAOImpl implements DriverDAO{
                 .getResultList();
 
         return driverList;
+    }
+
+    @Override
+    public List<Driver> getDriverListByIds(List<Integer> driverIds) {
+        Session session = sessionFactory.getCurrentSession();
+
+        List<Driver> drivers = new ArrayList<>();
+
+        for (Integer id: driverIds){
+            Driver driver = session.get(Driver.class, id);
+            drivers.add(driver);
+        }
+
+        if (drivers != null)
+            return drivers;
+        else
+            return null;
     }
 }

@@ -16,5 +16,7 @@ public interface WaypointService {
 
     WaypointDTO getWaypointByCargoName(String waypointToString);
 
-    List getWaypointListByIds(int[] ids);
+    List getWaypointListByIds(List<Integer> ids);
+
+    List<WaypointDTO> getAllFreeWaypoints();
 }

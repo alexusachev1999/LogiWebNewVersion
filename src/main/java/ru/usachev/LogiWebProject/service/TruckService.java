@@ -6,7 +6,7 @@ import ru.usachev.LogiWebProject.entity.Truck;
 import java.util.List;
 
 public interface TruckService {
-    public List<Truck> getAllTrucks();
+    public List<TruckDTO> getAllTrucks();
 
     public Truck getTruck(int id);
 

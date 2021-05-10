@@ -16,5 +16,6 @@ public interface WaypointDAO {
 
     Waypoint getWaypointByCargoName(String waypointToString);
 
-    List getWaypointListByIds(int[] ids);
+    List getWaypointListByIds(List<Integer> ids);
+
 }

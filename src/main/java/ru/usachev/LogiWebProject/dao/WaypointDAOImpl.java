@@ -88,12 +88,12 @@ public class WaypointDAOImpl implements WaypointDAO{
     }
 
     @Override
-    public List getWaypointListByIds(int[] ids) {
+    public List getWaypointListByIds(List<Integer> ids) {
         Session session = sessionFactory.getCurrentSession();
 
         List waypoints = new ArrayList<>();
 
-        for (int id: ids){
+        for (Integer id: ids){
             Waypoint waypoint = session.get(Waypoint.class, id);
             waypoints.add(waypoint);
         }

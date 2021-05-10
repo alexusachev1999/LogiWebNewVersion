@@ -21,12 +21,14 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import ru.usachev.LogiWebProject.converter.StringArrayToWaypointDTOList;
 import ru.usachev.LogiWebProject.converter.StringToWaypointDAO;
+import ru.usachev.LogiWebProject.dto.WaypointDTO;
+import ru.usachev.LogiWebProject.entity.Waypoint;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -93,7 +95,7 @@ public class MyConfig extends WebMvcConfigurationSupport {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new StringArrayToWaypointDTOList());
+//        registry.addConverter(new StringArrayToWaypointDTOList());
         registry.addConverter(new StringToWaypointDAO());
     }
 }

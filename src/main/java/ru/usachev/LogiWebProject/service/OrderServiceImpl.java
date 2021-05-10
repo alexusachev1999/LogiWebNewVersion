@@ -33,8 +33,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void saveOrder(OrderDTO order) {
-        orderDAO.saveOrder(orderConverter.convertOrderDTOToOrder(order));
+    public void saveOrder(OrderDTO orderDTO) {
+        Order order = orderConverter.convertOrderDTOToOrder(orderDTO);
+        orderDAO.saveOrder(order);
     }
 
     @Override

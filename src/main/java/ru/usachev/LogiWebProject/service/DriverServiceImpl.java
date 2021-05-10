@@ -20,8 +20,10 @@ public class DriverServiceImpl implements DriverService{
 
     @Override
     @Transactional
-    public List<Driver> getAllDrivers() {
-        return driverDAO.getAllDrivers();
+    public List<DriverDTO> getAllDrivers() {
+        List<Driver> drivers = driverDAO.getAllDrivers();
+        List<DriverDTO> driversDTO = driverConverter.convertDriverListToDriverDTOList(drivers);
+        return driversDTO;
     }
 
     @Override
@@ -71,5 +73,14 @@ public class DriverServiceImpl implements DriverService{
         List<Driver> driverList = driverDAO.getCoDriverListByUsername(username);
         List<DriverDTO> driverDTOList = driverConverter.convertDriverListToDriverDTOList(driverList);
         return driverDTOList;
+    }
+
+    @Override
+    @Transactional
+    public List<DriverDTO> getDriverListByIds(List<Integer> driverIds) {
+        List<Driver> drivers = driverDAO.getDriverListByIds(driverIds);
+        List<DriverDTO> driversDTO = driverConverter.convertDriverListToDriverDTOList(drivers);
+
+        return driversDTO;
     }
 }

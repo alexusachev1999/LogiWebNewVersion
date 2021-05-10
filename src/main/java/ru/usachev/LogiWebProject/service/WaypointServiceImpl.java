@@ -51,15 +51,24 @@ public class WaypointServiceImpl implements WaypointService{
     }
 
     @Override
+    @Transactional
     public WaypointDTO getWaypointByCargoName(String waypointToString) {
         return waypointConverter
                 .convertWaypointToWaypointDTO(waypointDAO.getWaypointByCargoName(waypointToString));
     }
 
     @Override
-    public List getWaypointListByIds(int[] ids) {
+    @Transactional
+    public List getWaypointListByIds(List<Integer> ids) {
         List waypoints = waypointDAO.getWaypointListByIds(ids);
         List waypointsDTO = waypointConverter.convertWaypointListToWaypointDTOList(waypoints);
+        return waypointsDTO;
+    }
+
+    @Override
+    @Transactional
+    public List<WaypointDTO> getAllFreeWaypoints() {
+        List<WaypointDTO> waypointsDTO = getAllWaypoints();
         return waypointsDTO;
     }
 }

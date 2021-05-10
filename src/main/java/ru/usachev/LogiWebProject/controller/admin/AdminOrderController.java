@@ -1,16 +1,12 @@
 package ru.usachev.LogiWebProject.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomCollectionEditor;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.usachev.LogiWebProject.converter.OrderConverter;
-import ru.usachev.LogiWebProject.converter.StringArrayToWaypointDTOList;
 import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.dto.OrderDTO;
 import ru.usachev.LogiWebProject.dto.TruckDTO;
@@ -19,7 +15,6 @@ import ru.usachev.LogiWebProject.service.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Random;
 
 @Controller
 @RequestMapping("/admin")
@@ -43,6 +38,8 @@ public class AdminOrderController {
     @Autowired
     private OrderConverter orderConverter;
 
+    private static OrderDTO orderDTOInMemory = new OrderDTO();
+
 
 
     @GetMapping("/orders")
@@ -55,33 +52,32 @@ public class AdminOrderController {
 
     @GetMapping("/addOrder")
     public String addOrder(Model model){
+        int randomInt = (int) (Math.random() * 1000);
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setStatus(false);
-        orderDTO.setNumber((int) (Math.random() * 1000));
-        List<WaypointDTO> waypoints = waypointService.getAllWaypoints();
+        orderDTO.setNumber(randomInt);
 
+        orderDTOInMemory.setStatus(false);
+        orderDTOInMemory.setNumber(randomInt);
+
+        // Need to return only free waypoints
+        List<WaypointDTO> waypoints = waypointService.getAllFreeWaypoints();
+
+        orderDTO.setWaypoints(waypoints);
         model.addAttribute("waypoints", waypoints);
         model.addAttribute("order", orderDTO);
         return "admin/add-order";
     }
 
     @PostMapping("/saveOrder")
-    public String saveOrder(@Valid @ModelAttribute("order") OrderDTO order, BindingResult bindingResult
-            , Model model, RedirectAttributes redirectAttributes){
-        if (bindingResult.hasErrors()){
-            order.setStatus(false);
-            order.setNumber((int) (Math.random() * 1000));
-            List<WaypointDTO> waypoints = waypointService.getAllWaypoints();
+    public String saveOrder(@RequestParam("waypoints") List<Integer> cargoIds){
 
-            model.addAttribute("waypoints", waypoints);
-            model.addAttribute("order", order);
-            return "admin/add-order";
-        }
-        else {
-            redirectAttributes.addFlashAttribute("order", order);
-            orderService.saveOrder(order);
-            return "redirect:/admin/order/addTruck";
-        }
+        List<WaypointDTO> waypointsDTO = waypointService.getWaypointListByIds(cargoIds);
+        orderDTOInMemory.setWaypoints(waypointsDTO);
+
+        orderService.saveOrder(orderDTOInMemory);
+        return "redirect:/admin/order/addTruck";
+
     }
 
     @RequestMapping("/updateOrder")
@@ -99,37 +95,45 @@ public class AdminOrderController {
     }
 
     @GetMapping("/order/addTruck")
-    public String addOrderTruck(Model model, @ModelAttribute(name = "order") OrderDTO order){
-        List<TruckDTO> trucks = truckService.getValidTrucksForOrder(order.getId());
+    public String addOrderTruck(Model model){
+//        List<TruckDTO> trucks = truckService.getValidTrucksForOrder(order.getId());
+        List<TruckDTO> trucks = truckService.getAllTrucks();
 
-        model.addAttribute("order", order);
+        model.addAttribute("order", orderDTOInMemory);
         model.addAttribute("trucks", trucks);
-        return "admin/order-drivers";
+        return "admin/order-add-truck";
     }
 
     @PostMapping("/order/saveTruck")
-    public String saveOrderTruck(@Valid @ModelAttribute("order") OrderDTO order
-            , BindingResult bindingResult, Model model){
+    public String saveOrderTruck(@RequestParam("truck") String truckNumber,
+                                 RedirectAttributes redirectAttributes){
 
-        model.addAttribute("order", order);
-        orderService.saveOrder(order);
+        orderDTOInMemory.setTruck(truckNumber);
+        redirectAttributes.addFlashAttribute("order", orderDTOInMemory);
+
+        orderService.saveOrder(orderDTOInMemory);
+
         return "redirect:/admin/order/addDrivers";
     }
 
     @GetMapping("/order/addDrivers")
-    public String addDriversToOrder(Model model, @ModelAttribute(name = "order") OrderDTO order){
-        List<DriverDTO> drivers = driverService.getValidDriversByOrderId(order.getId());
+    public String addDriversToOrder(Model model){
+//        List<DriverDTO> drivers = driverService.getValidDriversByOrderId(order.getId());
 
-        model.addAttribute("order", order);
+        List<DriverDTO> drivers = driverService.getAllDrivers();
+
+        model.addAttribute("order", orderDTOInMemory);
         model.addAttribute("drivers", drivers);
         return "admin/add-driver-to-order";
     }
 
 
     @PostMapping("/order/saveDrivers")
-    public String saveDriversToOrder(@Valid @ModelAttribute("order") OrderDTO order
-            , BindingResult bindingResult){
-        orderService.saveOrder(order);
+    public String saveDriversToOrder(@RequestParam("drivers") List<Integer> driverIds){
+        List<DriverDTO> driversDTO = driverService.getDriverListByIds(driverIds);
+        orderDTOInMemory.setDrivers(driversDTO);
+
+        orderService.saveOrder(orderDTOInMemory);
         return "redirect:admin/orders";
     }
 }

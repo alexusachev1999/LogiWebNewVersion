@@ -6,13 +6,13 @@ import ru.usachev.LogiWebProject.entity.Order;
 import java.util.List;
 
 public interface OrderService {
-    public List<OrderDTO> getAllOrders();
+    List<OrderDTO> getAllOrders();
 
-    public void saveOrder(OrderDTO order);
+    void saveOrder(OrderDTO order);
 
-    public Order getOrder(int id);
+    Order getOrder(int id);
 
-    public void deleteOrder(int id);
+    void deleteOrder(int id);
 
     Order getOrderByNumber(String order);
 

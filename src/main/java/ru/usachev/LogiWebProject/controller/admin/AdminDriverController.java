@@ -38,7 +38,7 @@ public class AdminDriverController {
 
     @RequestMapping("/drivers")
     public String getAllDrivers(Model model){
-        List<Driver> drivers = driverService.getAllDrivers();
+        List<DriverDTO> drivers = driverService.getAllDrivers();
         model.addAttribute("drivers", drivers);
         return "admin/all-drivers";
     }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Order;
 import ru.usachev.LogiWebProject.entity.Truck;
+import ru.usachev.LogiWebProject.entity.Waypoint;
 
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
@@ -33,6 +34,31 @@ public class OrderDAOImpl implements OrderDAO{
     @Override
     public void saveOrder(Order order) {
         Session session = sessionFactory.getCurrentSession();
+        List<Waypoint> waypoints = order.getWaypoints();
+
+        for (Waypoint waypoint: waypoints){
+            waypoint.setOrder(order);
+            session.update(waypoint);
+        }
+
+        if (order.getTruck() != null) {
+            int truckId = order.getTruck().getId();
+            Truck truck = session.get(Truck.class, truckId);
+            truck.setOrder(order);
+            session.update(truck);
+        }
+
+        if (order.getDrivers() != null) {
+            List<Driver> drivers = order.getDrivers();
+            int truckId = order.getTruck().getId();
+            Truck truck = session.get(Truck.class, truckId);
+            for (Driver driver : drivers) {
+                driver.setOrder(order);
+                driver.setTruck(truck);
+                session.update(driver);
+            }
+        }
+
         session.saveOrUpdate(order);
     }
 
@@ -52,6 +78,12 @@ public class OrderDAOImpl implements OrderDAO{
     public void deleteOrder(int id) {
         Session session = sessionFactory.getCurrentSession();
         Order order = session.get(Order.class, id);
+
+        // To exclude constraint exception - set order_id null for waypoints which have this order
+        List<Waypoint> waypoints = order.getWaypoints();
+        for (Waypoint waypoint: waypoints){
+            waypoint.setOrder(null);
+        }
         session.delete(order);
     }
 
@@ -75,14 +107,16 @@ public class OrderDAOImpl implements OrderDAO{
     public Order getOrderByUsername(String username) {
         Session session = sessionFactory.getCurrentSession();
 
-        Driver driver = (Driver) session.createQuery("from Driver where user.username=:username")
+        List<Driver> drivers = session.createQuery("from Driver where user.username=:username")
                 .setParameter("username", username)
-                .getSingleResult();
+                .getResultList();
 
-        int orderId = driver.getOrder().getId();
-
-        Order order = session.get(Order.class, orderId);
-
-        return order;
+        if (drivers != null) {
+            Driver driver = drivers.get(0);
+            int orderId = driver.getOrder().getId();
+            Order order = session.get(Order.class, orderId);
+            return order;
+        } else
+            return null;
     }
 }

@@ -20,4 +20,6 @@ public interface DriverDAO {
     Driver getDriverByUsername(String username);
 
     List<Driver> getCoDriverListByUsername(String username);
+
+    List<Driver> getDriverListByIds(List<Integer> driverIds);
 }

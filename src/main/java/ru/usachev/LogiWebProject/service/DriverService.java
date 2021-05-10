@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DriverService {
 
-    public List<Driver> getAllDrivers ();
+    public List<DriverDTO> getAllDrivers ();
 
     public void saveDriver(DriverDTO driver);
 
@@ -22,4 +22,6 @@ public interface DriverService {
     DriverDTO getDriverByUsername(String username);
 
     List<DriverDTO> getCoDriverListByUsername(String username);
+
+    List<DriverDTO> getDriverListByIds(List<Integer> driverIds);
 }

@@ -3,8 +3,12 @@ package ru.usachev.LogiWebProject.converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.usachev.LogiWebProject.dto.DriverDTO;
+import ru.usachev.LogiWebProject.dto.OrderDTO;
 import ru.usachev.LogiWebProject.entity.Driver;
+import ru.usachev.LogiWebProject.entity.Order;
+import ru.usachev.LogiWebProject.entity.User;
 import ru.usachev.LogiWebProject.service.CityService;
+import ru.usachev.LogiWebProject.service.OrderService;
 import ru.usachev.LogiWebProject.service.UserService;
 
 import java.util.ArrayList;
@@ -19,6 +23,12 @@ public class DriverConverterImpl implements DriverConverter{
     @Autowired
     private CityService cityService;
 
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private OrderConverter orderConverter;
+
     @Override
     public Driver convertDriverDTOToDriver(DriverDTO driver) {
         Driver convertedDriver = new Driver();
@@ -28,9 +38,15 @@ public class DriverConverterImpl implements DriverConverter{
         convertedDriver.setSurname(driver.getSurname());
         convertedDriver.setPhoneNumber(driver.getPhoneNumber());
         convertedDriver.setStatus(driver.getStatus());
-        convertedDriver.setOrder(null);
+
+
+        OrderDTO orderDTO = orderService.getOrderByUsername(driver.getUser());
+        Order order = orderConverter.convertOrderDTOToOrder(orderDTO);
+        convertedDriver.setOrder(order);
+        convertedDriver.setTruck(order.getTruck());
+
+
         convertedDriver.setCity(cityService.getCityByName(driver.getCity()));
-        convertedDriver.setTruck(null);
         convertedDriver.setWorkedHours(0);
         convertedDriver.setUser(userService.getUserByUsername(driver.getUser()));
         return convertedDriver;
@@ -46,7 +62,12 @@ public class DriverConverterImpl implements DriverConverter{
         convertedDriver.setPhoneNumber(driver.getPhoneNumber());
         convertedDriver.setStatus(driver.getStatus());
         convertedDriver.setCity(driver.getCity().getName());
-        convertedDriver.setUser(driver.getUser().getUsername());
+
+        User user = driver.getUser();
+        if(user != null)
+            convertedDriver.setUser(driver.getUser().getUsername());
+        else
+            convertedDriver.setUser(null);
 
         return convertedDriver;
     }

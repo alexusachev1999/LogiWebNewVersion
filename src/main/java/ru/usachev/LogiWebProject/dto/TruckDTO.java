@@ -58,4 +58,9 @@ public class TruckDTO {
     public void setState(boolean state) {
         this.state = state;
     }
+
+    @Override
+    public String toString() {
+        return "Рег. номер: " + registrationNumber;
+    }
 }

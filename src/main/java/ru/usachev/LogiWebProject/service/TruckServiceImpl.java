@@ -22,8 +22,10 @@ public class TruckServiceImpl implements TruckService{
 
     @Override
     @Transactional
-    public List<Truck> getAllTrucks() {
-        return truckDAO.getAllTrucks();
+    public List<TruckDTO> getAllTrucks() {
+        List<Truck> trucks = truckDAO.getAllTrucks();
+        List<TruckDTO> trucksDTO = truckConverter.convertTruckListToTruckDTOList(trucks);
+        return trucksDTO;
     }
 
     @Override
