@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Order;
 import ru.usachev.LogiWebProject.entity.Truck;
 
@@ -68,5 +69,20 @@ public class OrderDAOImpl implements OrderDAO{
         } catch (NoResultException e){
             return null;
         }
+    }
+
+    @Override
+    public Order getOrderByUsername(String username) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Driver driver = (Driver) session.createQuery("from Driver where user.username=:username")
+                .setParameter("username", username)
+                .getSingleResult();
+
+        int orderId = driver.getOrder().getId();
+
+        Order order = session.get(Order.class, orderId);
+
+        return order;
     }
 }

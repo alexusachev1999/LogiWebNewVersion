@@ -1,12 +1,16 @@
 package ru.usachev.LogiWebProject.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomCollectionEditor;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.usachev.LogiWebProject.converter.OrderConverter;
+import ru.usachev.LogiWebProject.converter.StringArrayToWaypointDTOList;
 import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.dto.OrderDTO;
 import ru.usachev.LogiWebProject.dto.TruckDTO;
@@ -40,6 +44,7 @@ public class AdminOrderController {
     private OrderConverter orderConverter;
 
 
+
     @GetMapping("/orders")
     public String getAllOrders(Model model){
         List<OrderDTO> orders = orderService.getAllOrders();
@@ -64,13 +69,12 @@ public class AdminOrderController {
     public String saveOrder(@Valid @ModelAttribute("order") OrderDTO order, BindingResult bindingResult
             , Model model, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()){
-            OrderDTO orderDTO = new OrderDTO();
-            orderDTO.setStatus(false);
-            orderDTO.setNumber((int) (Math.random() * 1000));
+            order.setStatus(false);
+            order.setNumber((int) (Math.random() * 1000));
             List<WaypointDTO> waypoints = waypointService.getAllWaypoints();
 
             model.addAttribute("waypoints", waypoints);
-            model.addAttribute("order", orderDTO);
+            model.addAttribute("order", order);
             return "admin/add-order";
         }
         else {

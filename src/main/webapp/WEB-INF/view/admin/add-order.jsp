@@ -17,12 +17,14 @@
 
     <label>Список маршрутных точек</label>
     <br>
+
     <c:forEach var="waypoint" items="${waypoints}">
-        <form:checkbox path="waypoints" value="${waypoint.id}" label="${waypoint.toString()}"/>
+            <form:checkbox path="waypoints" value="${waypoint.id}" label="${waypoint.toString()}"/>
         <br/>
     </c:forEach>
     <br/>
     <input type="submit" value="Добавить маршрутные точки" onclick="window.location='${submitButton}'">
 </form:form>
+
 </body>
 </html>

@@ -12,27 +12,33 @@
 <table>
     <tr>
         <th>Логин</th>
-        <th>Пароль</th>
         <th>Роль</th>
         <th>Статус</th>
-        <th>Обновить</th>
         <th>Удалить</th>
     </tr>
     <C:forEach var="user" items="${users}">
 
-        <c:url var="updateButton" value="/admin/updateUser">
-            <c:param name="userLogin" value="${user.login}"/>
-        </c:url>
-
         <c:url var="deleteButton" value="/admin/deleteUser">
-            <c:param name="userLogin" value="${user.login}"/>
+            <c:param name="userName" value="${user.username}"/>
         </c:url>
         <tr>
-            <td>${user.login}</td>
-            <td>${user.password}</td>
-            <td>${user.authority}</td>
-            <td>${user.enabled}</td>
-            <td><input type="button" value="Обновить" onclick="window.location.href='${updateButton}'"/></td>
+            <td>${user.username}</td>
+            <td>
+                <c:if test="${user.userRole.get(0).role.equals('ROLE_ADMIN')}">
+                    <c:out value="Администратор"/>
+                </c:if>
+                <c:if test="${user.userRole.get(0).role.equals('ROLE_DRIVER')}">
+                    <c:out value="Водитель"/>
+                </c:if>
+                    </td>
+            <td>
+                <c:if test="${user.enabled == true}">
+                    <c:out value="Действующий"/>
+                </c:if>
+                <c:if test="${user.enabled == false}">
+                    <c:out value="Заблокирован"/>
+                </c:if>
+            </td>
             <td><input type="button" value="Удалить" onclick="window.location.href='${deleteButton}'"/></td>
         </tr>
     </C:forEach>

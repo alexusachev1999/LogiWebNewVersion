@@ -15,4 +15,6 @@ public interface OrderDAO {
     public void deleteOrder(int id);
 
     Order getOrderByNumber(String order);
+
+    Order getOrderByUsername(String username);
 }

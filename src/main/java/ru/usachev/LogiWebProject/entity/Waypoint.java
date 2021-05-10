@@ -3,7 +3,7 @@ package ru.usachev.LogiWebProject.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "waypoint")
+@Table(name = "waypoints")
 public class Waypoint {
 
     @Id

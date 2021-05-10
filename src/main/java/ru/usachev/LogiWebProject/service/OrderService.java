@@ -15,4 +15,6 @@ public interface OrderService {
     public void deleteOrder(int id);
 
     Order getOrderByNumber(String order);
+
+    OrderDTO getOrderByUsername(String username);
 }

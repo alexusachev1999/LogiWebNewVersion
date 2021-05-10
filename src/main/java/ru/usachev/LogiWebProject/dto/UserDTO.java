@@ -2,23 +2,23 @@ package ru.usachev.LogiWebProject.dto;
 
 public class UserDTO {
 
-    private String login;
+    private String username;
 
     private String password;
 
     private boolean enabled;
 
-    private String authority;
+    private String userRole;
 
     public UserDTO() {
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -37,11 +37,11 @@ public class UserDTO {
         this.enabled = enabled;
     }
 
-    public String getAuthority() {
-        return authority;
+    public String getUserRole() {
+        return userRole;
     }
 
-    public void setAuthority(String authority) {
-        this.authority = authority;
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 }

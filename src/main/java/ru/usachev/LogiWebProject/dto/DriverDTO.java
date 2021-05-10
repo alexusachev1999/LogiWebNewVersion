@@ -8,6 +8,7 @@ public class DriverDTO {
     private String status;
     private String city;
     private String truck;
+    private String user;
 
     public DriverDTO() {
     }
@@ -68,4 +69,11 @@ public class DriverDTO {
         this.truck = truck;
     }
 
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
 }

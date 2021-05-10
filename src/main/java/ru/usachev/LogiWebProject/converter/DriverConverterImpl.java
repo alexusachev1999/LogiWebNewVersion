@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.service.CityService;
-import ru.usachev.LogiWebProject.service.OrderService;
+import ru.usachev.LogiWebProject.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 public class DriverConverterImpl implements DriverConverter{
 
     @Autowired
-    private OrderService orderService;
+    private UserService userService;
 
     @Autowired
     private CityService cityService;
@@ -32,6 +32,7 @@ public class DriverConverterImpl implements DriverConverter{
         convertedDriver.setCity(cityService.getCityByName(driver.getCity()));
         convertedDriver.setTruck(null);
         convertedDriver.setWorkedHours(0);
+        convertedDriver.setUser(userService.getUserByUsername(driver.getUser()));
         return convertedDriver;
     }
 
@@ -45,6 +46,7 @@ public class DriverConverterImpl implements DriverConverter{
         convertedDriver.setPhoneNumber(driver.getPhoneNumber());
         convertedDriver.setStatus(driver.getStatus());
         convertedDriver.setCity(driver.getCity().getName());
+        convertedDriver.setUser(driver.getUser().getUsername());
 
         return convertedDriver;
     }

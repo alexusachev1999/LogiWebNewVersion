@@ -92,4 +92,31 @@ public class DriverDAOImpl implements DriverDAO{
             return null;
         }
     }
+
+    @Override
+    public Driver getDriverByUsername(String username) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Driver driver = (Driver) session.createQuery("from Driver where user.username=:username")
+                .setParameter("username", username)
+                .getSingleResult();
+        return driver;
+    }
+
+    @Override
+    public List<Driver> getCoDriverListByUsername(String username) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Driver driver = (Driver) session.createQuery("from Driver where user.username=:username")
+                .setParameter("username", username)
+                .getSingleResult();
+
+        int orderId = driver.getOrder().getId();
+
+        List<Driver> driverList = session.createQuery("from Driver where order.id=:orderId")
+                .setParameter("orderId", orderId)
+                .getResultList();
+
+        return driverList;
+    }
 }

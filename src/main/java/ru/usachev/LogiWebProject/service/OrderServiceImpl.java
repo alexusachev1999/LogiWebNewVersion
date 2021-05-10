@@ -54,4 +54,12 @@ public class OrderServiceImpl implements OrderService {
     public Order getOrderByNumber(String order) {
         return orderDAO.getOrderByNumber(order);
     }
+
+    @Override
+    @Transactional
+    public OrderDTO getOrderByUsername(String username) {
+        Order order = orderDAO.getOrderByUsername(username);
+        OrderDTO orderDTO = orderConverter.convertOrderToOrderDTO(order);
+        return orderDTO;
+    }
 }

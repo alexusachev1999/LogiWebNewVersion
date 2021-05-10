@@ -37,7 +37,17 @@
             <form:option value="${city.name}"/>
         </c:forEach>
     </form:select>
+    <br/><br/>
+
+    <label>Пользователь для водителя</label>
+    <form:select path="user">
+        <c:forEach var="user" items="${freeUserForDrivers}">
+            <form:option value="${user.username}"/>
+        </c:forEach>
+    </form:select>
+    <br/><br/>
     <input type="submit" value="OK">
+
 </form:form>
 </body>
 </html>

@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.usachev.LogiWebProject.dao.UserDao;
+import ru.usachev.LogiWebProject.dao.UserDAO;
 import ru.usachev.LogiWebProject.entity.UserRole;
 
 import java.util.ArrayList;
@@ -21,14 +21,14 @@ import java.util.Set;
 public class MyUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private UserDao userDAO;
+	private UserDAO userDAO;
 
 	@Transactional(readOnly=true)
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 	
 		ru.usachev.LogiWebProject.entity.User user = userDAO.findByUserName(username);
-		List<GrantedAuthority> authorities = buildUserAuthority(user.getUserRole());
+		List<GrantedAuthority> authorities = buildUserAuthority((Set<UserRole>) user.getUserRole());
 
 		return buildUserForAuthentication(user, authorities);
 		

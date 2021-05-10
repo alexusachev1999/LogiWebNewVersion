@@ -11,6 +11,7 @@
 <body>
 <table>
     <tr>
+        <th>Логин</th>
         <th>Имя</th>
         <th>Фамилия</th>
         <th>Номер телефона</th>
@@ -31,6 +32,7 @@
             <c:param name="driverId" value="${driver.id}"/>
         </c:url>
         <tr>
+            <td>${driver.user.username}</td>
             <td>${driver.name}</td>
             <td>${driver.surname}</td>
             <td>${driver.phoneNumber}</td>

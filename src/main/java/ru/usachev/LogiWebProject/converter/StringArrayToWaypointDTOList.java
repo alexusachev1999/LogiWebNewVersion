@@ -1,6 +1,7 @@
 package ru.usachev.LogiWebProject.converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import ru.usachev.LogiWebProject.service.WaypointService;
@@ -8,7 +9,7 @@ import ru.usachev.LogiWebProject.service.WaypointService;
 import java.util.List;
 
 @Component
-public class StringArrayToWaypointDTOList implements Converter<String[], List> {
+public class StringArrayToWaypointDTOList implements Converter<String[], List>  {
 
     @Autowired
     private WaypointService waypointService;

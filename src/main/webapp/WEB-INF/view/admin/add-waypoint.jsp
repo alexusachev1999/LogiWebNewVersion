@@ -12,11 +12,9 @@
 <form:form action="saveWaypoint" modelAttribute="waypoint">
 
     <form:hidden path="id"/>
+    <form:hidden path="cargo"/>
 
-    <label>Груз</label>
-    <form:select path="cargo" name = "cargoName">
-        <form:options items="${cargoes}"/>
-    </form:select>
+    <label>Груз: ${waypoint.cargo}</label>
     <br/><br/>
     <label>Город загрузки</label>
     <form:select path="cityLoading">

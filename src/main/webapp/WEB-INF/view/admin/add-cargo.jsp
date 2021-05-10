@@ -8,14 +8,14 @@
     <title>Добавить груз</title>
 </head>
 <body>
+<h2>Груз № ${cargo.number}</h2>
 <form:form action="saveCargo" modelAttribute="cargo">
 
     <form:hidden path="id"/>
+    <form:hidden path="status"/>
+    <form:hidden path="number"/>
 
-    <label>Номер груза</label>
-    <form:input path="number"/>
-    <form:errors path="number"/>
-    <br/><br/>
+
     <label>Наименование</label>
     <form:input path="name"/>
     <form:errors path="name"/>
@@ -24,13 +24,11 @@
     <form:input path="weight"/>
     <form:errors path="weight"/>
     <br/><br/>
-    <label>Статус</label>
-    <form:select path="status">
-        <form:option value="Подготовлен" label="Подготовлен"/>
-        <form:option value="Отгружен" label="Отгружен"/>
-        <form:option value="Доставлен" label="Доставлен"/>
-    </form:select>
-    <br/><br/>
+<%--    <form:select path="status">--%>
+<%--        <form:option value="Подготовлен" label="Подготовлен"/>--%>
+<%--        <form:option value="Отгружен" label="Отгружен"/>--%>
+<%--        <form:option value="Доставлен" label="Доставлен"/>--%>
+<%--    </form:select>--%>
     <input type="submit" value="OK">
 </form:form>
 </body>

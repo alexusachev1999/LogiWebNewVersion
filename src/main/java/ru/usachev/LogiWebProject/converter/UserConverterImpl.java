@@ -1,23 +1,37 @@
 package ru.usachev.LogiWebProject.converter;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.usachev.LogiWebProject.dao.UserDAO;
+import ru.usachev.LogiWebProject.dao.UserRoleDAO;
 import ru.usachev.LogiWebProject.dto.UserDTO;
 import ru.usachev.LogiWebProject.entity.User;
+import ru.usachev.LogiWebProject.entity.UserRole;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class UserConverterImpl implements UserConverter{
+
+
+    @Autowired
+    private UserRoleDAO userRoleDAO;
 
     @Override
     public User convertUserDTOToUser(UserDTO userDTO) {
         User user = new User();
 
-        user.setUsername(userDTO.getLogin());
+        user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
         user.setEnabled(userDTO.isEnabled());
 
+        UserRole userRole = new UserRole();
+        userRole.setUser(user);
+        userRole.setRole(userDTO.getUserRole());
+        List <UserRole> userRoles = new ArrayList<>();
+        userRoles.add(userRole);
+
+        user.setUserRole(userRoles);
         return user;
     }
 
@@ -25,10 +39,10 @@ public class UserConverterImpl implements UserConverter{
     public UserDTO convertUserToUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
 
-        userDTO.setLogin(user.getUsername());
+        userDTO.setUsername(user.getUsername());
         userDTO.setPassword(user.getPassword());
         userDTO.setEnabled(user.isEnabled());
-        userDTO.setAuthority(user.getUserRole().toString());
+        userDTO.setUserRole(user.getUserRole().get(0).getRole());
 
         return userDTO;
     }

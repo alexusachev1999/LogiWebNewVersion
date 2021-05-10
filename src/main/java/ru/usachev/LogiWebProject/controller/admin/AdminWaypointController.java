@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.usachev.LogiWebProject.converter.WaypointConverter;
+import ru.usachev.LogiWebProject.dto.CargoDTO;
 import ru.usachev.LogiWebProject.dto.WaypointDTO;
 import ru.usachev.LogiWebProject.entity.Cargo;
 import ru.usachev.LogiWebProject.entity.City;
@@ -40,12 +41,11 @@ public class AdminWaypointController {
     }
 
     @GetMapping("/addWaypoint")
-    public String addCargo(Model model){
+    public String addCargo(@ModelAttribute(name = "cargo") CargoDTO cargo, Model model){
         WaypointDTO waypoint = new WaypointDTO();
-        List<Cargo> cargoes = cargoService.getAllCargoes();
+        waypoint.setCargo(cargo.getName());
         List<City> cities = cityService.getCities();
         model.addAttribute("waypoint", waypoint);
-        model.addAttribute("cargoes", cargoes);
         model.addAttribute("cities", cities);
         return "admin/add-waypoint";
     }

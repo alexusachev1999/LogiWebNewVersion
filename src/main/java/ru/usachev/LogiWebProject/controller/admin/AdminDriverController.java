@@ -10,6 +10,7 @@ import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.service.CityService;
 import ru.usachev.LogiWebProject.service.DriverService;
+import ru.usachev.LogiWebProject.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -23,6 +24,9 @@ public class AdminDriverController {
 
     @Autowired
     private CityService cityService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private DriverConverter driverConverter;
@@ -44,6 +48,7 @@ public class AdminDriverController {
         DriverDTO driver = new DriverDTO();
         model.addAttribute("driver", driver);
         model.addAttribute("cityList", cityService.getCities());
+        model.addAttribute("freeUserForDrivers", userService.freeUserForDrivers());
         return "admin/add-driver";
     }
 
@@ -51,6 +56,8 @@ public class AdminDriverController {
     public String saveDriver(@Valid @ModelAttribute("driver") DriverDTO driver, BindingResult bindingResult
     , Model model){
         if (bindingResult.hasErrors()){
+
+            model.addAttribute("driver", driver);
             model.addAttribute("cityList", cityService.getCities());
             return "admin/add-driver";}
         else {

@@ -50,9 +50,26 @@ public class DriverServiceImpl implements DriverService{
     }
 
     @Override
+    @Transactional
     public List<DriverDTO> getValidDriversByOrderId(int orderId) {
         List<Driver> drivers = driverDAO.getValidDriversByOrderId(orderId);
         List<DriverDTO> convertedDrivers = driverConverter.convertDriverListToDriverDTOList(drivers);
         return convertedDrivers;
+    }
+
+    @Override
+    @Transactional
+    public DriverDTO getDriverByUsername(String username) {
+        Driver driver = driverDAO.getDriverByUsername(username);
+        DriverDTO driverDTO = driverConverter.convertDriverToDriverDTO(driver);
+        return driverDTO;
+    }
+
+    @Override
+    @Transactional
+    public List<DriverDTO> getCoDriverListByUsername(String username) {
+        List<Driver> driverList = driverDAO.getCoDriverListByUsername(username);
+        List<DriverDTO> driverDTOList = driverConverter.convertDriverListToDriverDTOList(driverList);
+        return driverDTOList;
     }
 }

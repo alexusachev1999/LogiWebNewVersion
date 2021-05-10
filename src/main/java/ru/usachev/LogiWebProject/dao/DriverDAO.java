@@ -16,4 +16,8 @@ public interface DriverDAO {
     List<Driver> getDriversByOrderId(int orderId);
 
     List<Driver> getValidDriversByOrderId(int orderId);
+
+    Driver getDriverByUsername(String username);
+
+    List<Driver> getCoDriverListByUsername(String username);
 }

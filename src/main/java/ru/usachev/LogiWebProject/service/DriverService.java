@@ -18,4 +18,8 @@ public interface DriverService {
     List<Driver> getDriversByOrderId(int orderId);
 
     List<DriverDTO> getValidDriversByOrderId(int orderId);
+
+    DriverDTO getDriverByUsername(String username);
+
+    List<DriverDTO> getCoDriverListByUsername(String username);
 }

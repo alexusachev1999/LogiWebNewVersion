@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.usachev.LogiWebProject.converter.CargoConverter;
 import ru.usachev.LogiWebProject.dto.CargoDTO;
 import ru.usachev.LogiWebProject.entity.Cargo;
@@ -33,18 +34,24 @@ public class AdminCargoController {
     @GetMapping("/addCargo")
     public String addCargo(Model model){
         CargoDTO cargo = new CargoDTO();
+        cargo.setNumber((int) (Math.random() * 1000));
+        cargo.setStatus("Подготовлен");
         model.addAttribute("cargo", cargo);
         return "admin/add-cargo";
     }
 
     @PostMapping("/saveCargo")
     public String saveCargo(@Valid @ModelAttribute("cargo") CargoDTO cargo, BindingResult bindingResult
-            , Model model){
+            , Model model, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()){
+            cargo.setNumber((int) (Math.random() * 1000));
+            cargo.setStatus("Подготовлен");
+            model.addAttribute("cargo", cargo);
             return "admin/add-cargo";}
         else {
+            redirectAttributes.addFlashAttribute("cargo", cargo);
             cargoService.saveCargo(cargo);
-            return "redirect:/admin/cargoes";
+            return "redirect:/admin/addWaypoint";
         }
     }
 
