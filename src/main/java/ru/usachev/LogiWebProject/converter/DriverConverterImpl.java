@@ -6,9 +6,11 @@ import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.dto.OrderDTO;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Order;
+import ru.usachev.LogiWebProject.entity.Truck;
 import ru.usachev.LogiWebProject.entity.User;
 import ru.usachev.LogiWebProject.service.CityService;
 import ru.usachev.LogiWebProject.service.OrderService;
+import ru.usachev.LogiWebProject.service.TruckService;
 import ru.usachev.LogiWebProject.service.UserService;
 
 import java.util.ArrayList;
@@ -24,10 +26,11 @@ public class DriverConverterImpl implements DriverConverter{
     private CityService cityService;
 
     @Autowired
-    private OrderService orderService;
+    private TruckService truckService;
 
     @Autowired
     private OrderConverter orderConverter;
+
 
     @Override
     public Driver convertDriverDTOToDriver(DriverDTO driver) {
@@ -40,8 +43,8 @@ public class DriverConverterImpl implements DriverConverter{
         convertedDriver.setStatus(driver.getStatus());
 
 
-        OrderDTO orderDTO = orderService.getOrderByUsername(driver.getUser());
-        Order order = orderConverter.convertOrderDTOToOrder(orderDTO);
+        Truck truck = truckService.getTruckByDriverId(driver.getId());
+        Order order = truck.getOrder();
         convertedDriver.setOrder(order);
         convertedDriver.setTruck(order.getTruck());
 

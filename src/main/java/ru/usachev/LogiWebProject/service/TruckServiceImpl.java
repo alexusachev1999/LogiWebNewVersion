@@ -64,8 +64,24 @@ public class TruckServiceImpl implements TruckService{
     }
 
     @Override
+    @Transactional
     public TruckDTO getTruckByOrderId(int orderId) {
         TruckDTO truckDTO = truckConverter.convertTruckToTruckDTO(truckDAO.getTruckByOrderId(orderId));
         return truckDTO;
+    }
+
+    @Override
+    @Transactional
+    public TruckDTO getTruckByOrderNumber(int number) {
+        Truck truck = truckDAO.getTruckByOrderNumber(number);
+        TruckDTO truckDTO = truckConverter.convertTruckToTruckDTO(truck);
+
+        return truckDTO;
+    }
+
+    @Override
+    @Transactional
+    public Truck getTruckByDriverId(int id) {
+        return truckDAO.getTruckByDriverId(id);
     }
 }

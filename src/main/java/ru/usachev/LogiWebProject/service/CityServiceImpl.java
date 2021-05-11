@@ -26,6 +26,7 @@ public class CityServiceImpl implements CityService{
     }
 
     @Override
+    @Transactional
     public City getCityByName(String cityName) {
         return cityDAO.getCityByName(cityName);
     }

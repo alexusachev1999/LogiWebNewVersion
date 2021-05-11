@@ -18,4 +18,8 @@ public interface TruckDAO {
     Truck getTruckByRegistrationNumber(String registrationNumber);
 
     Truck getTruckByOrderId(int orderId);
+
+    Truck getTruckByOrderNumber(int number);
+
+    Truck getTruckByDriverId(int id);
 }

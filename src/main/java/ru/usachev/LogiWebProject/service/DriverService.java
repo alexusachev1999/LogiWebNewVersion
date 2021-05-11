@@ -23,5 +23,7 @@ public interface DriverService {
 
     List<DriverDTO> getCoDriverListByUsername(String username);
 
-    List<DriverDTO> getDriverListByIds(List<Integer> driverIds);
+    List<Driver> getDriverListByIds(List<Integer> driverIds);
+
+    void saveEntityDriver(Driver driver);
 }

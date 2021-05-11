@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.usachev.LogiWebProject.businessCalculating.BusinessCalculating;
 import ru.usachev.LogiWebProject.entity.City;
+import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Order;
 import ru.usachev.LogiWebProject.entity.Truck;
 
@@ -101,5 +102,25 @@ public class TruckDAOImpl implements TruckDAO{
         } catch (NoResultException e){
             return null;
         }
+    }
+
+    @Override
+    public Truck getTruckByOrderNumber(int number) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Order order = (Order) session.createQuery("from Order where number=:number")
+                .setParameter("number", number)
+                .getSingleResult();
+
+
+        return order.getTruck();
+    }
+
+    @Override
+    public Truck getTruckByDriverId(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        Driver driver = session.get(Driver.class, id);
+
+        return driver.getTruck();
     }
 }

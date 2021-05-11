@@ -77,10 +77,14 @@ public class DriverServiceImpl implements DriverService{
 
     @Override
     @Transactional
-    public List<DriverDTO> getDriverListByIds(List<Integer> driverIds) {
+    public List<Driver> getDriverListByIds(List<Integer> driverIds) {
         List<Driver> drivers = driverDAO.getDriverListByIds(driverIds);
-        List<DriverDTO> driversDTO = driverConverter.convertDriverListToDriverDTOList(drivers);
+        return drivers;
+    }
 
-        return driversDTO;
+    @Override
+    @Transactional
+    public void saveEntityDriver(Driver driver) {
+        driverDAO.saveEntityDriver(driver);
     }
 }

@@ -19,14 +19,17 @@ public class Order {
     @Column(name = "status")
     private boolean status;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "truck_id")
     private Truck truck;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.DETACH,
+            CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Waypoint> waypoints;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.DETACH,
+            CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Driver> drivers;
 
     public Order() {

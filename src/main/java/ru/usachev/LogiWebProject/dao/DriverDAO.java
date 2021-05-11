@@ -22,4 +22,6 @@ public interface DriverDAO {
     List<Driver> getCoDriverListByUsername(String username);
 
     List<Driver> getDriverListByIds(List<Integer> driverIds);
+
+    void saveEntityDriver(Driver driver);
 }

@@ -138,4 +138,11 @@ public class DriverDAOImpl implements DriverDAO{
         else
             return null;
     }
+
+    @Override
+    public void saveEntityDriver(Driver driver) {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.saveOrUpdate(driver);
+    }
 }

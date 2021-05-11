@@ -3,17 +3,19 @@ package ru.usachev.LogiWebProject.controller.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.usachev.LogiWebProject.converter.DriverConverter;
 import ru.usachev.LogiWebProject.converter.OrderConverter;
+import ru.usachev.LogiWebProject.converter.TruckConverter;
 import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.dto.OrderDTO;
 import ru.usachev.LogiWebProject.dto.TruckDTO;
 import ru.usachev.LogiWebProject.dto.WaypointDTO;
+import ru.usachev.LogiWebProject.entity.Driver;
+import ru.usachev.LogiWebProject.entity.Truck;
 import ru.usachev.LogiWebProject.service.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -37,6 +39,12 @@ public class AdminOrderController {
 
     @Autowired
     private OrderConverter orderConverter;
+
+    @Autowired
+    private DriverConverter driverConverter;
+
+    @Autowired
+    private TruckConverter truckConverter;
 
     private static OrderDTO orderDTOInMemory = new OrderDTO();
 
@@ -75,7 +83,6 @@ public class AdminOrderController {
         List<WaypointDTO> waypointsDTO = waypointService.getWaypointListByIds(cargoIds);
         orderDTOInMemory.setWaypoints(waypointsDTO);
 
-        orderService.saveOrder(orderDTOInMemory);
         return "redirect:/admin/order/addTruck";
 
     }
@@ -130,10 +137,24 @@ public class AdminOrderController {
 
     @PostMapping("/order/saveDrivers")
     public String saveDriversToOrder(@RequestParam("drivers") List<Integer> driverIds){
-        List<DriverDTO> driversDTO = driverService.getDriverListByIds(driverIds);
+        List<Driver> drivers = driverService.getDriverListByIds(driverIds);
+
+        TruckDTO truckDTO = truckService.getTruckByOrderNumber(orderDTOInMemory.getNumber());
+
+        Truck truck = truckConverter.convertTruckDTOToTruck(truckDTO);
+
+        for (Driver driver: drivers){
+            driver.setTruck(truck);
+            driverService.saveEntityDriver(driver);
+        }
+
+
+        List<DriverDTO> driversDTO = driverConverter.convertDriverListToDriverDTOList(drivers);
         orderDTOInMemory.setDrivers(driversDTO);
 
         orderService.saveOrder(orderDTOInMemory);
+//        orderService.saveDriversToOrder(drivers, orderDTOInMemory);
+
         return "redirect:admin/orders";
     }
 }

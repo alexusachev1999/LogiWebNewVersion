@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ru.usachev.LogiWebProject.dto.OrderDTO;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Order;
 import ru.usachev.LogiWebProject.entity.Truck;
@@ -34,32 +35,32 @@ public class OrderDAOImpl implements OrderDAO{
     @Override
     public void saveOrder(Order order) {
         Session session = sessionFactory.getCurrentSession();
-        List<Waypoint> waypoints = order.getWaypoints();
 
-        for (Waypoint waypoint: waypoints){
-            waypoint.setOrder(order);
-            session.update(waypoint);
-        }
+            List<Waypoint> waypoints = order.getWaypoints();
 
-        if (order.getTruck() != null) {
-            int truckId = order.getTruck().getId();
-            Truck truck = session.get(Truck.class, truckId);
-            truck.setOrder(order);
-            session.update(truck);
-        }
-
-        if (order.getDrivers() != null) {
-            List<Driver> drivers = order.getDrivers();
-            int truckId = order.getTruck().getId();
-            Truck truck = session.get(Truck.class, truckId);
-            for (Driver driver : drivers) {
-                driver.setOrder(order);
-                driver.setTruck(truck);
-                session.update(driver);
+            for (Waypoint waypoint: waypoints){
+                waypoint.setOrder(order);
+                session.saveOrUpdate(waypoint);
             }
-        }
 
-        session.saveOrUpdate(order);
+            if (order.getTruck() != null) {
+                int truckId = order.getTruck().getId();
+                Truck truck = session.get(Truck.class, truckId);
+                truck.setOrder(order);
+                session.saveOrUpdate(truck);
+            }
+
+            if (order.getDrivers() != null) {
+                List<Driver> drivers = order.getDrivers();
+                Truck truck = order.getTruck();
+                for (Driver driver : drivers) {
+                    driver.setOrder(order);
+                    driver.setTruck(truck);
+                    session.merge(driver);
+                }
+            }
+
+            session.saveOrUpdate(order);
     }
 
     @Override
@@ -107,16 +108,25 @@ public class OrderDAOImpl implements OrderDAO{
     public Order getOrderByUsername(String username) {
         Session session = sessionFactory.getCurrentSession();
 
-        List<Driver> drivers = session.createQuery("from Driver where user.username=:username")
+        List drivers = session.createQuery("from Driver where user.username=:username")
                 .setParameter("username", username)
                 .getResultList();
 
         if (drivers != null) {
-            Driver driver = drivers.get(0);
-            int orderId = driver.getOrder().getId();
-            Order order = session.get(Order.class, orderId);
+            Driver driver = (Driver) drivers.get(0);
+            Order order = driver.getTruck().getOrder();
             return order;
         } else
             return null;
+    }
+
+    @Override
+    public void saveDriversToOrder(List<Driver> drivers, Order order) {
+        Session session = sessionFactory.getCurrentSession();
+
+        session.update(order);
+        for (Driver driver: drivers){
+            session.saveOrUpdate(driver);
+        }
     }
 }

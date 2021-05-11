@@ -1,5 +1,7 @@
 package ru.usachev.LogiWebProject.dao;
 
+import ru.usachev.LogiWebProject.dto.OrderDTO;
+import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Order;
 
 import java.util.List;
@@ -17,4 +19,6 @@ public interface OrderDAO {
     Order getOrderByNumber(String order);
 
     Order getOrderByUsername(String username);
+
+    void saveDriversToOrder(List<Driver> drivers, Order order);
 }

@@ -1,6 +1,7 @@
 package ru.usachev.LogiWebProject.service;
 
 import ru.usachev.LogiWebProject.dto.OrderDTO;
+import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Order;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface OrderService {
     Order getOrderByNumber(String order);
 
     OrderDTO getOrderByUsername(String username);
+
+    void saveDriversToOrder(List<Driver> drivers, OrderDTO orderDTO);
 }

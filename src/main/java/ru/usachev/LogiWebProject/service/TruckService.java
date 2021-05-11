@@ -19,4 +19,8 @@ public interface TruckService {
     Truck getTruckByRegistrationNumber(String registrationNumber);
 
     TruckDTO getTruckByOrderId(int orderId);
+
+    TruckDTO getTruckByOrderNumber(int number);
+
+    Truck getTruckByDriverId(int id);
 }
