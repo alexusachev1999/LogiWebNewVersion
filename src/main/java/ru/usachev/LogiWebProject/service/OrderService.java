@@ -15,7 +15,7 @@ public interface OrderService {
 
     void deleteOrder(int id);
 
-    Order getOrderByNumber(String order);
+    Order getOrderByNumber(int number);
 
     OrderDTO getOrderByUsername(String username);
 

@@ -56,7 +56,7 @@ public class OrderDAOImpl implements OrderDAO{
                 for (Driver driver : drivers) {
                     driver.setOrder(order);
                     driver.setTruck(truck);
-                    session.merge(driver);
+                    session.update(driver);
                 }
             }
 
@@ -85,16 +85,20 @@ public class OrderDAOImpl implements OrderDAO{
         for (Waypoint waypoint: waypoints){
             waypoint.setOrder(null);
         }
+
+        List<Driver> drivers = order.getDrivers();
+        for (Driver driver: drivers){
+            driver.setOrder(null);
+        }
         session.delete(order);
     }
 
     @Override
-    public Order getOrderByNumber(String order) {
+    public Order getOrderByNumber(int number) {
         Session session = sessionFactory.getCurrentSession();
         Order orderByName = new Order();
-        Integer orderNumber = Integer.getInteger(order);
         orderByName = session.createQuery("from Order where number=:number", Order.class)
-                .setParameter("number", orderNumber)
+                .setParameter("number", number)
                 .getSingleResult();
 
         try {

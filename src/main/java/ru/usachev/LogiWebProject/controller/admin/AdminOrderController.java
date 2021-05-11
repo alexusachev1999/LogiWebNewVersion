@@ -13,6 +13,7 @@ import ru.usachev.LogiWebProject.dto.OrderDTO;
 import ru.usachev.LogiWebProject.dto.TruckDTO;
 import ru.usachev.LogiWebProject.dto.WaypointDTO;
 import ru.usachev.LogiWebProject.entity.Driver;
+import ru.usachev.LogiWebProject.entity.Order;
 import ru.usachev.LogiWebProject.entity.Truck;
 import ru.usachev.LogiWebProject.service.*;
 
@@ -120,6 +121,9 @@ public class AdminOrderController {
 
         orderService.saveOrder(orderDTOInMemory);
 
+        Order order = orderService.getOrderByNumber(orderDTOInMemory.getNumber());
+        orderDTOInMemory.setId(order.getId());
+
         return "redirect:/admin/order/addDrivers";
     }
 
@@ -145,6 +149,7 @@ public class AdminOrderController {
 
         for (Driver driver: drivers){
             driver.setTruck(truck);
+            driver.setOrder(orderConverter.convertOrderDTOToOrder(orderDTOInMemory));
             driverService.saveEntityDriver(driver);
         }
 

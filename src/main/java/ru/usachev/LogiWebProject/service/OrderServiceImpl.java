@@ -53,8 +53,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order getOrderByNumber(String order) {
-        return orderDAO.getOrderByNumber(order);
+    public Order getOrderByNumber(int number) {
+        return orderDAO.getOrderByNumber(number);
     }
 
     @Override

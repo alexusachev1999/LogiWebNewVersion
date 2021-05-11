@@ -66,6 +66,9 @@ public class DriverConverterImpl implements DriverConverter{
         convertedDriver.setStatus(driver.getStatus());
         convertedDriver.setCity(driver.getCity().getName());
 
+        if (driver.getTruck() != null)
+            convertedDriver.setTruck(driver.getTruck().getRegistrationNumber());
+
         User user = driver.getUser();
         if(user != null)
             convertedDriver.setUser(driver.getUser().getUsername());

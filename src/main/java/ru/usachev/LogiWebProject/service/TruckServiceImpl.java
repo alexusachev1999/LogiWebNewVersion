@@ -59,6 +59,7 @@ public class TruckServiceImpl implements TruckService{
     }
 
     @Override
+    @Transactional
     public Truck getTruckByRegistrationNumber(String registrationNumber) {
         return truckDAO.getTruckByRegistrationNumber(registrationNumber);
     }
