@@ -8,6 +8,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.usachev.LogiWebProject.converter.DriverConverter;
 import ru.usachev.LogiWebProject.converter.OrderConverter;
 import ru.usachev.LogiWebProject.converter.TruckConverter;
+import ru.usachev.LogiWebProject.converter.WaypointConverter;
 import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.dto.OrderDTO;
 import ru.usachev.LogiWebProject.dto.TruckDTO;
@@ -15,6 +16,7 @@ import ru.usachev.LogiWebProject.dto.WaypointDTO;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Order;
 import ru.usachev.LogiWebProject.entity.Truck;
+import ru.usachev.LogiWebProject.entity.Waypoint;
 import ru.usachev.LogiWebProject.service.*;
 
 import java.util.List;
@@ -46,6 +48,9 @@ public class AdminOrderController {
 
     @Autowired
     private TruckConverter truckConverter;
+
+    @Autowired
+    private WaypointConverter waypointConverter;
 
     private static OrderDTO orderDTOInMemory = new OrderDTO();
 
@@ -82,6 +87,7 @@ public class AdminOrderController {
     public String saveOrder(@RequestParam("waypoints") List<Integer> cargoIds){
 
         List<WaypointDTO> waypointsDTO = waypointService.getWaypointListByIds(cargoIds);
+
         orderDTOInMemory.setWaypoints(waypointsDTO);
 
         return "redirect:/admin/order/addTruck";
@@ -124,6 +130,15 @@ public class AdminOrderController {
         Order order = orderService.getOrderByNumber(orderDTOInMemory.getNumber());
         orderDTOInMemory.setId(order.getId());
 
+        List<Waypoint> waypoints = waypointConverter
+                .convertWaypointDTOListToWaypointList(orderDTOInMemory.getWaypoints());
+
+        for (Waypoint waypoint: waypoints){
+            waypoint.setOrder(orderConverter.convertOrderDTOToOrder(orderDTOInMemory));
+            waypointService.saveWaypointEntity(waypoint);
+        }
+
+
         return "redirect:/admin/order/addDrivers";
     }
 
@@ -158,8 +173,9 @@ public class AdminOrderController {
         orderDTOInMemory.setDrivers(driversDTO);
 
         orderService.saveOrder(orderDTOInMemory);
-//        orderService.saveDriversToOrder(drivers, orderDTOInMemory);
 
-        return "redirect:admin/orders";
+        orderDTOInMemory = new OrderDTO();
+
+        return "redirect:/admin/orders";
     }
 }

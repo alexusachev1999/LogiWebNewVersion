@@ -16,7 +16,6 @@
         <th>Список маршрутных точек</th>
         <th>Фура</th>
         <th>Список водителей</th>
-        <th>Обновить</th>
         <th>Удалить</th>
     </tr>
     <C:forEach var="order" items="${orders}">
@@ -38,16 +37,13 @@
             <td><c:if test="${order.status == false}">Невыполнен</c:if>
                 <c:if test="${order.status == true}">Выполнен</c:if></td>
             <td>
-                <ul>
                     <c:forEach var="waypoint" items="${order.waypoints}">
-                        <li>${waypoint.cargo} ${waypoint.cityLoading}</li>
-                        <li>${waypoint.cargo} ${waypoint.cityUnloading}</li>
+                        <h3>${waypoint.cargo} ${waypoint.cityLoading}</h3>
+                        <h3>${waypoint.cargo} ${waypoint.cityUnloading}</h3>
                     </c:forEach>
-                </ul>
             </td>
             <td>${order.truck}</td>
             <td><input type="button" value="Список водителей" onclick="window.location.href='${driverButton}'"/></td>
-            <td><input type="button" value="Обновить" onclick="window.location.href='${updateButton}'"/></td>
             <td><input type="button" value="Удалить" onclick="window.location.href='${deleteButton}'"/></td>
         </tr>
     </C:forEach>

@@ -35,32 +35,45 @@ public class OrderDAOImpl implements OrderDAO{
     @Override
     public void saveOrder(Order order) {
         Session session = sessionFactory.getCurrentSession();
+        Order orderFromDB;
 
-            List<Waypoint> waypoints = order.getWaypoints();
+        if (order.getId() != 0){
+            orderFromDB = session.get(Order.class, order.getId());
+            orderFromDB.setDrivers(order.getDrivers());
+            orderFromDB.setTruck(order.getTruck());
+            orderFromDB.setWaypoints(order.getWaypoints());
 
-            for (Waypoint waypoint: waypoints){
-                waypoint.setOrder(order);
-                session.saveOrUpdate(waypoint);
-            }
-
-            if (order.getTruck() != null) {
-                int truckId = order.getTruck().getId();
-                Truck truck = session.get(Truck.class, truckId);
-                truck.setOrder(order);
-                session.saveOrUpdate(truck);
-            }
-
-            if (order.getDrivers() != null) {
-                List<Driver> drivers = order.getDrivers();
-                Truck truck = order.getTruck();
-                for (Driver driver : drivers) {
-                    driver.setOrder(order);
-                    driver.setTruck(truck);
-                    session.update(driver);
-                }
-            }
+            session.saveOrUpdate(orderFromDB);
+        } else {
 
             session.saveOrUpdate(order);
+        }
+
+//
+//            List<Waypoint> waypoints = order.getWaypoints();
+//
+//            for (Waypoint waypoint: waypoints){
+//                waypoint.setOrder(order);
+//                session.saveOrUpdate(waypoint);
+//            }
+//
+//            if (order.getTruck() != null) {
+//                int truckId = order.getTruck().getId();
+//                Truck truck = session.get(Truck.class, truckId);
+//                truck.setOrder(order);
+//                session.saveOrUpdate(truck);
+//            }
+//
+//            if (order.getDrivers() != null) {
+//                List<Driver> drivers = order.getDrivers();
+//                Truck truck = order.getTruck();
+//                for (Driver driver : drivers) {
+//                    driver.setOrder(order);
+//                    driver.setTruck(truck);
+//                    session.update(driver);
+//                }
+//            }
+
     }
 
     @Override

@@ -19,4 +19,6 @@ public interface WaypointService {
     List getWaypointListByIds(List<Integer> ids);
 
     List<WaypointDTO> getAllFreeWaypoints();
+
+    void saveWaypointEntity(Waypoint waypoint);
 }

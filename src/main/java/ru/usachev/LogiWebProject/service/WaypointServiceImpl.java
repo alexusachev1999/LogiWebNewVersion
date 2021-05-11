@@ -71,4 +71,10 @@ public class WaypointServiceImpl implements WaypointService{
         List<WaypointDTO> waypointsDTO = getAllWaypoints();
         return waypointsDTO;
     }
+
+    @Override
+    @Transactional
+    public void saveWaypointEntity(Waypoint waypoint) {
+        waypointDAO.saveWaypointEntity(waypoint);
+    }
 }

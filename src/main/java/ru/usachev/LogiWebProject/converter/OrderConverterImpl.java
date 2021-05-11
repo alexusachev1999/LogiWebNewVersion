@@ -6,6 +6,9 @@ import ru.usachev.LogiWebProject.dto.OrderDTO;
 import ru.usachev.LogiWebProject.entity.Order;
 import ru.usachev.LogiWebProject.service.TruckService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class OrderConverterImpl implements OrderConverter{
 
@@ -49,12 +52,21 @@ public class OrderConverterImpl implements OrderConverter{
         if (order.getTruck() != null)
             orderDTO.setTruck(order.getTruck().getRegistrationNumber());
 
-        if (orderDTO.getDrivers() != null)
+        if (order.getDrivers() != null)
             orderDTO.setDrivers(driverConverter.convertDriverListToDriverDTOList(order.getDrivers()));
 
-        if (orderDTO.getWaypoints() != null)
+        if (order.getWaypoints() != null)
             orderDTO.setWaypoints(waypointConverter.convertWaypointListToWaypointDTOList(order.getWaypoints()));
 
         return orderDTO;
+    }
+
+    @Override
+    public List<OrderDTO> convertOrderListToOrderDTOList(List<Order> orders) {
+        List<OrderDTO> ordersDTO = new ArrayList<>();
+        for (Order order: orders){
+            ordersDTO.add(convertOrderToOrderDTO(order));
+        }
+        return ordersDTO;
     }
 }

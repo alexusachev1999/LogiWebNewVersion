@@ -42,13 +42,11 @@ public class Driver {
     @JoinColumn(name = "city_id")
     private City city;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,
-            CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "truck_id")
     private Truck truck;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,
-            CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "order_id")
     private Order order;
 

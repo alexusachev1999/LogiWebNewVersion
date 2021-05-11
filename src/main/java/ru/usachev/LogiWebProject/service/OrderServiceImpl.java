@@ -25,10 +25,8 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public List<OrderDTO> getAllOrders() {
         List<Order> orders = orderDAO.getAllOrders();
-        List<OrderDTO> convertedOrders = new ArrayList<>();
-        for (Order order: orders){
-            convertedOrders.add(orderConverter.convertOrderToOrderDTO(order));
-        }
+        List<OrderDTO> convertedOrders = orderConverter.convertOrderListToOrderDTOList(orders);
+
         return convertedOrders;
     }
 

@@ -18,4 +18,5 @@ public interface WaypointDAO {
 
     List getWaypointListByIds(List<Integer> ids);
 
+    void saveWaypointEntity(Waypoint waypoint);
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.usachev.LogiWebProject.dto.WaypointDTO;
 import ru.usachev.LogiWebProject.entity.Cargo;
 import ru.usachev.LogiWebProject.entity.City;
+import ru.usachev.LogiWebProject.entity.Order;
 import ru.usachev.LogiWebProject.entity.Waypoint;
 
 import javax.persistence.NoResultException;
@@ -51,6 +52,11 @@ public class WaypointDAOImpl implements WaypointDAO{
         query3.setParameter("cityUnloadingName", waypoint.getCityUnloading().getName());
         City cityUnloading = (City) query3.getSingleResult();
         cityUnloading.addWaypointToUnloadingWaypointList(waypoint);
+
+        Query query4 = session.createQuery("from Order where id=:orderId");
+        query4.setParameter("orderId", waypoint.getOrder().getId());
+        Order order= (Order) query4.getSingleResult();
+        order.setWaypoints((List<Waypoint>) waypoint);
 
         session.saveOrUpdate(waypoint);
     }
@@ -103,5 +109,16 @@ public class WaypointDAOImpl implements WaypointDAO{
         } catch (NoResultException e){
             return null;
         }
+    }
+
+    @Override
+    public void saveWaypointEntity(Waypoint waypoint) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Waypoint waypointFromDB = session.get(Waypoint.class, waypoint.getId());
+
+        waypointFromDB.setOrder(waypoint.getOrder());
+
+        session.saveOrUpdate(waypointFromDB);
     }
 }
