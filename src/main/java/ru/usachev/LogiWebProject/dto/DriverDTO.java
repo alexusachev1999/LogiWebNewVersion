@@ -1,32 +1,42 @@
 package ru.usachev.LogiWebProject.dto;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class DriverDTO {
     private int id;
-
 
     @Size(min = 2, max = 20, message = "Имя не меньше 2-х и не больше 20-ти символов")
     @NotBlank
     @Pattern(regexp = "[А-Я]{1}[а-я]*", message = "Используйте для имени следующий шаблон - \"Александр\"")
     private String name;
 
-    @Column(name = "surname")
     @Size (min = 2, max = 20, message = "Имя не меньше 2-х и не больше 20-ти символов")
     @NotBlank
     @Pattern(regexp = "[А-Я]{1}[а-я]*", message = "Используйте для имени следующий шаблон - \"Иванов\"")
     private String surname;
 
+    @NotBlank
+    @Pattern(regexp = "^\\+[7][-]\\d{3}-\\d{3}-\\d{2}-\\d{2}$",
+            message = "Используйте для номера следующий шаблон - +7-953-146-23-60")
     private String phoneNumber;
+
+
+    @Max(value = 176, message = "Водитель не может работать больше 176 часов в месяц")
+    @PositiveOrZero(message = "Рабочие часы не могут быть отрицательными")
     private int workedHours;
 
+    @NotNull
     private boolean workType;
+
+    @NotBlank
     private String status;
+
+    @NotBlank
     private String city;
+
     private String truck;
+
+    @NotBlank
     private String user;
 
     public DriverDTO() {

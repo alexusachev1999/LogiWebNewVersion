@@ -11,6 +11,9 @@
 <form:form action="saveDriver" modelAttribute="driver">
 
     <form:hidden path="id"/>
+    <form:hidden path="user"/>
+    <form:hidden path="status"/>
+    <form:hidden path="workType"/>
 
     <label>Имя</label>
     <form:input path="name"/>
@@ -24,28 +27,15 @@
     <form:input path="phoneNumber"/>
     <form:errors path="phoneNumber"/>
     <br/><br/>
-    <label>Статус</label>
-    <form:select path="status">
-        <form:option value="Отдых" label="Отдых"/>
-        <form:option value="В смене" label="В смене"/>
-        <form:option value="За рулем" label="За рулем"/>
-    </form:select>
-    <br/><br/>
     <label>Текущий город</label>
     <form:select path="city">
         <c:forEach var="city" items="${cityList}">
             <form:option value="${city.name}"/>
         </c:forEach>
     </form:select>
+    <form:errors path="city"/>
     <br/><br/>
 
-    <label>Пользователь для водителя</label>
-    <form:select path="user">
-        <c:forEach var="user" items="${freeUserForDrivers}">
-            <form:option value="${user.username}"/>
-        </c:forEach>
-    </form:select>
-    <br/><br/>
     <input type="submit" value="OK">
 
 </form:form>

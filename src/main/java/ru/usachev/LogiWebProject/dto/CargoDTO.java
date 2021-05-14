@@ -1,10 +1,21 @@
 package ru.usachev.LogiWebProject.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+
 public class CargoDTO {
     private int id;
+
+    @Positive(message = "Номер должен быть больше нуля")
     private int number;
+
+    @NotBlank(message = "Имя не может быть пустым")
     private String name;
+
+    @Positive(message = "Вес должен быть положительным")
     private int weight;
+
+    @NotBlank(message = "Статус не может быть пустым")
     private String status;
 
     public CargoDTO() {

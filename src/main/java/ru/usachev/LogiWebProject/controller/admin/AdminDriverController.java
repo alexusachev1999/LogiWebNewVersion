@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.usachev.LogiWebProject.converter.DriverConverter;
 import ru.usachev.LogiWebProject.dto.DriverDTO;
+import ru.usachev.LogiWebProject.dto.UserDTO;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.service.CityService;
 import ru.usachev.LogiWebProject.service.DriverService;
@@ -43,20 +44,39 @@ public class AdminDriverController {
         return "admin/all-drivers";
     }
 
-    @GetMapping("/addDriver")
-    public String addDriver(Model model){
-        DriverDTO driver = new DriverDTO();
-        model.addAttribute("driver", driver);
-        model.addAttribute("cityList", cityService.getCities());
-        model.addAttribute("freeUserForDrivers", userService.freeUserForDrivers());
-        return "admin/add-driver";
+    @GetMapping("/addUserForNewDriver")
+    public String addUserDriver(Model model){
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserRole("ROLE_DRIVER");
+        userDTO.setEnabled(true);
+        model.addAttribute("user", userDTO);
+        return "admin/add-driver-user";
+    }
+
+    @PostMapping("/saveUserForNewDriver")
+    public String saveUserForNewDriver(@Valid @ModelAttribute(name = "user") UserDTO userDTO,
+                                BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()){
+            userDTO.setUserRole("ROLE_DRIVER");
+            userDTO.setEnabled(true);
+            model.addAttribute("user", userDTO);
+            return "admin/add-driver-user";
+        } else {
+            userService.saveUser(userDTO);
+
+            DriverDTO driver = new DriverDTO();
+            driver.setUser(userDTO.getUsername());
+            driver.setStatus("Отдых");
+            model.addAttribute("driver", driver);
+            model.addAttribute("cityList", cityService.getCities());
+            return "admin/add-driver";
+        }
     }
 
     @PostMapping(value = "/saveDriver", produces = "text/plain;charset=UTF-8")
     public String saveDriver(@Valid @ModelAttribute("driver") DriverDTO driver, BindingResult bindingResult
     , Model model){
         if (bindingResult.hasErrors()){
-
             model.addAttribute("driver", driver);
             model.addAttribute("cityList", cityService.getCities());
             return "admin/add-driver";}

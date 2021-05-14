@@ -41,12 +41,36 @@ public class DriverDAOImpl implements DriverDAO{
     public void saveDriver(Driver driver) {
         Session session = sessionFactory.getCurrentSession();
 
+        if (driver.getId() == 0){
+
         Query query = session.createQuery("from City where name=:cityName ");
         query.setParameter("cityName", driver.getCity().getName());
 
         City city = (City) query.getSingleResult();
         city.addDriverToDriverList(driver);
         session.saveOrUpdate(driver);
+        } else {
+            Driver driverFromDB = session.get(Driver.class, driver.getId());
+            driverFromDB.setName(driver.getName());
+            driverFromDB.setSurname(driver.getSurname());
+            driverFromDB.setStatus(driver.getStatus());
+            driverFromDB.setWorkType(driver.isWorkType());
+
+            if (driver.getTruck() != null)
+                driverFromDB.setTruck(driver.getTruck());
+
+            if (driver.getOrder() != null)
+            driverFromDB.setOrder(driver.getOrder());
+
+            driverFromDB.setCity(driver.getCity());
+
+            driverFromDB.setPhoneNumber(driver.getPhoneNumber());
+
+            driverFromDB.setUser(driver.getUser());
+
+            session.saveOrUpdate(driverFromDB);
+        }
+
     }
 
     @Override

@@ -52,7 +52,7 @@
         </tr>
     </C:forEach>
 </table>
-<input type="button" value="Добавить водителя" onclick="window.location.href='addDriver'">
+<input type="button" value="Добавить водителя" onclick="window.location.href='addUserForNewDriver'">
 <br/><br/>
 
 <input type="button" value="Вернуться в главное меню" onclick="window.location.href='/admin'">
