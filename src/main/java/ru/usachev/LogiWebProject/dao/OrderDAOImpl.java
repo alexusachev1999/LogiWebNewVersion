@@ -131,8 +131,11 @@ public class OrderDAOImpl implements OrderDAO{
 
         if (drivers != null) {
             Driver driver = (Driver) drivers.get(0);
-            Order order = driver.getTruck().getOrder();
-            return order;
+            if (driver.getTruck() != null) {
+                Order order = driver.getTruck().getOrder();
+                return order;
+            } else
+                return null;
         } else
             return null;
     }

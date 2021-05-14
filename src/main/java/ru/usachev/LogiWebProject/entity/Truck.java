@@ -6,7 +6,7 @@ import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Entity
-@Table(name = "truck")
+@Table(name = "trucks")
 public class Truck {
 
     @Id

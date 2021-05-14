@@ -68,11 +68,11 @@ public class MainController {
 
 		String error = "";
 		if (exception instanceof BadCredentialsException) {
-			error = "Invalid username and password!";
+			error = "Неправильный логин или пароль!";
 		} else if (exception instanceof LockedException) {
 			error = exception.getMessage();
 		} else {
-			error = "Invalid username and password!";
+			error = "Неправильный логин или пароль!";
 		}
 
 		return error;

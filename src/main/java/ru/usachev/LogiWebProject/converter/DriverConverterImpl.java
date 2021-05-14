@@ -28,8 +28,6 @@ public class DriverConverterImpl implements DriverConverter{
     @Autowired
     private TruckService truckService;
 
-    @Autowired
-    private OrderConverter orderConverter;
 
 
     @Override
@@ -41,16 +39,19 @@ public class DriverConverterImpl implements DriverConverter{
         convertedDriver.setSurname(driver.getSurname());
         convertedDriver.setPhoneNumber(driver.getPhoneNumber());
         convertedDriver.setStatus(driver.getStatus());
+        convertedDriver.setWorkedHours(driver.getWorkedHours());
+        convertedDriver.setWorkType(driver.isWorkType());
 
 
-        Truck truck = truckService.getTruckByDriverId(driver.getId());
+        if (driver.getTruck() != null){
+        Truck truck = truckService.getTruckByRegistrationNumber(driver.getTruck());
         Order order = truck.getOrder();
         convertedDriver.setOrder(order);
-        convertedDriver.setTruck(order.getTruck());
+        convertedDriver.setTruck(truck);
+        }
 
 
         convertedDriver.setCity(cityService.getCityByName(driver.getCity()));
-        convertedDriver.setWorkedHours(0);
         convertedDriver.setUser(userService.getUserByUsername(driver.getUser()));
         return convertedDriver;
     }
@@ -65,6 +66,8 @@ public class DriverConverterImpl implements DriverConverter{
         convertedDriver.setPhoneNumber(driver.getPhoneNumber());
         convertedDriver.setStatus(driver.getStatus());
         convertedDriver.setCity(driver.getCity().getName());
+        convertedDriver.setWorkedHours(driver.getWorkedHours());
+        convertedDriver.setWorkType(driver.isWorkType());
 
         if (driver.getTruck() != null)
             convertedDriver.setTruck(driver.getTruck().getRegistrationNumber());

@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 import java.util.Map;
 
 @Entity
-@Table(name = "driver")
+@Table(name = "drivers")
 public class Driver {
 
     @Id
@@ -33,6 +33,9 @@ public class Driver {
 
     @Column(name = "worked_hours")
     private int workedHours;
+
+    @Column(name = "work_type")
+    private boolean workType;
 
     @Column(name = "status")
     private String status;
@@ -135,6 +138,14 @@ public class Driver {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isWorkType() {
+        return this.workType;
+    }
+
+    public void setWorkType(boolean workType) {
+        this.workType = workType;
     }
 }
 

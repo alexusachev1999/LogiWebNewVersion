@@ -32,7 +32,7 @@
             <td>${truck.registrationNumber}</td>
             <td>${truck.driverShiftDuration}</td>
             <td>${truck.capacity}</td>
-            <td>${truck.city.name}</td>
+            <td>${truck.city}</td>
             <td><c:if test="${truck.state == false}">Неисправна</c:if>
                 <c:if test="${truck.state == true}">Исправна</c:if></td>
             <td><input type="button" value="Обновить" onclick="window.location.href='${updateButton}'"/></td>
@@ -41,5 +41,8 @@
     </C:forEach>
 </table>
 <input type="button" value="Добавить фуру" onclick="window.location.href='addTruck'">
+<br/><br/>
+
+<input type="button" value="Вернуться в главное меню" onclick="window.location.href='/admin'">
 </body>
 </html>

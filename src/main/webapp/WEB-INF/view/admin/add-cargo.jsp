@@ -24,11 +24,7 @@
     <form:input path="weight"/>
     <form:errors path="weight"/>
     <br/><br/>
-<%--    <form:select path="status">--%>
-<%--        <form:option value="Подготовлен" label="Подготовлен"/>--%>
-<%--        <form:option value="Отгружен" label="Отгружен"/>--%>
-<%--        <form:option value="Доставлен" label="Доставлен"/>--%>
-<%--    </form:select>--%>
+
     <input type="submit" value="OK">
 </form:form>
 </body>

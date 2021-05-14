@@ -28,10 +28,6 @@
             <c:param name="orderId" value="${order.id}"/>
         </c:url>
 
-        <c:url var="driverButton" value="/admin/order/drivers">
-            <c:param name="orderId" value="${order.id}"/>
-        </c:url>
-
         <tr>
             <td>${order.number}</td>
             <td><c:if test="${order.status == false}">Невыполнен</c:if>
@@ -43,11 +39,18 @@
                     </c:forEach>
             </td>
             <td>${order.truck}</td>
-            <td><input type="button" value="Список водителей" onclick="window.location.href='${driverButton}'"/></td>
+            <td>
+                <c:forEach var="driver" items="${order.drivers}">
+                    <h3>${driver.name} ${driver.surname}</h3>
+                </c:forEach>
+            </td>
             <td><input type="button" value="Удалить" onclick="window.location.href='${deleteButton}'"/></td>
         </tr>
     </C:forEach>
 </table>
 <input type="button" value="Добавить заказ" onclick="window.location.href='addOrder'">
+<br/><br/>
+
+<input type="button" value="Вернуться в главное меню" onclick="window.location.href='/admin'">
 </body>
 </html>

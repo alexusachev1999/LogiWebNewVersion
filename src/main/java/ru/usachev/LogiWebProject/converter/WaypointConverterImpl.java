@@ -39,6 +39,7 @@ public class WaypointConverterImpl implements WaypointConverter{
         waypointDTO.setCityLoading(waypoint.getCityLoading().getName());
         waypointDTO.setCityUnloading(waypoint.getCityUnloading().getName());
         waypointDTO.setCargo(waypoint.getCargo().getName());
+        waypointDTO.setCargoStatus(waypoint.getCargo().getStatus());
 
         return waypointDTO;
     }

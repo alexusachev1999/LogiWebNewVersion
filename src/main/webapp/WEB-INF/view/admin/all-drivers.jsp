@@ -32,19 +32,19 @@
             <c:param name="driverId" value="${driver.id}"/>
         </c:url>
         <tr>
-            <td>${driver.user.username}</td>
+            <td>${driver.user}</td>
             <td>${driver.name}</td>
             <td>${driver.surname}</td>
             <td>${driver.phoneNumber}</td>
             <td>${driver.workedHours}</td>
             <td>${driver.status}</td>
-            <td>${driver.city.name}</td>
+            <td>${driver.city}</td>
             <td>
                 <c:if test="${driver.truck == null}">
                     <c:out value="Нет фуры"/>
                 </c:if>
-                <c:if test="${driver.truck != null}">
-                    <c:out value="${driver.truck.registrationNumber}"/>
+                <c:if test="${!driver.truck.equals(null)}">
+                    <c:out value="${driver.truck}"/>
                 </c:if>
             </td>
             <td><input type="button" value="Обновить" onclick="window.location.href='${updateButton}'"/></td>
@@ -53,5 +53,8 @@
     </C:forEach>
 </table>
 <input type="button" value="Добавить водителя" onclick="window.location.href='addDriver'">
+<br/><br/>
+
+<input type="button" value="Вернуться в главное меню" onclick="window.location.href='/admin'">
 </body>
 </html>

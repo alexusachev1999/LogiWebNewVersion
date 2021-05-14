@@ -87,4 +87,10 @@ public class DriverServiceImpl implements DriverService{
     public void saveEntityDriver(Driver driver) {
         driverDAO.saveEntityDriver(driver);
     }
+
+    @Override
+    @Transactional
+    public void updateDriver(DriverDTO driver) {
+        driverDAO.updateDriver(driver);
+    }
 }

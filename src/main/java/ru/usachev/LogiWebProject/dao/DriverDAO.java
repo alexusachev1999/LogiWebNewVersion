@@ -1,5 +1,6 @@
 package ru.usachev.LogiWebProject.dao;
 
+import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.entity.Driver;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface DriverDAO {
     List<Driver> getDriverListByIds(List<Integer> driverIds);
 
     void saveEntityDriver(Driver driver);
+
+    void updateDriver(DriverDTO driver);
 }

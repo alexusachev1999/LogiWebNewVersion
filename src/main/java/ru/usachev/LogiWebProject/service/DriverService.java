@@ -26,4 +26,6 @@ public interface DriverService {
     List<Driver> getDriverListByIds(List<Integer> driverIds);
 
     void saveEntityDriver(Driver driver);
+
+    void updateDriver(DriverDTO driver);
 }

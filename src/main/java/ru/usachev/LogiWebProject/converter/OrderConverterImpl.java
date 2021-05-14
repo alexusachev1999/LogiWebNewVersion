@@ -43,6 +43,10 @@ public class OrderConverterImpl implements OrderConverter{
 
     @Override
     public OrderDTO convertOrderToOrderDTO(Order order) {
+
+        if (order == null)
+            return null;
+
         OrderDTO orderDTO = new OrderDTO();
 
         orderDTO.setId(order.getId());

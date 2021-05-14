@@ -14,4 +14,6 @@ public interface CargoDAO {
     public Cargo getCargo(int id);
 
     Cargo getCargoByName(String cargoName);
+
+    Cargo getCargoByWaypointId(int waypointId);
 }

@@ -20,7 +20,7 @@
     <form:input path="driverShiftDuration"/>
     <form:errors path="driverShiftDuration"/>
     <br/><br/>
-    <label>Вместимость</label>
+    <label>Вместимость (т.) </label>
     <form:input path="capacity"/>
     <form:errors path="capacity"/>
     <br/><br/>

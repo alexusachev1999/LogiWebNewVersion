@@ -6,11 +6,11 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Тег META, атрибут charset</title>
+	<title>Грузоперевозки</title>
 </head>
 <body>
-	<h1>Title : ${title}</h1>
-	<h1>Message : ${message}</h1>
+	<h1>${title}</h1>
+	<h1>${message}</h1>
 
 	<input type="button" value="Для администраторов" onclick="window.location.href = '/admin/'">
 	<input type="button" value="Для водителей" onclick="window.location.href = '/driver/'">

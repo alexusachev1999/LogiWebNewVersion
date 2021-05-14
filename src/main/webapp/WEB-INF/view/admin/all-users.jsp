@@ -44,5 +44,8 @@
     </C:forEach>
 </table>
 <input type="button" value="Добавить пользователя" onclick="window.location.href='addUser'">
+<br/><br/>
+
+<input type="button" value="Вернуться в главное меню" onclick="window.location.href='/admin'">
 </body>
 </html>

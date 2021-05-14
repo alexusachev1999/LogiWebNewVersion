@@ -38,5 +38,8 @@
     </C:forEach>
 </table>
 <input type="button" value="Добавить груз" onclick="window.location.href='addCargo'">
+<br/><br/>
+
+<input type="button" value="Вернуться в главное меню" onclick="window.location.href='/admin'">
 </body>
 </html>

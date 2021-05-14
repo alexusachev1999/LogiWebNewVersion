@@ -4,6 +4,7 @@ public class WaypointDTO {
 
     private int id;
     private String cargo;
+    private String cargoStatus;
     private String cityLoading;
     private String cityUnloading;
 
@@ -40,6 +41,14 @@ public class WaypointDTO {
 
     public void setCityUnloading(String cityUnloading) {
         this.cityUnloading = cityUnloading;
+    }
+
+    public String getCargoStatus() {
+        return cargoStatus;
+    }
+
+    public void setCargoStatus(String cargoStatus) {
+        this.cargoStatus = cargoStatus;
     }
 
     @Override

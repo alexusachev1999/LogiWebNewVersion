@@ -66,4 +66,16 @@ public class CargoDAOImpl implements CargoDAO{
             return null;
         }
     }
+
+    @Override
+    public Cargo getCargoByWaypointId(int waypointId) {
+        Session session = sessionFactory.getCurrentSession();
+        Waypoint waypoint = session.get(Waypoint.class, waypointId);
+
+        try {
+            return waypoint.getCargo();
+        } catch (NoResultException e){
+            return null;
+        }
+    }
 }

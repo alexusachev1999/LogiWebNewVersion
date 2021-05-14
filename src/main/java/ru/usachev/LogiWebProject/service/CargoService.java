@@ -16,4 +16,7 @@ public interface CargoService {
     public Cargo getCargo(int id);
 
     Cargo getCargoByName(String cargoName);
+
+    CargoDTO getCargoByWaypointId(int waypointId);
+
 }

@@ -49,4 +49,11 @@ public class CargoServiceImpl implements CargoService{
     public Cargo getCargoByName(String cargoName) {
         return cargoDAO.getCargoByName(cargoName);
     }
+
+    @Override
+    @Transactional
+    public CargoDTO getCargoByWaypointId(int waypointId) {
+        Cargo cargo = cargoDAO.getCargoByWaypointId(waypointId);
+        return cargoConverter.convertCargoToCargoDTO(cargo);
+    }
 }

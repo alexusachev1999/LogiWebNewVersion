@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.usachev.LogiWebProject.businessCalculating.BusinessCalculating;
+import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.entity.City;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Order;
@@ -144,5 +145,17 @@ public class DriverDAOImpl implements DriverDAO{
         Session session = sessionFactory.getCurrentSession();
 
         session.saveOrUpdate(driver);
+    }
+
+    @Override
+    public void updateDriver(DriverDTO driver) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Driver driverFromDB = session.get(Driver.class, driver.getId());
+
+        driverFromDB.setStatus(driver.getStatus());
+        driverFromDB.setWorkType(driver.isWorkType());
+
+        session.update(driverFromDB);
     }
 }

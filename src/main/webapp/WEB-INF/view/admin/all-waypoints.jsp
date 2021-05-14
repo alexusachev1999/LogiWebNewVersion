@@ -37,5 +37,8 @@
     </C:forEach>
 </table>
 <input type="button" value="Добавить точку" onclick="window.location.href='addWaypoint'">
+<br/><br/>
+
+<input type="button" value="Вернуться в главное меню" onclick="window.location.href='/admin'">
 </body>
 </html>

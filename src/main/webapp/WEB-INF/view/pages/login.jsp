@@ -1,19 +1,20 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@page session="true"%>
-<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=utf-8" %>
+<!doctype html>
 <html>
 <head>
-<title>Login Page</title>
+<title>Добро пожаловать</title>
 </head>
 
 
 <body onload='document.loginForm.username.focus();'>
 
-	<h1>Spring Security Login Form (Database + Hibernate Authentication)</h1>
+	<h1>Грузоперевозки "Logi Web"</h1>
 
 	<div id="login-box">
 
-		<h3>Login with Username and Password</h3>
+		<h3>Введите логин и пароль</h3>
 
 		<c:if test="${not empty error}">
 			<div class="error">${error}</div>
@@ -27,16 +28,16 @@
 
 			<table>
 				<tr>
-					<td>User:</td>
+					<td>Логин:</td>
 					<td><input type='text' name='username'></td>
 				</tr>
 				<tr>
-					<td>Password:</td>
+					<td>Пароль:</td>
 					<td><input type='password' name='password' /></td>
 				</tr>
 				<tr>
 					<td colspan='2'><input name="submit" type="submit"
-						value="submit" /></td>
+						value="Войти" /></td>
 				</tr>
 			</table>
 

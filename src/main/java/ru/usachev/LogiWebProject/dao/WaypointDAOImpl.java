@@ -53,10 +53,12 @@ public class WaypointDAOImpl implements WaypointDAO{
         City cityUnloading = (City) query3.getSingleResult();
         cityUnloading.addWaypointToUnloadingWaypointList(waypoint);
 
-        Query query4 = session.createQuery("from Order where id=:orderId");
-        query4.setParameter("orderId", waypoint.getOrder().getId());
-        Order order= (Order) query4.getSingleResult();
-        order.setWaypoints((List<Waypoint>) waypoint);
+        if (waypoint.getOrder() != null) {
+            Query query4 = session.createQuery("from Order where id=:orderId");
+            query4.setParameter("orderId", waypoint.getOrder().getId());
+            Order order = (Order) query4.getSingleResult();
+            order.setWaypoints((List<Waypoint>) waypoint);
+        }
 
         session.saveOrUpdate(waypoint);
     }
