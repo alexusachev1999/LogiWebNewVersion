@@ -1,5 +1,6 @@
 package ru.usachev.LogiWebProject.service;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.usachev.LogiWebProject.converter.DriverConverter;
@@ -12,6 +13,9 @@ import java.util.List;
 
 @Service
 public class DriverServiceImpl implements DriverService{
+
+    static Logger log = Logger.getLogger(DriverServiceImpl.class.getName());
+
     @Autowired
     private DriverDAO driverDAO;
 
@@ -31,6 +35,7 @@ public class DriverServiceImpl implements DriverService{
     public void saveDriver(DriverDTO driver) {
         Driver convertedDriver = driverConverter.convertDriverDTOToDriver(driver);
         driverDAO.saveDriver(convertedDriver);
+        log.info("Save new driver" + driver.getId());
     }
 
     @Override
@@ -92,5 +97,11 @@ public class DriverServiceImpl implements DriverService{
     @Transactional
     public void updateDriver(DriverDTO driver) {
         driverDAO.updateDriver(driver);
+    }
+
+    @Override
+    @Transactional
+    public Driver getDriverByPhoneNumber(String phoneNumber) {
+        return driverDAO.getDriverByPhoneNumber(phoneNumber);
     }
 }

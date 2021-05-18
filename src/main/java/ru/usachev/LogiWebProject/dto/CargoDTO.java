@@ -1,5 +1,7 @@
 package ru.usachev.LogiWebProject.dto;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 

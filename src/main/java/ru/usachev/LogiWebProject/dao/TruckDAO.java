@@ -1,5 +1,6 @@
 package ru.usachev.LogiWebProject.dao;
 
+import ru.usachev.LogiWebProject.dto.WaypointDTO;
 import ru.usachev.LogiWebProject.entity.Truck;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface TruckDAO {
 
     public void saveTruck(Truck truck);
 
-    public List<Truck> getValidTrucksForOrder(int orderId);
+    public List<Truck> getValidTrucksForOrder(List<WaypointDTO> waypoints);
 
     Truck getTruckByRegistrationNumber(String registrationNumber);
 

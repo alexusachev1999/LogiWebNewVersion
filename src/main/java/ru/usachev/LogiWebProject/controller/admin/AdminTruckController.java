@@ -11,6 +11,7 @@ import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Truck;
 import ru.usachev.LogiWebProject.service.CityService;
 import ru.usachev.LogiWebProject.service.TruckService;
+import ru.usachev.LogiWebProject.validation.TruckValidator;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -28,6 +29,9 @@ public class AdminTruckController {
     @Autowired
     private TruckConverter truckConverter;
 
+    @Autowired
+    private TruckValidator truckValidator;
+
     @RequestMapping("/trucks")
     private String getAllTrucks(Model model){
         List<TruckDTO> trucks = truckService.getAllTrucks();
@@ -40,13 +44,18 @@ public class AdminTruckController {
         TruckDTO truck = new TruckDTO();
         model.addAttribute("truck", truck);
         model.addAttribute("cityList", cityService.getCities());
+        model.addAttribute("uniqueError", "no error");
         return "admin/add-new-truck";
     }
 
     @PostMapping("/saveTruck")
     private String saveTruck(@Valid @ModelAttribute("truck") TruckDTO truck, BindingResult bindingResult
             , Model model){
-        if (bindingResult.hasErrors()){
+        boolean isValidTruck = truckValidator.validTruck(truck);
+        if (bindingResult.hasErrors() || !isValidTruck){
+            if (!isValidTruck)
+                model.addAttribute("uniqueError", "Фура с таким номером " +
+                        "уже существует!");
             model.addAttribute("cityList", cityService.getCities());
             return "admin/add-new-truck";}
         else {

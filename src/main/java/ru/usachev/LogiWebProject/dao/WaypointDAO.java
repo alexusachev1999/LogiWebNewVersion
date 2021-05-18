@@ -19,4 +19,8 @@ public interface WaypointDAO {
     List getWaypointListByIds(List<Integer> ids);
 
     void saveWaypointEntity(Waypoint waypoint);
+
+    List<Waypoint> getAllFreeWaypoints();
+
+    void deleteWaypointByCargoId(int id);
 }

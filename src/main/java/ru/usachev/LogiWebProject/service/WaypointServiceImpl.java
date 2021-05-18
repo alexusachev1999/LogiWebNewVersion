@@ -68,13 +68,19 @@ public class WaypointServiceImpl implements WaypointService{
     @Override
     @Transactional
     public List<WaypointDTO> getAllFreeWaypoints() {
-        List<WaypointDTO> waypointsDTO = getAllWaypoints();
-        return waypointsDTO;
+        List<Waypoint> freeWaypoints = waypointDAO.getAllFreeWaypoints();
+        return waypointConverter.convertWaypointListToWaypointDTOList(freeWaypoints);
     }
 
     @Override
     @Transactional
     public void saveWaypointEntity(Waypoint waypoint) {
         waypointDAO.saveWaypointEntity(waypoint);
+    }
+
+    @Override
+    @Transactional
+    public void deleteWaypointByCargoId(int id) {
+        waypointDAO.deleteWaypointByCargoId(id);
     }
 }

@@ -1,5 +1,7 @@
 package ru.usachev.LogiWebProject.controller;
 
+import org.apache.log4j.BasicConfigurator;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -8,12 +10,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.logging.Logger;
 
 @Controller
 public class MainController {
@@ -53,7 +55,7 @@ public class MainController {
 		}
 
 		if (logout != null) {
-			model.addObject("msg", "You've been logged out successfully.");
+			model.addObject("msg", "Вы успешно вышли!");
 		}
 		model.setViewName("pages/login");
 
@@ -96,7 +98,14 @@ public class MainController {
 
 		model.setViewName("pages/403");
 		return model;
+	}
 
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(Exception.class)
+	public ModelAndView redirectToErrorPage() {
+		ModelAndView mav = new ModelAndView("pages/404");
+		mav.addObject("message", "error on server");
+		return mav;
 	}
 
 }

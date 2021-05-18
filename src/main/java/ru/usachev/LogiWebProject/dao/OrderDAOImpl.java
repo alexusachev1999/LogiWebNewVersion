@@ -102,6 +102,7 @@ public class OrderDAOImpl implements OrderDAO{
         List<Driver> drivers = order.getDrivers();
         for (Driver driver: drivers){
             driver.setOrder(null);
+            driver.setTruck(null);
         }
         session.delete(order);
     }

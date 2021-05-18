@@ -74,7 +74,6 @@ public class AdminOrderController {
         orderDTOInMemory.setStatus(false);
         orderDTOInMemory.setNumber(randomInt);
 
-        // Need to return only free waypoints
         List<WaypointDTO> waypoints = waypointService.getAllFreeWaypoints();
 
         orderDTO.setWaypoints(waypoints);
@@ -110,8 +109,7 @@ public class AdminOrderController {
 
     @GetMapping("/order/addTruck")
     public String addOrderTruck(Model model){
-//        List<TruckDTO> trucks = truckService.getValidTrucksForOrder(order.getId());
-        List<TruckDTO> trucks = truckService.getAllTrucks();
+        List<TruckDTO> trucks = truckService.getValidTrucksForOrder(orderDTOInMemory.getWaypoints());
 
         model.addAttribute("order", orderDTOInMemory);
         model.addAttribute("trucks", trucks);
@@ -144,9 +142,7 @@ public class AdminOrderController {
 
     @GetMapping("/order/addDrivers")
     public String addDriversToOrder(Model model){
-//        List<DriverDTO> drivers = driverService.getValidDriversByOrderId(order.getId());
-
-        List<DriverDTO> drivers = driverService.getAllDrivers();
+        List<DriverDTO> drivers = driverService.getValidDriversByOrderId(orderDTOInMemory.getId());
 
         model.addAttribute("order", orderDTOInMemory);
         model.addAttribute("drivers", drivers);

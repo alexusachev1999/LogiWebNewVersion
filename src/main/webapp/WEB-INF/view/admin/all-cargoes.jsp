@@ -8,16 +8,22 @@
     <meta charset="UTF-8">
     <title>Список грузов</title>
 </head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <body>
-<table>
+<table class="table table-bordered table-dark">
+    <thead>
     <tr>
-        <th>Номер</th>
-        <th>Наименование</th>
-        <th>Масса</th>
-        <th>Статус</th>
-        <th>Обновить</th>
-        <th>Удалить</th>
+        <th scope="col">Номер</th>
+        <th scope="col">Наименование</th>
+        <th scope="col">Масса</th>
+        <th scope="col">Статус</th>
+        <th scope="col">Обновить</th>
+        <th scope="col">Удалить</th>
     </tr>
+    </thead>
+    <tbody>
     <C:forEach var="cargo" items="${cargoes}">
 
         <c:url var="updateButton" value="/admin/updateCargo">
@@ -36,6 +42,7 @@
             <td><input type="button" value="Удалить" onclick="window.location.href='${deleteButton}'"/></td>
         </tr>
     </C:forEach>
+    </tbody>
 </table>
 <input type="button" value="Добавить груз" onclick="window.location.href='addCargo'">
 <br/><br/>

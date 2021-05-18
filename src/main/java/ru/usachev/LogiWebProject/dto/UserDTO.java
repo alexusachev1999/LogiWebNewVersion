@@ -1,13 +1,18 @@
 package ru.usachev.LogiWebProject.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class UserDTO {
 
+    @NotBlank(message = "Логин не должен быть пустым")
     private String username;
 
+    @NotBlank(message = "Пароль не должен быть пустым")
     private String password;
 
     private boolean enabled;
 
+    @NotBlank
     private String userRole;
 
     public UserDTO() {

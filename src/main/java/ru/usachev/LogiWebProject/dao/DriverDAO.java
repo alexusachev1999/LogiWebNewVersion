@@ -27,4 +27,6 @@ public interface DriverDAO {
     void saveEntityDriver(Driver driver);
 
     void updateDriver(DriverDTO driver);
+
+    Driver getDriverByPhoneNumber(String phoneNumber);
 }

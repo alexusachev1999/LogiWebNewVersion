@@ -1,11 +1,27 @@
 package ru.usachev.LogiWebProject.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
+
 public class TruckDTO {
     private int id;
+
+    @NotBlank
+    @Pattern(regexp = "[А-Я]{2}\\d{5}", message = "Используйте следующий шаблон \"АБ12345\"")
     private String registrationNumber;
+
+    @Positive
     private int driverShiftDuration;
+
+    @Positive
     private int capacity;
+
+    @NotBlank
     private String city;
+
+    @NotNull
     private boolean state;
 
     public TruckDTO() {

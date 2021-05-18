@@ -1,6 +1,7 @@
 package ru.usachev.LogiWebProject.service;
 
 import ru.usachev.LogiWebProject.dto.TruckDTO;
+import ru.usachev.LogiWebProject.dto.WaypointDTO;
 import ru.usachev.LogiWebProject.entity.Truck;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface TruckService {
 
     public void saveTruck(TruckDTO truck);
 
-    public List<TruckDTO> getValidTrucksForOrder(int orderId);
+    public List<TruckDTO> getValidTrucksForOrder(List<WaypointDTO> waypoints);
 
     Truck getTruckByRegistrationNumber(String registrationNumber);
 

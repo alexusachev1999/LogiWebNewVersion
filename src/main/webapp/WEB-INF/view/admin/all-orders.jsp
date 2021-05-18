@@ -8,16 +8,22 @@
     <meta charset="UTF-8">
     <title>Список заказов</title>
 </head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <body>
-<table>
+<table class="table table-bordered table-dark">
+    <thead>
     <tr>
-        <th>Номер заказа</th>
-        <th>Статус</th>
-        <th>Список маршрутных точек</th>
-        <th>Фура</th>
-        <th>Список водителей</th>
-        <th>Удалить</th>
+        <th scope="col">Номер заказа</th>
+        <th scope="col">Статус</th>
+        <th scope="col">Список маршрутных точек</th>
+        <th scope="col">Фура</th>
+        <th scope="col">Список водителей</th>
+        <th scope="col">Удалить</th>
     </tr>
+    </thead>
+    <tbody>
     <C:forEach var="order" items="${orders}">
 
         <c:url var="updateButton" value="/admin/updateOrder">
@@ -33,20 +39,26 @@
             <td><c:if test="${order.status == false}">Невыполнен</c:if>
                 <c:if test="${order.status == true}">Выполнен</c:if></td>
             <td>
+                <ol>
                     <c:forEach var="waypoint" items="${order.waypoints}">
-                        <h3>${waypoint.cargo} ${waypoint.cityLoading}</h3>
-                        <h3>${waypoint.cargo} ${waypoint.cityUnloading}</h3>
+                        <li>${waypoint.cargo} ${waypoint.cityLoading}</li>
+                        <li>${waypoint.cargo} ${waypoint.cityUnloading}</li>
                     </c:forEach>
+                </ol>
             </td>
             <td>${order.truck}</td>
             <td>
-                <c:forEach var="driver" items="${order.drivers}">
-                    <h3>${driver.name} ${driver.surname}</h3>
-                </c:forEach>
+                <ol>
+                    <c:forEach var="driver" items="${order.drivers}">
+                        <li>${driver.name} ${driver.surname}</li>
+                    </c:forEach>
+                </ol>
+
             </td>
             <td><input type="button" value="Удалить" onclick="window.location.href='${deleteButton}'"/></td>
         </tr>
     </C:forEach>
+    </tbody>
 </table>
 <input type="button" value="Добавить заказ" onclick="window.location.href='addOrder'">
 <br/><br/>

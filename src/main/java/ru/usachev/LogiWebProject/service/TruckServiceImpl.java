@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.usachev.LogiWebProject.converter.TruckConverter;
 import ru.usachev.LogiWebProject.dao.TruckDAO;
 import ru.usachev.LogiWebProject.dto.TruckDTO;
+import ru.usachev.LogiWebProject.dto.WaypointDTO;
 import ru.usachev.LogiWebProject.entity.Truck;
 
 import javax.transaction.Transactional;
@@ -49,8 +50,8 @@ public class TruckServiceImpl implements TruckService{
 
     @Override
     @Transactional
-    public List<TruckDTO> getValidTrucksForOrder(int orderId) {
-        List<Truck> trucks = truckDAO.getValidTrucksForOrder(orderId);
+    public List<TruckDTO> getValidTrucksForOrder(List<WaypointDTO> waypoints) {
+        List<Truck> trucks = truckDAO.getValidTrucksForOrder(waypoints);
         List<TruckDTO> convertedTrucks = new ArrayList<>();
         for (Truck truck: trucks){
             convertedTrucks.add(truckConverter.convertTruckToTruckDTO(truck));

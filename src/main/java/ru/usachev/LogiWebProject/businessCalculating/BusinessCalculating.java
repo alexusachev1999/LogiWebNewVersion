@@ -1,12 +1,18 @@
 package ru.usachev.LogiWebProject.businessCalculating;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Schedules;
 import org.springframework.stereotype.Component;
+import ru.usachev.LogiWebProject.converter.WaypointConverter;
+import ru.usachev.LogiWebProject.dao.DistanceDAO;
+import ru.usachev.LogiWebProject.dto.WaypointDTO;
+import ru.usachev.LogiWebProject.entity.City;
+import ru.usachev.LogiWebProject.entity.Distance;
 import ru.usachev.LogiWebProject.entity.Order;
 import ru.usachev.LogiWebProject.entity.Waypoint;
 import ru.usachev.LogiWebProject.service.OrderService;
 
-import java.util.List;
+import java.util.*;
 
 @Component
 public class BusinessCalculating {
@@ -14,43 +20,112 @@ public class BusinessCalculating {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private WaypointConverter waypointConverter;
+
+    @Autowired
+    private DistanceDAO distanceDAO;
+
     private static final int driverWorkedHoursLimit = 176;
 
-    public int calculateNeedingCapacityByOrderId(int orderId) {
-        int capacity = 0;
-        Order order = orderService.getOrder(orderId);
-        List<Waypoint> waypoints = order.getWaypoints();
+    private static final double approximateSpeedOfTruckInKmPerHour = 80;
 
-        //Now it's without unloading on way
-        for (Waypoint waypoint: waypoints){
-            capacity += waypoint.getCargo().getWeight();
+    public int calculateNeedingCapacityByWaypointList(List<WaypointDTO> waypointsDTO) {
+        int capacity = 0;
+
+        List<Waypoint> waypoints = waypointConverter.convertWaypointDTOListToWaypointList(waypointsDTO);
+
+        List<WaypointBusiness> waypointBusinessList = convertWaypointListIntoWaypointBusinessList(waypoints);
+
+        for (WaypointBusiness waypoint: waypointBusinessList){
+            if (waypoint.isLoading())
+                capacity += waypoint.getCargo().getWeight();
         }
 
         // Cast capacity from kg to t
-        Double capacityDouble = ((double) capacity)/1000;
+        double capacityDouble = ((double) capacity)/1000;
         capacity = (int) Math.round(capacityDouble);
 
         return capacity;
     }
 
+
+    /* Max number of hours which driver may has before execution the order */
     public int calculateDriverWorkedHoursLimitForOrderByOrderId(int orderId) {
+        return driverWorkedHoursLimit - calculateApproximateTimeOfOrderExecution(orderId);
+    }
+
+    public int calculateApproximateTimeOfOrderExecution(int orderId){
+        int distanceOfOrderInKm = calculateDistanceOfOrderByOrderId(orderId);
+
+        double ApproximateTimeInHours = distanceOfOrderInKm / approximateSpeedOfTruckInKmPerHour;
+        return (int) Math.round(ApproximateTimeInHours);
+    }
+
+    private int calculateDistanceOfOrderByOrderId(int orderId) {
         Order order = orderService.getOrder(orderId);
-        return driverWorkedHoursLimit - calculateApproximateTimeOfOrderExecution(order);
+        List<Waypoint> waypoints = order.getWaypoints();
+
+        /* Get list if ids for loading cities and unloading */
+        List<Integer> cityLoadingIds = new ArrayList<>();
+        List<Integer> cityUnloadingIds = new ArrayList<>();
+        for (Waypoint waypoint: waypoints) {
+            cityLoadingIds.add(waypoint.getCityLoading().getId());
+            cityUnloadingIds.add(waypoint.getCityUnloading().getId());
+        }
+
+        Collections.sort(cityLoadingIds);
+        Collections.sort(cityUnloadingIds);
+
+        List<Distance> distances = distanceDAO.getAllDistances();
+        int distanceForOrder = 0;
+
+        /* Get max distance if it's a straight way (from SPb to Sochi) */
+        Distance distanceInStraightWay = distances
+                    .stream()
+                    .filter(distance -> distance.getCity1().getId() == (cityLoadingIds.get(0)))
+                    .filter(distance -> distance.getCity2().getId() == (cityUnloadingIds.get(cityUnloadingIds.size() - 1)))
+                    .findFirst()
+                    .get();
+
+        /* Get max distance if it's a reverse way (from Sochi to SPb) */
+        Distance distanceInReverseWay = distances
+                .stream()
+                .filter(distance -> distance.getCity1().getId() == (cityLoadingIds.get(cityLoadingIds.size() - 1)))
+                .filter(distance -> distance.getCity2().getId() == (cityUnloadingIds.get(0)))
+                .findFirst()
+                .get();
+
+        /* Which one is more is right shortest way */
+        if (distanceInStraightWay.getDistance() > distanceInReverseWay.getDistance())
+            distanceForOrder = distanceInStraightWay.getDistance();
+        else
+            distanceForOrder = distanceInReverseWay.getDistance();
+
+
+        return distanceForOrder;
     }
 
-    // Needs jgrapht for calculating shortest way for order
-    public int calculateApproximateTimeOfOrderExecution(Order order){
-        int ApproximateTimeInHours = 0;
 
+    private List<WaypointBusiness> convertWaypointListIntoWaypointBusinessList(List<Waypoint> waypoints){
+        List<WaypointBusiness> waypointBusinessList = new ArrayList<>();
 
+        /* Set waypoint for WaypointBusiness which considers type of loading */
+        for (Waypoint waypoint: waypoints){
+            WaypointBusiness waypointBusinessLoading = new WaypointBusiness();
+            waypointBusinessLoading.setLoading(true);
+            waypointBusinessLoading.setCargo(waypoint.getCargo());
+            waypointBusinessLoading.setCity(waypoint.getCityLoading());
 
-        return ApproximateTimeInHours;
-    }
+            WaypointBusiness waypointBusinessUnloading = new WaypointBusiness();
+            waypointBusinessUnloading.setLoading(false);
+            waypointBusinessUnloading.setCargo(waypoint.getCargo());
+            waypointBusinessUnloading.setCity(waypoint.getCityUnloading());
 
-    public int calculateShortestWayForOrderInKm(){
-        int shortestWayInKm = 0;
+            waypointBusinessList.add(waypointBusinessLoading);
+            waypointBusinessList.add(waypointBusinessUnloading);
+        }
 
-
-        return shortestWayInKm;
+        return waypointBusinessList;
     }
 }

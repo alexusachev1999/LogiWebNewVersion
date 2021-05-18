@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.usachev.LogiWebProject.businessCalculating.BusinessCalculating;
+import ru.usachev.LogiWebProject.dto.WaypointDTO;
 import ru.usachev.LogiWebProject.entity.City;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Order;
@@ -20,8 +21,8 @@ public class TruckDAOImpl implements TruckDAO{
     @Autowired
     private SessionFactory sessionFactory;
 
-//    @Autowired
-//    private BusinessCalculating calculating;
+    @Autowired
+    private BusinessCalculating calculating;
 
     @Override
     public List<Truck> getAllTrucks() {
@@ -63,16 +64,22 @@ public class TruckDAOImpl implements TruckDAO{
     }
 
     @Override
-    public List<Truck> getValidTrucksForOrder(int orderId) {
+    public List<Truck> getValidTrucksForOrder(List<WaypointDTO> waypoints) {
         Session session = sessionFactory.getCurrentSession();
-        int needingCapacity = 20;
-//        int needingCapacity = calculating.calculateNeedingCapacityByOrderId(orderId);
-        Query query = session.createQuery("from Truck where state=true and " +
-                "capacity<=:capacity and order = null");
-        query.setParameter("capacity", needingCapacity);
+
+        final int needingCapacity;
+        needingCapacity = calculating.calculateNeedingCapacityByWaypointList(waypoints);
+
+        Query query = session.createQuery("from Truck where state=true");
+        List<Truck> trucks = query.getResultList();
 
         try {
-            return query.getResultList();
+            if (!trucks.isEmpty()){
+                trucks.removeIf(truck -> !truck.isState());
+                trucks.removeIf(truck -> truck.getOrder() != null);
+                trucks.removeIf(truck -> truck.getCapacity() < needingCapacity);
+            }
+            return trucks;
         } catch (NoResultException e){
             return null;
         }

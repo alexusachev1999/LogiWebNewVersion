@@ -21,4 +21,6 @@ public interface WaypointService {
     List<WaypointDTO> getAllFreeWaypoints();
 
     void saveWaypointEntity(Waypoint waypoint);
+
+    void deleteWaypointByCargoId(int id);
 }

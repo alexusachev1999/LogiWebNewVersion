@@ -5,9 +5,16 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.Filter;
+import javax.servlet.ServletRegistration;
 
 public class MyWebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer
         implements WebApplicationInitializer {
+
+    @Override
+    public void customizeRegistration(ServletRegistration.Dynamic registration) {
+        registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
+    }
+
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return null;

@@ -8,15 +8,21 @@
     <meta charset="UTF-8">
     <title>Список маршрутных точек</title>
 </head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <body>
-<table>
+<table class="table table-bordered table-dark">
+    <thead>
     <tr>
-        <th>Груз</th>
-        <th>Город погрузки</th>
-        <th>Город разгрузки</th>
-        <th>Обновить</th>
-        <th>Удалить</th>
+        <th scope="col">Груз</th>
+        <th scope="col">Город погрузки</th>
+        <th scope="col">Город разгрузки</th>
+        <th scope="col">Обновить</th>
+        <th scope="col">Удалить</th>
     </tr>
+    </thead>
+    <tbody>
     <C:forEach var="waypoint" items="${waypoints}">
 
         <c:url var="updateButton" value="/admin/updateWaypoint">
@@ -35,10 +41,9 @@
             <td><input type="button" value="Удалить" onclick="window.location.href='${deleteButton}'"/></td>
         </tr>
     </C:forEach>
+    </tbody>
 </table>
-<input type="button" value="Добавить точку" onclick="window.location.href='addWaypoint'">
-<br/><br/>
-
+<br/>
 <input type="button" value="Вернуться в главное меню" onclick="window.location.href='/admin'">
 </body>
 </html>

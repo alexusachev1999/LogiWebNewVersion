@@ -28,4 +28,6 @@ public interface DriverService {
     void saveEntityDriver(Driver driver);
 
     void updateDriver(DriverDTO driver);
+
+    Driver getDriverByPhoneNumber(String phoneNumber);
 }

@@ -12,6 +12,8 @@ import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.service.CityService;
 import ru.usachev.LogiWebProject.service.DriverService;
 import ru.usachev.LogiWebProject.service.UserService;
+import ru.usachev.LogiWebProject.validation.DriverValidator;
+import ru.usachev.LogiWebProject.validation.UserValidator;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -32,6 +34,12 @@ public class AdminDriverController {
     @Autowired
     private DriverConverter driverConverter;
 
+    @Autowired
+    private UserValidator userValidator;
+
+    @Autowired
+    private DriverValidator driverValidator;
+
     @RequestMapping("/")
     public String showAdminMenu(){
         return "admin/admin-main";
@@ -50,13 +58,19 @@ public class AdminDriverController {
         userDTO.setUserRole("ROLE_DRIVER");
         userDTO.setEnabled(true);
         model.addAttribute("user", userDTO);
+        model.addAttribute("uniqueError", "no error");
         return "admin/add-driver-user";
     }
 
     @PostMapping("/saveUserForNewDriver")
     public String saveUserForNewDriver(@Valid @ModelAttribute(name = "user") UserDTO userDTO,
                                 BindingResult bindingResult, Model model){
-        if (bindingResult.hasErrors()){
+        boolean isValidUser = userValidator.validUser(userDTO);
+        if (bindingResult.hasErrors() || !isValidUser){
+            if (!isValidUser)
+                model.addAttribute("uniqueError", "Пользователь " +
+                        "с таким именем существует!");
+
             userDTO.setUserRole("ROLE_DRIVER");
             userDTO.setEnabled(true);
             model.addAttribute("user", userDTO);
@@ -69,6 +83,7 @@ public class AdminDriverController {
             driver.setStatus("Отдых");
             model.addAttribute("driver", driver);
             model.addAttribute("cityList", cityService.getCities());
+            model.addAttribute("uniqueDriverError", "no error");
             return "admin/add-driver";
         }
     }
@@ -76,7 +91,11 @@ public class AdminDriverController {
     @PostMapping(value = "/saveDriver", produces = "text/plain;charset=UTF-8")
     public String saveDriver(@Valid @ModelAttribute("driver") DriverDTO driver, BindingResult bindingResult
     , Model model){
-        if (bindingResult.hasErrors()){
+        boolean isValidDriver = driverValidator.validDriver(driver);
+        if (bindingResult.hasErrors() || !isValidDriver){
+            if (!isValidDriver)
+                model.addAttribute("uniqueDriverError", "Водитель " +
+                        "с таким номером уже существует!");
             model.addAttribute("driver", driver);
             model.addAttribute("cityList", cityService.getCities());
             return "admin/add-driver";}

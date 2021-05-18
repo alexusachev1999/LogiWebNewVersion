@@ -15,6 +15,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class DriverDAOImpl implements DriverDAO{
@@ -22,8 +23,8 @@ public class DriverDAOImpl implements DriverDAO{
     @Autowired
     private SessionFactory sessionFactory;
 
-//    @Autowired
-//    private BusinessCalculating businessCalculating;
+    @Autowired
+    private BusinessCalculating businessCalculating;
 
     @Override
     public List<Driver> getAllDrivers() {
@@ -105,19 +106,24 @@ public class DriverDAOImpl implements DriverDAO{
     @Override
     public List<Driver> getValidDriversByOrderId(int orderId) {
         Session session = sessionFactory.getCurrentSession();
-        int workedHours = 9;
-//        int workedHours = businessCalculating.calculateDriverWorkedHoursLimitForOrderByOrderId(orderId);
+        Order order = session.get(Order.class, orderId);
 
-        Query query = session.createQuery("from Driver where order.id = null " +
-                "and order.truck.city=city " +
-                "and workedHours<:workedHours")
-                .setParameter("workedHours", workedHours);
+        City cityOfTruck = order.getTruck().getCity();
 
-        try {
-            return query.getResultList();
-        } catch (NoResultException e) {
+        int workedHours = businessCalculating.calculateDriverWorkedHoursLimitForOrderByOrderId(orderId);
+
+        Query query = session.createQuery("from Driver where order.id = null ");
+
+        List<Driver> drivers = query.getResultList();
+
+        if (drivers != null){
+            drivers.removeIf(driver -> !driver.getCity().equals(cityOfTruck));
+
+            drivers.removeIf(driver -> driver.getWorkedHours() > workedHours);
+
+            return drivers;
+        } else
             return null;
-        }
     }
 
     @Override
@@ -181,5 +187,19 @@ public class DriverDAOImpl implements DriverDAO{
         driverFromDB.setWorkType(driver.isWorkType());
 
         session.update(driverFromDB);
+    }
+
+    @Override
+    public Driver getDriverByPhoneNumber(String phoneNumber) {
+        Session session = sessionFactory.getCurrentSession();
+
+        List<Driver> drivers = (List<Driver>) session.createQuery("from Driver where phoneNumber=:phoneNumber")
+                    .setParameter("phoneNumber", phoneNumber)
+                    .getResultList();
+
+        if (drivers.isEmpty())
+            return null;
+        else
+            return drivers.get(0);
     }
 }

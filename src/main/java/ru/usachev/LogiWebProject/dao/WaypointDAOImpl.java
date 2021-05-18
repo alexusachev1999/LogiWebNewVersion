@@ -78,7 +78,9 @@ public class WaypointDAOImpl implements WaypointDAO{
     public void deleteWaypoint(int id) {
         Session session = sessionFactory.getCurrentSession();
         Waypoint waypoint = session.get(Waypoint.class, id);
+        Cargo cargo = waypoint.getCargo();
         session.delete(waypoint);
+        session.delete(cargo);
     }
 
     @Override
@@ -122,5 +124,29 @@ public class WaypointDAOImpl implements WaypointDAO{
         waypointFromDB.setOrder(waypoint.getOrder());
 
         session.saveOrUpdate(waypointFromDB);
+    }
+
+    @Override
+    public List<Waypoint> getAllFreeWaypoints() {
+        Session session = sessionFactory.getCurrentSession();
+
+        List<Waypoint> waypoints = session.createQuery("from Waypoint where order=null")
+                .getResultList();
+        return waypoints;
+    }
+
+    @Override
+    public void deleteWaypointByCargoId(int id) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Cargo cargo = session.get(Cargo.class, id);
+
+        if (cargo.getWaypoints().size() > 0){
+            Waypoint waypoint = cargo.getWaypoints().get(0);
+            waypoint.setCargo(null);
+            cargo.setWaypoints(null);
+            session.delete(waypoint);
+        }
+        session.delete(cargo);
     }
 }
