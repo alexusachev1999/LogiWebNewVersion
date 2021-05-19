@@ -108,4 +108,11 @@ public class MainController {
 		return mav;
 	}
 
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(Exception.class)
+	public ModelAndView redirectToError500Page() {
+		ModelAndView mav = new ModelAndView("pages/500");
+		mav.addObject("message", "error on server");
+		return mav;
+	}
 }

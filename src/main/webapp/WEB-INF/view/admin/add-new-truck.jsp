@@ -94,7 +94,7 @@
                     </div>
                 </c:if>
 
-                <form:errors path="registrationNumber"/>
+                <form:errors path="registrationNumber" cssClass="alert alert-danger"/>
             </div>
             <br/>
 
@@ -102,7 +102,8 @@
                 <label for="registrationNumber" class="form-label">Смена водителя (ч.)</label>
                 <form:input path="driverShiftDuration" cssClass="form-control form-control-lg"
                             placeholder="9"/>
-                <form:errors path="driverShiftDuration"/>
+                <br/>
+                <form:errors path="driverShiftDuration" cssClass="alert alert-danger"/>
             </div>
             <br/>
 
@@ -110,7 +111,8 @@
                 <label for="registrationNumber" class="form-label">Вместимость (т.) </label>
                 <form:input path="capacity" cssClass="form-control form-control-lg"
                             placeholder="20"/>
-                <form:errors path="capacity"/>
+                <br/>
+                <form:errors path="capacity" cssClass="alert alert-danger"/>
             </div>
             <br/>
 
@@ -122,7 +124,8 @@
                         <form:option value="${city.name}"/>
                     </c:forEach>
                 </form:select>
-                <form:errors path="city"/>
+                <br/>
+                <form:errors path="city" cssClass="alert alert-danger"/>
             </div>
             <br/>
 
@@ -133,7 +136,8 @@
                     <form:option value= "true" label="Исправна"/>
                     <form:option value="false" label="Неисправна"/>
                 </form:select>
-                <form:errors path="city"/>
+                <br/>
+                <form:errors path="city" cssClass="alert alert-danger"/>
             </div>
             <br/>
 

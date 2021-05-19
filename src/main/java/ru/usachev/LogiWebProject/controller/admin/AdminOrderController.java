@@ -52,7 +52,7 @@ public class AdminOrderController {
     @Autowired
     private WaypointConverter waypointConverter;
 
-    private static OrderDTO orderDTOInMemory = new OrderDTO();
+    private OrderDTO orderDTOInMemory = new OrderDTO();
 
 
 
@@ -75,6 +75,10 @@ public class AdminOrderController {
         orderDTOInMemory.setNumber(randomInt);
 
         List<WaypointDTO> waypoints = waypointService.getAllFreeWaypoints();
+
+        if (waypoints.isEmpty()){
+            return "admin/no-waypoints";
+        }
 
         orderDTO.setWaypoints(waypoints);
         model.addAttribute("waypoints", waypoints);
@@ -111,6 +115,9 @@ public class AdminOrderController {
     public String addOrderTruck(Model model){
         List<TruckDTO> trucks = truckService.getValidTrucksForOrder(orderDTOInMemory.getWaypoints());
 
+        if (trucks.isEmpty())
+            return "admin/no-truck";
+
         model.addAttribute("order", orderDTOInMemory);
         model.addAttribute("trucks", trucks);
         return "admin/order-add-truck";
@@ -143,6 +150,12 @@ public class AdminOrderController {
     @GetMapping("/order/addDrivers")
     public String addDriversToOrder(Model model){
         List<DriverDTO> drivers = driverService.getValidDriversByOrderId(orderDTOInMemory.getId());
+
+        if (drivers.isEmpty()) {
+            orderService.deleteOrder(orderDTOInMemory.getId());
+            orderDTOInMemory = new OrderDTO();
+            return "admin/no-driver";
+        }
 
         model.addAttribute("order", orderDTOInMemory);
         model.addAttribute("drivers", drivers);

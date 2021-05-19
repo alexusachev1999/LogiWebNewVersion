@@ -39,6 +39,7 @@ public class OrderDAOImpl implements OrderDAO{
 
         if (order.getId() != 0){
             orderFromDB = session.get(Order.class, order.getId());
+
             orderFromDB.setDrivers(order.getDrivers());
             orderFromDB.setTruck(order.getTruck());
             orderFromDB.setWaypoints(order.getWaypoints());

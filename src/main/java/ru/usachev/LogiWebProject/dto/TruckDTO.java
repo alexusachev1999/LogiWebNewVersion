@@ -13,9 +13,11 @@ public class TruckDTO {
     private String registrationNumber;
 
     @Positive
+    @NotNull
     private int driverShiftDuration;
 
     @Positive
+    @NotNull
     private int capacity;
 
     @NotBlank

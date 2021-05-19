@@ -22,9 +22,10 @@
 
 	.top-of-page{
 		padding-top: 50px;
+		padding-bottom: 50px;
 		display: grid;
 		width: 100%;
-		background-color: black;
+		background-color: #bb0000;
 		color: #FFFFFF;
 		text-align: center;
 		font-size: xxx-large;
@@ -130,47 +131,6 @@
 				<input class="buttonStyleWhite" type="button" value="Для водителей" onclick="window.location.href = '/driver/'">
 			</div>
 		</div>
-	</div>
-	<div>
-		<sec:authorize access="hasRole('ROLE_ADMIN')">
-			<!-- For login user -->
-			<c:url value="/logout" var="logoutUrl" />
-			<form action="${logoutUrl}" method="post" id="logoutForm">
-				<input type="hidden" name="${_csrf.parameterName}"
-					   value="${_csrf.token}" />
-			</form>
-			<script>
-				function formSubmit() {
-					document.getElementById("logoutForm").submit();
-				}
-			</script>
-
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
-				<h2>
-					<a href="javascript:formSubmit()">Выйти</a>
-				</h2>
-			</c:if>
-		</sec:authorize>
-
-		<sec:authorize access="hasRole('ROLE_DRIVER')">
-			<!-- For login user -->
-			<c:url value="/logout" var="logoutUrl" />
-			<form action="${logoutUrl}" method="post" id="logoutForm">
-				<input type="hidden" name="${_csrf.parameterName}"
-					   value="${_csrf.token}" />
-			</form>
-			<script>
-				function formSubmit() {
-					document.getElementById("logoutForm").submit();
-				}
-			</script>
-
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
-				<h2>
-					<a href="javascript:formSubmit()">Выйти</a>
-				</h2>
-			</c:if>
-		</sec:authorize>
 	</div>
 </div>
 
