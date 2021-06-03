@@ -20,4 +20,6 @@ public interface OrderService {
     OrderDTO getOrderByUsername(String username);
 
     void saveDriversToOrder(List<Driver> drivers, OrderDTO orderDTO);
+
+    void orderComplete(int orderId);
 }

@@ -1,5 +1,6 @@
 package ru.usachev.LogiWebProject.dao;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import ru.usachev.LogiWebProject.entity.City;
 import ru.usachev.LogiWebProject.entity.Driver;
 import ru.usachev.LogiWebProject.entity.Order;
 import ru.usachev.LogiWebProject.entity.Truck;
+import ru.usachev.LogiWebProject.service.TruckServiceImpl;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -17,6 +19,8 @@ import java.util.List;
 
 @Repository
 public class TruckDAOImpl implements TruckDAO{
+
+    private static Logger logger = Logger.getLogger(TruckDAOImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -51,6 +55,8 @@ public class TruckDAOImpl implements TruckDAO{
         Session session = sessionFactory.getCurrentSession();
         Truck truck = session.get(Truck.class, id);
         session.delete(truck);
+
+        logger.info("delete truck: " + truck.getRegistrationNumber());
     }
 
     @Override
@@ -61,6 +67,11 @@ public class TruckDAOImpl implements TruckDAO{
         City city = (City) query.getSingleResult();
         city.addTruckToTruckList(truck);
         session.saveOrUpdate(truck);
+
+        if (truck.getId() != 0)
+            logger.info("save truck: " + truck.getRegistrationNumber());
+        else
+            logger.info("update truck: " + truck.getRegistrationNumber());
     }
 
     @Override

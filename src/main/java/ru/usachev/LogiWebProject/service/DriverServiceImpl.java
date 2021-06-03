@@ -76,8 +76,12 @@ public class DriverServiceImpl implements DriverService{
     @Transactional
     public List<DriverDTO> getCoDriverListByUsername(String username) {
         List<Driver> driverList = driverDAO.getCoDriverListByUsername(username);
-        List<DriverDTO> driverDTOList = driverConverter.convertDriverListToDriverDTOList(driverList);
-        return driverDTOList;
+
+        if (driverList != null){
+            List<DriverDTO> driverDTOList = driverConverter.convertDriverListToDriverDTOList(driverList);
+            return driverDTOList;
+        } else
+            return null;
     }
 
     @Override

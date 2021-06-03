@@ -21,4 +21,6 @@ public interface OrderDAO {
     Order getOrderByUsername(String username);
 
     void saveDriversToOrder(List<Driver> drivers, Order order);
+
+    void orderComplete(int orderId);
 }

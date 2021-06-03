@@ -1,5 +1,6 @@
 package ru.usachev.LogiWebProject.businessCalculating;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Schedules;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,8 @@ import java.util.*;
 @Component
 public class BusinessCalculating {
 
+    private static Logger logger = Logger.getLogger(BusinessCalculating.class);
+
     @Autowired
     private OrderService orderService;
 
@@ -29,6 +32,8 @@ public class BusinessCalculating {
     private static final int driverWorkedHoursLimit = 176;
 
     private static final double approximateSpeedOfTruckInKmPerHour = 80;
+
+
 
     public int calculateNeedingCapacityByWaypointList(List<WaypointDTO> waypointsDTO) {
         int capacity = 0;
@@ -46,7 +51,9 @@ public class BusinessCalculating {
         double capacityDouble = ((double) capacity)/1000;
         capacity = (int) Math.round(capacityDouble);
 
+        logger.info("capacity for order is: " + capacity);
         return capacity;
+
     }
 
 
@@ -58,8 +65,10 @@ public class BusinessCalculating {
     public int calculateApproximateTimeOfOrderExecution(int orderId){
         int distanceOfOrderInKm = calculateDistanceOfOrderByOrderId(orderId);
 
-        double ApproximateTimeInHours = distanceOfOrderInKm / approximateSpeedOfTruckInKmPerHour;
-        return (int) Math.round(ApproximateTimeInHours);
+        double approximateTimeInHours = distanceOfOrderInKm / approximateSpeedOfTruckInKmPerHour;
+
+        logger.info("approximate time for order with id: " + orderId + " is " + approximateTimeInHours);
+        return (int) Math.round(approximateTimeInHours);
     }
 
     private int calculateDistanceOfOrderByOrderId(int orderId) {
@@ -102,6 +111,7 @@ public class BusinessCalculating {
         else
             distanceForOrder = distanceInReverseWay.getDistance();
 
+        logger.info("shortest distance for order №" + order.getNumber() + " is: " + distanceForOrder);
 
         return distanceForOrder;
     }

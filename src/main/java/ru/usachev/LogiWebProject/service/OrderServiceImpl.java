@@ -73,4 +73,10 @@ public class OrderServiceImpl implements OrderService {
         }
         orderDAO.saveDriversToOrder(drivers, order);
     }
+
+    @Override
+    @Transactional
+    public void orderComplete(int orderId) {
+        orderDAO.orderComplete(orderId);
+    }
 }

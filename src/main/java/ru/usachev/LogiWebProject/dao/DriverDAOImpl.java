@@ -1,10 +1,12 @@
 package ru.usachev.LogiWebProject.dao;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.usachev.LogiWebProject.businessCalculating.BusinessCalculating;
+import ru.usachev.LogiWebProject.controller.admin.AdminDriverController;
 import ru.usachev.LogiWebProject.dto.DriverDTO;
 import ru.usachev.LogiWebProject.entity.City;
 import ru.usachev.LogiWebProject.entity.Driver;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Repository
 public class DriverDAOImpl implements DriverDAO{
+    private static Logger logger = Logger.getLogger(DriverDAOImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -50,6 +53,7 @@ public class DriverDAOImpl implements DriverDAO{
         City city = (City) query.getSingleResult();
         city.addDriverToDriverList(driver);
         session.saveOrUpdate(driver);
+        logger.info("save new driver" + driver.getName() + " " + driver.getSurname());
         } else {
             Driver driverFromDB = session.get(Driver.class, driver.getId());
             driverFromDB.setName(driver.getName());
@@ -70,6 +74,7 @@ public class DriverDAOImpl implements DriverDAO{
             driverFromDB.setUser(driver.getUser());
 
             session.saveOrUpdate(driverFromDB);
+            logger.info("update driver" + driver.getName() + " " + driver.getSurname());
         }
 
     }
@@ -86,6 +91,8 @@ public class DriverDAOImpl implements DriverDAO{
         Session session = sessionFactory.getCurrentSession();
         Driver driver = session.get(Driver.class, id);
         session.delete(driver);
+        logger.info("delete driver" + driver.getName() + " " + driver.getSurname());
+
     }
 
     @Override
@@ -110,16 +117,23 @@ public class DriverDAOImpl implements DriverDAO{
 
         City cityOfTruck = order.getTruck().getCity();
 
+        int timeOfOrderExecution = businessCalculating.calculateApproximateTimeOfOrderExecution(orderId);
+
         int workedHours = businessCalculating.calculateDriverWorkedHoursLimitForOrderByOrderId(orderId);
 
         Query query = session.createQuery("from Driver where order.id = null ");
 
         List<Driver> drivers = query.getResultList();
 
+
         if (drivers != null){
             drivers.removeIf(driver -> !driver.getCity().equals(cityOfTruck));
 
             drivers.removeIf(driver -> driver.getWorkedHours() > workedHours);
+
+            for (Driver driver: drivers){
+                driver.setTimeForOrderExecution(timeOfOrderExecution);
+            }
 
             return drivers;
         } else
@@ -144,13 +158,17 @@ public class DriverDAOImpl implements DriverDAO{
                 .setParameter("username", username)
                 .getSingleResult();
 
-        int orderId = driver.getOrder().getId();
+        if (driver.getOrder() != null) {
+            int orderId = driver.getOrder().getId();
 
         List<Driver> driverList = session.createQuery("from Driver where order.id=:orderId")
                 .setParameter("orderId", orderId)
                 .getResultList();
 
-        return driverList;
+        return driverList;}
+
+        else
+            return null;
     }
 
     @Override
@@ -175,6 +193,7 @@ public class DriverDAOImpl implements DriverDAO{
         Session session = sessionFactory.getCurrentSession();
 
         session.saveOrUpdate(driver);
+        logger.info("save new driver" + driver.getName() + " " + driver.getSurname());
     }
 
     @Override
@@ -187,6 +206,8 @@ public class DriverDAOImpl implements DriverDAO{
         driverFromDB.setWorkType(driver.isWorkType());
 
         session.update(driverFromDB);
+        logger.info("update driver" + driver.getName() + " " + driver.getSurname());
+
     }
 
     @Override

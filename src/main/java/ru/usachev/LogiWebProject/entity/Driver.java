@@ -31,6 +31,10 @@ public class Driver {
     @Pattern(regexp = "^\\+[7][-]\\d{3}-\\d{3}-\\d{2}-\\d{2}$", message = "Используйте для номера следующий шаблон - +7-953-146-23-60")
     private String phoneNumber;
 
+    /* It's help field for driver menu. When driver finish his order it sets into his worked hours */
+    @Column(name = "time_for_order_execution")
+    private int timeForOrderExecution;
+
     @Column(name = "worked_hours")
     private int workedHours;
 
@@ -146,6 +150,14 @@ public class Driver {
 
     public void setWorkType(boolean workType) {
         this.workType = workType;
+    }
+
+    public int getTimeForOrderExecution() {
+        return timeForOrderExecution;
+    }
+
+    public void setTimeForOrderExecution(int timeForOrderExecution) {
+        this.timeForOrderExecution = timeForOrderExecution;
     }
 }
 

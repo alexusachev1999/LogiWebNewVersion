@@ -11,11 +11,11 @@
 <h2>Добро пожаловать!</h2>
 
 <security:authorize access="hasRole('ROLE_ADMIN')">
-    <input type="button" value="Для администраторов" onclick="window.location.href = '/admin/main'">
+    <input type="button" value="Для администраторов" onclick="window.location.href = '/logiweb/admin/main'">
 </security:authorize>
 
 <security:authorize access="hasRole('ROLE_DRIVER')">
-    <input type="button" value="Для водителей" onclick="window.location.href = '/driver/main'">
+    <input type="button" value="Для водителей" onclick="window.location.href = '/logiweb/driver/main'">
 </security:authorize>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package ru.usachev.LogiWebProject.dao;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import java.util.List;
 
 @Repository
 public class OrderDAOImpl implements OrderDAO{
+
+    private static Logger logger = Logger.getLogger(OrderDAOImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -45,35 +48,11 @@ public class OrderDAOImpl implements OrderDAO{
             orderFromDB.setWaypoints(order.getWaypoints());
 
             session.saveOrUpdate(orderFromDB);
+            logger.info("update order №: " + order.getNumber());
         } else {
-
             session.saveOrUpdate(order);
+            logger.info("save new order №: " + order.getNumber());
         }
-
-//
-//            List<Waypoint> waypoints = order.getWaypoints();
-//
-//            for (Waypoint waypoint: waypoints){
-//                waypoint.setOrder(order);
-//                session.saveOrUpdate(waypoint);
-//            }
-//
-//            if (order.getTruck() != null) {
-//                int truckId = order.getTruck().getId();
-//                Truck truck = session.get(Truck.class, truckId);
-//                truck.setOrder(order);
-//                session.saveOrUpdate(truck);
-//            }
-//
-//            if (order.getDrivers() != null) {
-//                List<Driver> drivers = order.getDrivers();
-//                Truck truck = order.getTruck();
-//                for (Driver driver : drivers) {
-//                    driver.setOrder(order);
-//                    driver.setTruck(truck);
-//                    session.update(driver);
-//                }
-//            }
 
     }
 
@@ -85,6 +64,7 @@ public class OrderDAOImpl implements OrderDAO{
         try {
             return order;
         } catch (NoResultException e){
+            logger.info("no order №: " + order.getNumber() + " in DB");
             return null;
         }
     }
@@ -106,6 +86,7 @@ public class OrderDAOImpl implements OrderDAO{
             driver.setTruck(null);
         }
         session.delete(order);
+        logger.info("delete order №: " + order.getNumber());
     }
 
     @Override
@@ -147,8 +128,43 @@ public class OrderDAOImpl implements OrderDAO{
         Session session = sessionFactory.getCurrentSession();
 
         session.update(order);
+        logger.info("update order №: " + order.getNumber());
+
         for (Driver driver: drivers){
             session.saveOrUpdate(driver);
+            logger.info("set order №: " + order.getNumber() + " to driver: " + driver.getId() + " "
+            + driver.getName() + " " + driver.getSurname());
         }
+    }
+
+    @Override
+    public void orderComplete(int orderId) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Order orderFromDB = session.get(Order.class, orderId);
+
+        List<Driver> drivers = orderFromDB.getDrivers();
+
+        for (Driver driver: drivers){
+            driver.setOrder(null);
+            session.saveOrUpdate(driver);
+        }
+
+        Truck truck = orderFromDB.getTruck();
+        truck.setOrder(null);
+        session.saveOrUpdate(truck);
+
+        List<Waypoint> waypoints = orderFromDB.getWaypoints();
+        for (Waypoint waypoint: waypoints){
+            waypoint.setOrder(null);
+            session.saveOrUpdate(waypoint);
+        }
+
+        orderFromDB.setDrivers(null);
+        orderFromDB.setTruck(null);
+        orderFromDB.setWaypoints(null);
+        orderFromDB.setStatus(true);
+
+        session.saveOrUpdate(orderFromDB);
     }
 }

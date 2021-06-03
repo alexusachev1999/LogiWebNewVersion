@@ -1,6 +1,7 @@
 package ru.usachev.LogiWebProject.controller;
 
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,13 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.logging.Logger;
 
 @Controller
-public class MainController {
+public class MainController{
+
+	private static Logger logger = Logger.getLogger(MainController.class);
+
 
 	@RequestMapping(value = { "/", "/welcome**" }, method = RequestMethod.GET)
 	public ModelAndView defaultPage() {
@@ -95,6 +97,7 @@ public class MainController {
 			model.addObject("username", userDetail.getUsername());
 
 		}
+
 
 		model.setViewName("pages/403");
 		return model;

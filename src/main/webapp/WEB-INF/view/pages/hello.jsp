@@ -122,13 +122,13 @@
 	<div class="dividing-div">
 		<div class="left-side">
 			<div class="center">
-				<input class="buttonStyleBlack" type="button" value="Для администраторов" onclick="window.location.href = '/admin/'">
+				<input class="buttonStyleBlack" type="button" value="Для администраторов" onclick="window.location.href = '/logiweb/admin/'">
 			</div>
 		</div>
 
 		<div class="right-side">
 			<div class="center">
-				<input class="buttonStyleWhite" type="button" value="Для водителей" onclick="window.location.href = '/driver/'">
+				<input class="buttonStyleWhite" type="button" value="Для водителей" onclick="window.location.href = '/logiweb/driver/'">
 			</div>
 		</div>
 	</div>

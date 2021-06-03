@@ -78,7 +78,7 @@
 	</div>
 
 	<div class="center">
-		<input class="center buttonStyle" type="button" value="Вернуться в главное меню" onclick="window.location.href='/'">
+		<input class="center buttonStyle" type="button" value="Вернуться в главное меню" onclick="window.location.href='/logiweb/'">
 	</div>
 
 </body>

@@ -73,17 +73,17 @@
 <body>
 
 <div class="buttonMain">
-    <input type="button" class="buttonStyle" value="Водители" onclick="window.location.href='/admin/drivers'">
+    <input type="button" class="buttonStyle" value="Водители" onclick="window.location.href='/logiweb/admin/drivers'">
     <br/>
-    <input type="button" class="buttonStyle" value="Фуры" onclick="window.location.href='/admin/trucks'">
+    <input type="button" class="buttonStyle" value="Фуры" onclick="window.location.href='/logiweb/admin/trucks'">
     <br/>
-    <input type="button" class="buttonStyle" value="Заказы" onclick="window.location.href='/admin/orders'">
+    <input type="button" class="buttonStyle" value="Заказы" onclick="window.location.href='/logiweb/admin/orders'">
     <br/>
-    <input type="button" class="buttonStyle" value="Маршрутные точки" onclick="window.location.href='/admin/waypoints'">
+    <input type="button" class="buttonStyle" value="Маршрутные точки" onclick="window.location.href='/logiweb/admin/waypoints'">
     <br/>
-    <input type="button" class="buttonStyle" value="Грузы" onclick="window.location.href='/admin/cargoes'">
+    <input type="button" class="buttonStyle" value="Грузы" onclick="window.location.href='/logiweb/admin/cargoes'">
     <br/>
-    <input type="button" class="buttonStyle" value="Добавить нового администратора" onclick="window.location.href='/admin/users'">
+    <input type="button" class="buttonStyle" value="Добавить нового администратора" onclick="window.location.href='/logiweb/admin/users'">
 </div>
 
 

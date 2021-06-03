@@ -1,5 +1,6 @@
 package ru.usachev.LogiWebProject.controller.admin;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminCargoController {
+
+    private static Logger logger = Logger.getLogger(AdminCargoController.class);
 
     @Autowired
     private CargoService cargoService;
@@ -68,10 +71,13 @@ public class AdminCargoController {
             redirectAttributes.addFlashAttribute("cargo", cargo);
             cargoService.saveCargo(cargo);
 
-            if (cargo.getId() == 0)
+
+            if (cargo.getId() == 0){
                 return "redirect:/admin/addWaypoint";
-            else
-                return "redirect:/admin/waypoints";
+            }
+            else{
+                return "redirect:/admin/cargoes";
+            }
         }
     }
 
@@ -79,6 +85,7 @@ public class AdminCargoController {
     public String updateCargo(@RequestParam("cargoId") int id, Model model){
         CargoDTO cargo = cargoConverter.convertCargoToCargoDTO(cargoService.getCargo(id));
         model.addAttribute("cargo", cargo);
+        logger.info("Want to update cargo: " + cargo.getName());
         return "admin/add-cargo";
     }
 

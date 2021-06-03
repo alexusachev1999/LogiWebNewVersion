@@ -1,9 +1,11 @@
 package ru.usachev.LogiWebProject.dao;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ru.usachev.LogiWebProject.controller.admin.AdminDriverController;
 import ru.usachev.LogiWebProject.entity.User;
 import ru.usachev.LogiWebProject.entity.UserRole;
 
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
+
+	private static Logger logger = Logger.getLogger(UserDAOImpl.class);
+
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -51,6 +56,8 @@ public class UserDAOImpl implements UserDAO {
 	public void saveUser(User user) {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(user);
+
+		logger.info("save user: " + user.getUsername());
 	}
 
 	@Override
@@ -63,6 +70,8 @@ public class UserDAOImpl implements UserDAO {
 	public void deleteUser(User user) {
 		Session session = sessionFactory.getCurrentSession();
 		session.delete(user);
+
+		logger.info("delete user: " + user.getUsername());
 	}
 
 	@Override

@@ -41,6 +41,7 @@ public class DriverConverterImpl implements DriverConverter{
         convertedDriver.setStatus(driver.getStatus());
         convertedDriver.setWorkedHours(driver.getWorkedHours());
         convertedDriver.setWorkType(driver.isWorkType());
+        convertedDriver.setTimeForOrderExecution(driver.getTimeForOrderExecution());
 
 
         if (driver.getTruck() != null){
@@ -68,6 +69,7 @@ public class DriverConverterImpl implements DriverConverter{
         convertedDriver.setCity(driver.getCity().getName());
         convertedDriver.setWorkedHours(driver.getWorkedHours());
         convertedDriver.setWorkType(driver.isWorkType());
+        convertedDriver.setTimeForOrderExecution(driver.getTimeForOrderExecution());
 
         if (driver.getTruck() != null)
             convertedDriver.setTruck(driver.getTruck().getRegistrationNumber());

@@ -25,6 +25,9 @@ public class DriverDTO {
     @PositiveOrZero(message = "Рабочие часы не могут быть отрицательными")
     private int workedHours;
 
+    /* It's help field for driver menu. When driver finish his order it sets into his worked hours */
+    private int timeForOrderExecution;
+
     @NotNull
     private boolean workType;
 
@@ -120,5 +123,13 @@ public class DriverDTO {
 
     public void setWorkType(boolean workType) {
         this.workType = workType;
+    }
+
+    public int getTimeForOrderExecution() {
+        return timeForOrderExecution;
+    }
+
+    public void setTimeForOrderExecution(int timeForOrderExecution) {
+        this.timeForOrderExecution = timeForOrderExecution;
     }
 }

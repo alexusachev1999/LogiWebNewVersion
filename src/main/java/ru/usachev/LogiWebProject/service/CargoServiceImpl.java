@@ -2,6 +2,7 @@ package ru.usachev.LogiWebProject.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.usachev.LogiWebProject.aop.UpdateAnnotation;
 import ru.usachev.LogiWebProject.converter.CargoConverter;
 import ru.usachev.LogiWebProject.dao.CargoDAO;
 import ru.usachev.LogiWebProject.dto.CargoDTO;
@@ -21,6 +22,7 @@ public class CargoServiceImpl implements CargoService{
 
     @Override
     @Transactional
+    @UpdateAnnotation
     public List<Cargo> getAllCargoes() {
         return cargoDAO.getAllCargoes();
     }

@@ -1,5 +1,6 @@
 package ru.usachev.LogiWebProject.dao;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import java.util.List;
 
 @Repository
 public class CargoDAOImpl implements CargoDAO{
+
+    private static Logger logger = Logger.getLogger(CargoDAOImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -32,6 +35,10 @@ public class CargoDAOImpl implements CargoDAO{
     public void saveCargo(Cargo cargo) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(cargo);
+
+        String message = ("Save or update cargo: " + cargo.getName());
+
+        logger.info(message);
     }
 
     @Override
@@ -39,6 +46,10 @@ public class CargoDAOImpl implements CargoDAO{
         Session session = sessionFactory.getCurrentSession();
         Cargo cargo = session.get(Cargo.class, id);
         session.delete(cargo);
+
+        String message = "delete cargo: " + cargo.getName();
+
+        logger.info(message);
     }
 
     @Override

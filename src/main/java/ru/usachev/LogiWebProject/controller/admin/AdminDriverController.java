@@ -1,5 +1,6 @@
 package ru.usachev.LogiWebProject.controller.admin;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminDriverController {
+
+    private static Logger logger = Logger.getLogger(AdminDriverController.class);
 
     @Autowired
     private DriverService driverService;
@@ -105,12 +108,26 @@ public class AdminDriverController {
         }
     }
 
-    @RequestMapping("/updateDriver")
+    @GetMapping("/updateDriver")
     public String updateDriver(@RequestParam("driverId") int id, Model model){
         DriverDTO driver = driverConverter.convertDriverToDriverDTO(driverService.getDriver(id));
         model.addAttribute("cityList", cityService.getCities());
         model.addAttribute("driver", driver);
-        return "admin/add-driver";
+        return "admin/update-driver";
+    }
+
+    @PostMapping("/updateDriver")
+    public String updateDriver(@Valid @ModelAttribute("driver") DriverDTO driver,
+                               BindingResult bindingResult, Model model){
+
+        if (bindingResult.hasErrors()){
+            model.addAttribute("cityList", cityService.getCities());
+            model.addAttribute("driver", driver);
+            return "admin/update-driver";
+        } else {
+            driverService.saveDriver(driver);
+            return getAllDrivers(model);
+        }
     }
 
     @RequestMapping("/deleteDriver")

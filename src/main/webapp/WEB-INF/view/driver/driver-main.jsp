@@ -32,6 +32,10 @@
         justify-self: center;
     }
 
+    .green{
+        background-color: green;
+    }
+
     .name-of-driver{
         background-color: #050505;
         color: #ffffff;
@@ -97,8 +101,41 @@
         border-radius: 10px;
         font-size: 20px;
     }
+
+    .buttonStyleGreen{
+        margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        align-self: center;
+        background-color: #02bf0a;
+        color: #000000;
+        width: auto;
+        height: auto;
+        border: 4px solid #000000;
+        border-radius: 10px;
+        font-size: 30px;
+    }
+
+    .buttonStyleGreen:hover{
+        margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        align-self: center;
+        background-color: #a5e262;
+        color: #000000;
+        width: auto;
+        height: auto;
+        border: 4px solid #000000;
+        border-radius: 10px;
+        font-size: 30px;
+    }
 </style>
 <body>
+
+<c:url var="orderComplete" value="/driver/orderComplete">
+    <c:param name="orderId" value="${order.id}"/>
+</c:url>
+
 <div class="main-div name-of-driver">
     <h1>${driver.name} ${driver.surname}</h1>
 </div>
@@ -172,6 +209,11 @@
                         <br/>
                 </c:forEach>
             </ul>
+
+            <c:if test="${isOrderCompleted == true}">
+                <input class="center buttonStyleGreen" type="button" value="Заказ выполнен"
+                       onclick="window.location.href = '${orderComplete}'">
+            </c:if>
         </div>
     </div>
 </c:if>

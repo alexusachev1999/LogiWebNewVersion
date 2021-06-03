@@ -1,5 +1,6 @@
 package ru.usachev.LogiWebProject.controller.admin;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminTruckController {
+
+    private static Logger logger = Logger.getLogger(AdminTruckController.class);
 
     @Autowired
     private TruckService truckService;
@@ -64,13 +67,27 @@ public class AdminTruckController {
         }
     }
 
-    @RequestMapping("/updateTruck")
+    @GetMapping("/updateTruck")
     private String updateTruck(@RequestParam("truckId") int id, Model model){
         TruckDTO truck = truckConverter.convertTruckToTruckDTO(truckService.getTruck(id));
         model.addAttribute("cityList", cityService.getCities());
         model.addAttribute("truck", truck);
-        return "admin/add-new-truck";
+        return "admin/update-truck";
     }
+
+    @PostMapping("/updateTruck")
+    private String updateTruck(@Valid @ModelAttribute("truck") TruckDTO truck, BindingResult bindingResult
+            , Model model){
+        if (bindingResult.hasErrors()){
+            model.addAttribute("cityList", cityService.getCities());
+            return "admin/add-new-truck";
+        }
+        else {
+            truckService.saveTruck(truck);
+            return "redirect:/admin/trucks";
+        }
+    }
+
 
     @RequestMapping("/deleteTruck")
     public String deleteDriver(@RequestParam(name = "truckId") int id){

@@ -1,5 +1,6 @@
 package ru.usachev.LogiWebProject.dao;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import java.util.List;
 
 @Repository
 public class WaypointDAOImpl implements WaypointDAO{
+
+    private static Logger logger = Logger.getLogger(WaypointDAOImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -61,6 +64,11 @@ public class WaypointDAOImpl implements WaypointDAO{
         }
 
         session.saveOrUpdate(waypoint);
+
+        if (waypoint.getId() != 0)
+            logger.info("update waypoint for cargo: " + waypoint.getCargo().getName());
+        else
+            logger.info("save waypoint for cargo: " + waypoint.getCargo().getName());
     }
 
     @Override
@@ -80,7 +88,11 @@ public class WaypointDAOImpl implements WaypointDAO{
         Waypoint waypoint = session.get(Waypoint.class, id);
         Cargo cargo = waypoint.getCargo();
         session.delete(waypoint);
+
+        logger.info("delete waypoint for cargo: " + cargo.getName());
         session.delete(cargo);
+
+        logger.info("delete cargo: " + cargo.getName());
     }
 
     @Override
@@ -146,7 +158,9 @@ public class WaypointDAOImpl implements WaypointDAO{
             waypoint.setCargo(null);
             cargo.setWaypoints(null);
             session.delete(waypoint);
+            logger.info("delete waypoint for cargo: " + cargo.getName());
         }
         session.delete(cargo);
+        logger.info("delete cargo: " + cargo.getName());
     }
 }
